@@ -1,0 +1,64 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+# J.V.Ojala 17.08.2019
+# GPU-tycoon
+
+import calc
+import UI
+from msvcrt import getch
+from math import log, e, sqrt
+from engine import GameStatus, Player, REFINE
+import ai
+
+"""Game engine and main program"""
+
+players=[]
+game = GameStatus()
+
+def newPlayer():
+    players.append(Player())
+
+def NewAiPlayer():
+    players.append(Player("xVidia", True))
+
+if __name__ == "__main__":
+
+    UI.intro()
+    getch()
+    newPlayer()
+    # NewAiPlayer()
+
+    while True:
+
+        for p in players:
+
+            if p.ai == False:
+                UI.gameScreen(p, game)
+            else:
+                ai.aiTurn(p)
+            p.year += 1
+            p.refinememt =  p.refinememt / REFINE
+
+            p.income = 0    # Income is reset for update
+
+            for c in p.products:
+
+                # Update the dynamic parameters about each chip
+                c.update_refinement()
+                c.update_cost()
+                c.update_price_delta(game)
+                c.update_yeald()
+                c.update_income(game)
+
+                if c.inproduction == True:
+                    p.income += c.income    # Income is added together
+
+            # Yearly income is deposited
+            p.credits += p.income
+            print("This years earnings:", p.income, "c")
+
+    print(("year:", players[0].year))
+    print(("year:", players[0].refinememt))
+
+    # when game is run on command line
+

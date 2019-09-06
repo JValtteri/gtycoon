@@ -36,7 +36,7 @@ if __name__ == "__main__":
             if p.ai == False:
                 UI.gameScreen(p, game)
             else:
-                ai.aiTurn(p)
+                ai.aiTurn(p, game)
             p.year += 1
             p.refinememt =  p.refinememt / REFINE
 

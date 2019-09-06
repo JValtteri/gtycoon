@@ -231,10 +231,19 @@ def design(player, game):
     print("\nChoose chip price:")
     print("Press enter for default (10%%) margin price: (%i c) \nor enter a price. (Minimum ~26)" % round(chipcost*1.1) )
     try:
-        player.products[-1].price = int( input("> ") )
+        price = int( input("> ") )
     except:
         print("Using default price")
-        player.products[-1].price = round(chipcost * 1.1)
+        price = round(chipcost * 1.1)
+    if price < 26:
+            price = 26
+            print("""
+            Price set too low!
+            It won't cover the packaging costs.
+            But don't worry. I raised the price abit. It should be fine now.
+            New price is %i c
+            """ % price)
+    player.products[-1].price = price
 
     # Is the maximum number of chips reached?
     if len(player.products) >= engine.MAX_CHIPS:
@@ -257,10 +266,12 @@ def design(player, game):
 
     if ch.upper() in ['Y', b'Y']:
         done = player.purchase(engine.PRODUCTION_COST)
+        
         if done == True:
-            player.products[-1].inproduction = True
 
-            game.newProduct(player.products[-1].market(), player.products[-1].price)
+            player.products[-1].inproduction = True
+            market_segment = player.products[-1].market()
+            game.newProduct(market_segment, price)
             player.income += player.products[-1].get_income(game)
 
             # game.ref_market += player.products[-1].market()

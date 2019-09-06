@@ -3,7 +3,7 @@
 # J.V.Ojala 17.08.2019
 # UI
 
-from msvcrt import getch
+# from msvcrt import getch
 import calc
 import sys
 import engine
@@ -57,30 +57,30 @@ def gameScreen(player, game):
 
 
         """)
-        ch = getch()
+        ch = input (">>") # ch = getch()
 
-        if ch.upper() == b"R":
+        if ch.upper() == "R":
             research(player)
 
-        elif ch.upper() == b"B":
+        elif ch.upper() == "B":
             pass
 
-        elif ch.upper() == b"C":
+        elif ch.upper() == "C":
             design(player, game)
 
-        elif ch.upper() == b"S":
+        elif ch.upper() == "S":
             pass
 
-        elif ch.upper() == b"M":
+        elif ch.upper() == "M":
             showMarket(player, game)
 
-        elif ch.upper() == b" ":
+        elif ch.upper() in [b" ", ""]:
             if game.num_products < 1:
                 print("What sort of a company doesn't have any products!?")
             else:
                 break
         
-        elif  ch.upper() == b"Q":
+        elif  ch.upper() == "Q":
             sys.exit("quit")
 
         else:
@@ -104,18 +104,18 @@ def research(player):
 
         """ % (player.research_cost(), player.research_cost(), player.node_cost() ) )
 
-        ch = getch()
+        ch = input(">>")#getch()
 
-        if ch.upper() == b"S":
+        if ch.upper() == "S":
             researched = player.research(0)
 
-        elif ch.upper() == b"G":
+        elif ch.upper() == "G":
             researched = player.research(1)
 
-        elif ch.upper() == b"N":
+        elif ch.upper() == "N":
             researched = player.research_node()
 
-        elif ch.upper() == b" ":
+        elif ch.upper() in ["", " "]:
             break
         else:
             print("woops")
@@ -148,11 +148,7 @@ def design(player, game):
     statusBar(player)
     showMarket(player, game)
 
-    print("""
-    
-    
-    
-    """)
+    print("\n\n\n\n")
 
     # Asks if there is a new chip designed, that is not in production
     try:
@@ -206,10 +202,10 @@ def design(player, game):
         print( "Total yeald:                 \t", round( player.products[-1].yealdPr() * player.products[-1].skewYeald() *100 ), "%" )
 
         print("\nProceed? Y/n")
-        ch = getch()
-        if ch.upper() == b'N':
+        ch = input(">>") # getch()
+        if ch.upper() == 'N':
             pass
-        elif ch.upper() in [b'Y', b'\r', b' ']:
+        elif ch.upper() in ['Y', b'\r', ' ']:
             break
         else:
             pass
@@ -235,12 +231,12 @@ def design(player, game):
 
     statusBar(player)
     print("""
-    It costs 1 M to start production.
+    It costs %i M to start production.
     Do you whant to procede with producing this chip? (y/N)
-    """)
-    ch = getch()
-    if ch.upper() == b'Y':
-        done = player.purchase(1)
+    """ % engine.PRODUCTION_COST)
+    ch = input("")  # getch()
+    if ch.upper() == 'Y':
+        done = player.purchase(engine.PRODUCTION_COST)
         if done == True:
             player.products[-1].inproduction = True
 
@@ -253,13 +249,13 @@ def design(player, game):
             print("Transaction complete\nChip Released")
         else:
             print("Not enough credits!")
-    elif ch.upper() == b'N':
+    elif ch.upper() == 'N':
         print("""
         Do you whant to save the chip for later?
         (Y/n)
         """)
-        ch = getch()
-        if ch.upper() == b'N':
+        ch = input(">>")  #getch()
+        if ch.upper() == 'N':
             del player.products[-1]
             print("Deleted")
         else:

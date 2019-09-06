@@ -5,7 +5,7 @@
 
 import calc
 import UI
-from msvcrt import getch
+#from msvcrt import bgetch
 from math import log, e, sqrt
 #from gtycoon import game
 
@@ -18,6 +18,7 @@ AVGCONSUMER = 200.0         # Money an average consumer has to spend
 TOTAL_MARKET = 10000        # Size of the annual market in thousands
 REFINE = 1.3                # Refinement step per year
 MAX_CHIPS = 4               # Maximum allowed chips per player
+PRODUCTION_COST = 1 # Cost to start manufacturing a new chip
 
 class GameStatus():
     

@@ -5,7 +5,7 @@
 
 import calc
 import UI
-from msvcrt import getch
+# from msvcrt import getch
 from math import log, e, sqrt
 from engine import GameStatus, Player, REFINE
 import ai
@@ -18,15 +18,16 @@ game = GameStatus()
 def newPlayer():
     players.append(Player())
 
-def NewAiPlayer():
-    players.append(Player("xVidia", True))
+def newAiPlayer():
+    players.append(Player("ASIx", True))
 
 if __name__ == "__main__":
 
     UI.intro()
-    getch()
+    #getch()
+    input("Press ENTER")
     newPlayer()
-    # NewAiPlayer()
+    newAiPlayer()
 
     while True:
 

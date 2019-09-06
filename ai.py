@@ -25,7 +25,7 @@ def typeAturn(player):
         #if player.products[-3].node == player.node: # If the last 3 chips are current node, buy a new node if possible
         #    doNode(player)
     makeAproduct(player)
-    research(player)
+    player.research(player)
 
  
 def makeAproduct(player):

@@ -3,11 +3,16 @@
 # J.V.Ojala 17.08.2019
 # UI
 
-# from msvcrt import getch
 import calc
 import sys
 import engine
-#from gtycoon import game
+from gtycoon import game
+
+# To make platform independent
+try:
+    from msvcrt import getch
+except: pass
+
 
 def intro():
     print("""
@@ -57,30 +62,33 @@ def gameScreen(player, game):
 
 
         """)
-        ch = input (">>") # ch = getch()
+        try:
+            ch = getch()
+        except:
+            ch = input (">>")
 
-        if ch.upper() == "R":
+        if ch.upper() in ["R", b"R"]:
             research(player)
 
-        elif ch.upper() == "B":
+        elif ch.upper() in ["B", b"B"]:
             pass
 
-        elif ch.upper() == "C":
+        elif ch.upper() in ["C", b"C"]:
             design(player, game)
 
-        elif ch.upper() == "S":
+        elif ch.upper() in ["S", b"S"]:
             pass
 
-        elif ch.upper() == "M":
+        elif ch.upper() in ["M", b"M"]:
             showMarket(player, game)
 
-        elif ch.upper() in [b" ", ""]:
+        elif ch.upper() in [b" ", "", " "]:
             if game.num_products < 1:
                 print("What sort of a company doesn't have any products!?")
             else:
                 break
         
-        elif  ch.upper() == "Q":
+        elif  ch.upper() in ["Q", b"Q"]:
             sys.exit("quit")
 
         else:
@@ -104,18 +112,22 @@ def research(player):
 
         """ % (player.research_cost(), player.research_cost(), player.node_cost() ) )
 
-        ch = input(">>")#getch()
+        try:
+            ch = getch()
+        except:
+            ch = input(">>")
+            
 
-        if ch.upper() == "S":
+        if ch.upper() == ["S", b"S"]:
             researched = player.research(0)
 
-        elif ch.upper() == "G":
+        elif ch.upper() == ["G", b"G"]:
             researched = player.research(1)
 
-        elif ch.upper() == "N":
+        elif ch.upper() == ["N", b"N"]:
             researched = player.research_node()
 
-        elif ch.upper() in ["", " "]:
+        elif ch.upper() in ["", b" ", " "]:
             break
         else:
             print("woops")
@@ -202,10 +214,13 @@ def design(player, game):
         print( "Total yeald:                 \t", round( player.products[-1].yealdPr() * player.products[-1].skewYeald() *100 ), "%" )
 
         print("\nProceed? Y/n")
-        ch = input(">>") # getch()
-        if ch.upper() == 'N':
+        try:
+            ch = getch()
+        except:
+            ch = input(">>")
+        if ch.upper() in ['N', b'N']:
             pass
-        elif ch.upper() in ['Y', b'\r', ' ']:
+        elif ch.upper() in ['', 'Y', ' ', b'\r', b'Y', b' ']:
             break
         else:
             pass
@@ -229,13 +244,18 @@ def design(player, game):
         """)
         print(player.products[0].name, player.products[0].node, player.products[0].size, "mm2", player.products[0].price, "c")
 
+
     statusBar(player)
     print("""
     It costs %i M to start production.
     Do you whant to procede with producing this chip? (y/N)
     """ % engine.PRODUCTION_COST)
-    ch = input("")  # getch()
-    if ch.upper() == 'Y':
+    try:
+        ch = getch()
+    except:
+        ch = ch = input("")
+
+    if ch.upper() in ['Y', b'Y']:
         done = player.purchase(engine.PRODUCTION_COST)
         if done == True:
             player.products[-1].inproduction = True
@@ -249,13 +269,17 @@ def design(player, game):
             print("Transaction complete\nChip Released")
         else:
             print("Not enough credits!")
-    elif ch.upper() == 'N':
+
+    elif ch.upper() in ['N', b'N']:
         print("""
         Do you whant to save the chip for later?
         (Y/n)
         """)
-        ch = input(">>")  #getch()
-        if ch.upper() == 'N':
+        try:
+            getch()
+        except:
+            ch = input(">>")
+        if ch.upper() in ['N', b'N']:
             del player.products[-1]
             print("Deleted")
         else:

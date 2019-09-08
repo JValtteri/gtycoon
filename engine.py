@@ -21,11 +21,27 @@ MAX_CHIPS = 4               # Maximum allowed chips per player
 PRODUCTION_COST = 1 # Cost to start manufacturing a new chip
 
 class GameStatus():
-    
-    def __init__(self):
+    """
+    Keeps track of the game state.
+
+    Inputs:
+    number of human players
+    number of ai players
+    """
+
+    def __init__(self, human_players, aiPlayers):
         self.ref_market = 0              # Initial "refrence market yeald"
         self.sum_price = 0               # Sum price of all active products
         self.num_products = 0            # Number of active products
+        self.players = []
+
+        for id in range(human_players):
+            self.players.append(Player(id))
+            number = id
+
+        for i in range(aiPlayers):
+            id = number + i
+            self.players.append(Player(id, name="ASIx", ai=True))
 
     def newProduct(self, market, price):
         #print(self.ref_market, self.sum_price, self.num_products)
@@ -43,11 +59,13 @@ class GameStatus():
     # def price_cut(self, old_market, new_market, old_price, new_price):
     #     pass
 
+
 class Player():
 
-    def __init__(self, name = "Mixel Co.", ai = False):
+    def __init__(self, id = 0, name = "Mixel Co.", ai = False):
         
         self.name = name
+        self.id = id
         self.credits = 1     # thousand credits
         self.science = 1        #science level
         self.generalization = 1 # resistance to technology changes
@@ -110,6 +128,7 @@ class Player():
             return True
         else:
             return False
+
 
 class Product():
 
@@ -212,6 +231,7 @@ class Product():
 
     def update_refinement(self):
         self.refinememt = self.refinememt / REFINE
+
 
 if __name__ == "__main__":
     newProduct = Product("name", 50, 0, 200, 0, 0)

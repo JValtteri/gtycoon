@@ -12,26 +12,27 @@ import ai
 
 """Game engine and main program"""
 
-players=[]
-game = GameStatus()
+# players=[]
 
-def newPlayer():
-    players.append(Player())
+# def newPlayer():
+#     players.append(Player())
 
-def newAiPlayer():
-    players.append(Player("ASIx", True))
+# def newAiPlayer():
+#     players.append(Player("ASIx", True))
 
 if __name__ == "__main__":
 
     UI.intro()
     #getch()
+
     input("Press ENTER")
-    newPlayer()
-    newAiPlayer()
+
+    game = GameStatus(1, 1)
+    players = game.players
 
     while True:
 
-        for p in players:
+        for p in game.players:
 
             if p.ai == False:
                 UI.gameScreen(p, game)

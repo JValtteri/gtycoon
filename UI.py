@@ -149,17 +149,22 @@ def showMarket(player, game):
         print("\n\tIt's a virgin market")
 
     print('\t Name \t Perf \t Cost \t Price \t Sales \t Size \t Node')
-    for c in player.products:
-        if c.inproduction == True:
-            line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2\t ' + str(calc.NODE[c.node]) 
-            print(line)
+    for p in game.players:
+        for c in p.products:
+            if c.inproduction == True:
+                line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2\t ' + str(calc.NODE[c.node]) 
+                print(line)
 
 def design(player, game):
     "Design a chip"
 
+    ### PLEASE ####
+    #
+    # Find a sane way to split this in to sections.
+    # This is horrible to read.
+
     statusBar(player)
     showMarket(player, game)
-
     print("\n\n\n\n")
 
     # Asks if there is a new chip designed, that is not in production
@@ -169,7 +174,7 @@ def design(player, game):
         # If there are no chips at all, there are no saved chips either
         no_saved = True
 
-    # Start Fresh
+    # START FRESH
     # THE BASICS
     if no_saved:
         name = input("Chip name: ")
@@ -183,6 +188,7 @@ def design(player, game):
         # player.products[-1] ig. Players newest product.
         player.products.append(new_product)
 
+    # RECALL AN UNFINISHED CHIP
     else:
         # If a saved chip is found, the preliminary specs are displayed
         print("Chip name: ", player.products[-1].name)
@@ -201,6 +207,8 @@ def design(player, game):
     print( "Manufacturing cost per chip: \t", round( chipcost, 2), "c" )
     print( "Manufacturing yeald:         \t", round( player.products[-1].yealdPr()*100 ), "%" )
 
+
+    # FINE TUNING THE PRODUCT
     while True:
         try:
             overdrive = float( input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
@@ -225,9 +233,11 @@ def design(player, game):
         else:
             pass
 
+
+    # PRICE SELECTION
+    #
     # Proposes a price for the player
     # pprice = round(chipcost*1.1)
-
     print("\nChoose chip price:")
     print("Press enter for default (10%%) margin price: (%i c) \nor enter a price. (Minimum ~26)" % round(chipcost*1.1) )
     try:
@@ -254,6 +264,7 @@ def design(player, game):
         print(player.products[0].name, player.products[0].node, player.products[0].size, "mm2", player.products[0].price, "c")
 
 
+    # PRODUCTION AND TRANSACTION
     statusBar(player)
     print("""
     It costs %i M to start production.
@@ -296,6 +307,4 @@ def design(player, game):
         else:
             pass
         
-
-
 

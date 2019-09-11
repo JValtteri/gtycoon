@@ -183,7 +183,7 @@ class Product():
             print("AVG PTP defined!")  # DEBUG
             return 0
         else:
-            sales = theoretical_sales * (game.avg_ptp/self.ptp) # * ( 1 + self.price_delta ) #  modifiers (price to performance) 
+            sales = theoretical_sales * ( 1 + calc.normal(game.avg_ptp/self.ptp * 100) ) # * ( 1 + self.price_delta ) #  modifiers (price to performance) 
         return sales
 
     def get_income(self, game):

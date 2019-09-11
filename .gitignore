@@ -5,3 +5,4 @@ __*
 # Editor etc. files
 *.code*
 *.log
+*.sh

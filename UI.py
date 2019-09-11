@@ -118,13 +118,13 @@ def research(player):
             ch = input(">>")
             
 
-        if ch.upper() == ["S", b"S"]:
+        if ch.upper() in ["S", b"S"]:
             researched = player.research(0)
 
-        elif ch.upper() == ["G", b"G"]:
+        elif ch.upper() in ["G", b"G"]:
             researched = player.research(1)
 
-        elif ch.upper() == ["N", b"N"]:
+        elif ch.upper() in ["N", b"N"]:
             researched = player.research_node()
 
         elif ch.upper() in ["", b" ", " "]:

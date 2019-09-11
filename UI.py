@@ -137,6 +137,11 @@ def research(player):
                 print("Researched!")
             else:
                 print("Not enough credits")
+                
+            try:
+                getch()
+            except:
+                input ()
         except:
             pass
 

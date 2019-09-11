@@ -6,7 +6,7 @@
 import calc
 import sys
 import engine
-from gtycoon import game
+# from gtycoon import game
 
 # To make platform independent
 try:

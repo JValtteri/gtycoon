@@ -29,29 +29,36 @@ def typeAturn(player, game):
     if len(player.products) >= 3:    # If a full product stack exists...
         player.research()            # Research architecture
         if player.refinememt < 0.15:
-            player.research(2)    # Research NODE
+            player.research_node()   # Research NODE
         #if player.products[-3].node == player.node: # If the last 3 chips are current node, buy a new node if possible
         #    doNode(player)
     makeAproduct(player, game)
-    player.research(player)
-
+    while True:                     # Research nodes 'till out of money
+        money_to_spend = player.research_node()
+        if money_to_spend not True:
+            break
+    while True:                     # Research other stuff 'till out of money
+        money_to_spend = player.research(player)
+        if money_to_spend not True:
+            break
+            
 
 def makeAproduct(player, game):
     # Try transaction, if true go on...
     if player.purchase(engine.PRODUCTION_COST):
         if len(player.products) % 3 == 0: # make Low end / make first product
             name = "A10"
-            size = 48
+            size = 95
             overdrive = -8
             price = 50
         elif len(player.products) % 3 == 1: # make mid range
             name = "A20"
-            size = 156
+            size = 185
             overdrive = -5
             price = 190
         elif len(player.products) % 3 == 2: # make High end
             name = "A30"
-            size = 248
+            size = 275
             overdrive = 3
             price = 50
         print(name, "released")
@@ -62,10 +69,24 @@ def makeAproduct(player, game):
         if price < 26:                              # If the price is too low
             price = 26                              # set the minimum price.
         new_product.price = price                   # Save it in the product
+        
+        if len(player.products) >= 3:               # If a full product stack exits
+            old_product = player.products[0]        # Oldest card is replaced
+            game.remove_from_market(old_product.market(), old_product.price, old_product.pref):
+            
+            if bace_name = name:
+                name = name.replace('A', 'A1')
+            else:
+                bace_name = player.products[0].name     
+                new_name = bace_name.strip('A')         
+                series = str(int(new_name[0]) + 1)      # Iterate series number
+                name = "A" + series + new_name,         # New name is derived
+            
+            del[player.products[0]]
         player.products.append(new_product)
         player.products[-1].inproduction = True
         market_segment = player.products[-1].market()
-        game.newProduct(market_segment, price)
+        game.newProduct(market_segment, price, product.performance())
         player.income += player.products[-1].get_income(game)
 
 

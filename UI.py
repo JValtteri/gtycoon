@@ -37,7 +37,7 @@ def statusBar(player):
     print("""
 
         company:  %s    \t\t   year:     %i
-        credits:  %i M  \t\t   products: %i
+        credits:  %i M   \t\t   products: %i
         science:  %i   \t\t\t   income:   %i M
         general:  %i    \t\t\t   node:     %s
         refinem:  %f
@@ -148,11 +148,11 @@ def showMarket(player, game):
     if player.products == []:
         print("\n\tIt's a virgin market")
 
-    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size \t Node')
+    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \tNode')
     for p in game.players:
         for c in p.products:
             if c.inproduction == True:
-                line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2\t ' + str(calc.NODE[c.node]) 
+                line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
                 print(line)
 
 def design(player, game):

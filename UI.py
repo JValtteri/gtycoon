@@ -153,7 +153,7 @@ def showMarket(player, game):
     if player.products == []:
         print("\n\tIt's a virgin market")
 
-    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \tNode')
+    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
     for p in game.players:
         for c in p.products:
             if c.inproduction == True:
@@ -291,8 +291,8 @@ def design(player, game):
 
             player.products[-1].inproduction = True
             market_segment = player.products[-1].market()
-            game.newProduct(market_segment, price)
-            player.income += player.products[-1].get_income(game)
+            game.newProduct(market_segment, price, player.products[-1].performance())
+            # player.income += player.products[-1].get_income(game)				# PROBLEMATIC!!! GET INCOME ASKS FOR GAME PTP THAT IS NONE
 
             # game.ref_market += player.products[-1].market()
             # game.num_products += 1

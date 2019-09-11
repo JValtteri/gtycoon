@@ -6,7 +6,7 @@
 import calc
 import engine
 try:
-    from mscvrt import getch()
+    from mscvrt import getch
 except:
     pass
 
@@ -19,8 +19,7 @@ def aiTurn(player, game, ai_type = 0):
     print("\n\n\n==================\nAi Turn\n==================\n\n\n")
     try: getch()
     except: input()
-    
-    try:
+
     if ai_type == 0:
         typeAturn(player, game)
 
@@ -35,11 +34,11 @@ def typeAturn(player, game):
     makeAproduct(player, game)
     while True:                     # Research nodes 'till out of money
         money_to_spend = player.research_node()
-        if money_to_spend not True:
+        if money_to_spend != True:
             break
     while True:                     # Research other stuff 'till out of money
         money_to_spend = player.research(player)
-        if money_to_spend not True:
+        if money_to_spend != True:
             break
             
 
@@ -69,24 +68,24 @@ def makeAproduct(player, game):
         if price < 26:                              # If the price is too low
             price = 26                              # set the minimum price.
         new_product.price = price                   # Save it in the product
-        
+
         if len(player.products) >= 3:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced
-            game.remove_from_market(old_product.market(), old_product.price, old_product.pref):
-            
-            if bace_name = name:
+            game.remove_from_market(old_product.market(), old_product.price, old_product.pref)
+
+            if bace_name == name:
                 name = name.replace('A', 'A1')
             else:
-                bace_name = player.products[0].name     
-                new_name = bace_name.strip('A')         
+                bace_name = player.products[0].name
+                new_name = bace_name.strip('A')
                 series = str(int(new_name[0]) + 1)      # Iterate series number
-                name = "A" + series + new_name,         # New name is derived
-            
+                name = "A" + series + new_name          # New name is derived
+
             del[player.products[0]]
         player.products.append(new_product)
         player.products[-1].inproduction = True
         market_segment = player.products[-1].market()
-        game.newProduct(market_segment, price, product.performance())
+        game.newProduct(market_segment, price, player.products[-1].performance())
         player.income += player.products[-1].get_income(game)
 
 
@@ -101,7 +100,7 @@ def makeAproduct(player, game):
 #def spawnProduct(player):
     #
  #   new_product = engine.Product(name, size, overdrive, price, player.node, player.science, player.refinememt)
-    # The chip is added to products (saved), it will be refrenced to as 
+    # The chip is added to products (saved), it will be refrenced to as
     # player.products[-1] eg. Players newest product.
   #  player.products.append(new_product)
 

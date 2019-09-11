@@ -32,6 +32,8 @@ if __name__ == "__main__":
 
     while True:
 
+        game.update_ptp()
+
         for p in game.players:
 
             if p.ai == False:

@@ -32,8 +32,10 @@ class GameStatus():
     def __init__(self, human_players, aiPlayers):
         self.ref_market = 0              # Initial "refrence market yeald"
         self.sum_price = 0               # Sum price of all active products
+        self.sum_perf = 0
         self.num_products = 0            # Number of active products
         self.players = []
+        self.avg_ptp = 0                 # Average price to performance
 
         for id in range(human_players):
             self.players.append(Player(id))
@@ -43,19 +45,27 @@ class GameStatus():
             id = number + i
             self.players.append(Player(id, name="ASIx", ai=True))
 
-    def newProduct(self, market, price):
+    def newProduct(self, market, price, perf):
         #print(self.ref_market, self.sum_price, self.num_products)
         self.num_products += 1
         self.ref_market += market
         self.sum_price += price
+        self.sum_perf += perf
         #print(price)
         #print(self.ref_market, self.sum_price, self.num_products)
+        self.update_ptp()
 
-    def remove_from_market(self, market, price):
+    def remove_from_market(self, market, price, pref):
         self.num_products -= 1
         self.ref_market -= market
         self.sum_price -= price
-
+        self.sum_perf -= perf
+        self.update_ptp()
+        
+    def update_ptp(self):
+        ptp = self.sum_price/self.sum_perf
+        self.avg_ptp = ptp
+        
     # def price_cut(self, old_market, new_market, old_price, new_price):
     #     pass
 
@@ -147,7 +157,8 @@ class Product():
         # self.income = 0                         # income is created automatically every turn
         self.inproduction = False               # is the chip in the market
         self.perf = self.performance()          # performance metric
-        self.price_delta = 0
+        self.price_delta = 0                    # Delta from the 
+        self.ptp = self.update_ptp()            # Price to performance
         
         # self.update_price_delta()    # Difference in price to performance to the market average
                                        # is created automatically every turn
@@ -162,7 +173,7 @@ class Product():
         "Counts number of units sold per year"
         self.update_price_delta(game)
         theoretical_sales = self.market() / game.ref_market * TOTAL_MARKET
-        sales = theoretical_sales * ( 1 + self.price_delta ) #  modifiers (price to performance) 
+        sales = theoretical_sales * (self.ptp/game.avg_ptp) #* ( 1 + self.price_delta ) #  modifiers (price to performance) 
         return sales
 
     def get_income(self, game):
@@ -232,6 +243,10 @@ class Product():
 
     def update_refinement(self):
         self.refinememt = self.refinememt / REFINE
+        
+    def update_ptp(self):
+        ptp = self.price / self.perf
+        self.ptp = ptp
 
 
 if __name__ == "__main__":

@@ -5,6 +5,10 @@
 
 import calc
 import engine
+try:
+    from mscvrt import getch()
+except:
+    pass
 
 # class Ai():
 
@@ -13,6 +17,10 @@ import engine
 
 def aiTurn(player, game, ai_type = 0):
     print("\n\n\n==================\nAi Turn\n==================\n\n\n")
+    try: getch()
+    except: input()
+    
+    try:
     if ai_type == 0:
         typeAturn(player, game)
 

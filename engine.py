@@ -93,9 +93,9 @@ class Player():
             elif branch == 1:
                 self.generalization += 1
                 return True
-            elif branch == 2:
-                self.node += 1
-                return True
+            #elif branch == 2:
+            #    self.node += 1
+            #    return True
         else:
             return False
 
@@ -113,8 +113,9 @@ class Player():
             self.node += 1
             # When moving to a new node, the node refinement is reset
             self.refinememt = REFINEMENT
+            return True
         else:
-            print("Not enough credits")
+            return False
 
     def purchase(self, cost):
         """

@@ -87,7 +87,7 @@ def gameScreen(player, game):
                 print("What sort of a company doesn't have any products!?")
             else:
                 break
-        
+
         elif  ch.upper() in ["Q", b"Q"]:
             sys.exit("quit")
 
@@ -116,7 +116,7 @@ def research(player):
             ch = getch()
         except:
             ch = input(">>")
-            
+
 
         if ch.upper() in ["S", b"S"]:
             researched = player.research(0)
@@ -253,6 +253,10 @@ def design(player, game):
             But don't worry. I raised the price abit. It should be fine now.
             New price is %i c
             """ % price)
+    try:
+        getch()
+    except:
+        input()
     player.products[-1].price = price
 
     # Is the maximum number of chips reached?
@@ -277,7 +281,7 @@ def design(player, game):
 
     if ch.upper() in ['Y', b'Y']:
         done = player.purchase(engine.PRODUCTION_COST)
-        
+
         if done == True:
 
             player.products[-1].inproduction = True
@@ -291,6 +295,10 @@ def design(player, game):
             print("Transaction complete\nChip Released")
         else:
             print("Not enough credits!")
+        try:
+            getch()
+        except:
+            input()
 
     elif ch.upper() in ['N', b'N']:
         print("""
@@ -306,5 +314,5 @@ def design(player, game):
             print("Deleted")
         else:
             pass
-        
+
 

@@ -37,6 +37,7 @@ if __name__ == "__main__":
         for p in game.players:
 
             if p.ai == False:
+                UI.showMarket(p, game)
                 UI.gameScreen(p, game)
             else:
                 ai.aiTurn(p, game)
@@ -59,7 +60,13 @@ if __name__ == "__main__":
 
             # Yearly income is deposited
             p.credits += p.income
-            print("This years earnings:", p.income, "c")
+
+            print("\n", p.name, "This years earnings:", p.income, "c")
+
+            try:
+                getch()
+            except:
+                input()
 
     print(("year:", players[0].year))
     print(("year:", players[0].refinememt))

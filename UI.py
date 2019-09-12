@@ -148,7 +148,7 @@ def research(player):
 def showMarket(player, game):
     "Prints the market situation"
     print("""
-    MARKET SITUATION""")
+    MARKET SITUATION:""")
 
     if player.products == []:
         print("\n\tIt's a virgin market")
@@ -159,6 +159,11 @@ def showMarket(player, game):
             if c.inproduction == True:
                 line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
                 print(line)
+    try:
+        getch()
+    except:
+        input()
+
 
 def design(player, game):
     "Design a chip"
@@ -251,17 +256,17 @@ def design(player, game):
         print("Using default price")
         price = round(chipcost * 1.1)
     if price < 26:
-            price = 26
-            print("""
-            Price set too low!
-            It won't cover the packaging costs.
-            But don't worry. I raised the price abit. It should be fine now.
-            New price is %i c
-            """ % price)
-    try:
-        getch()
-    except:
-        input()
+         price = 26
+         print("""
+         Price set too low!
+         It won't cover the packaging costs.
+         But don't worry. I raised the price abit. It should be fine now.
+         New price is %i c
+         """ % price)
+        try:
+            getch()
+        except:
+            input()
     player.products[-1].price = price
 
     # Is the maximum number of chips reached?

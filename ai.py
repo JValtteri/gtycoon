@@ -60,7 +60,14 @@ def makeAproduct(player, game):
             size = 275
             overdrive = 3
             price = 50
-        print(name, "released")
+
+        print("\n==============================")
+        print(player.name, "released", name)
+        print("==============================\n")
+        try:
+            getch()
+        except:
+            input()
 
         new_product = engine.Product(name, size, overdrive, price, player.node, player.science, player.refinememt)
         chipcost = new_product.chipCost()           # Count chipcost to guide pricing

@@ -88,8 +88,8 @@ class Player():
         self.name = name
         self.id = id
         self.credits = INIT_CREDITS     # thousand credits
-        self.science = 1        #science level
-        self.generalization = 1 # resistance to technology changes
+        self.science = 1                # science level
+        self.generalization = 1         # resistance to technology changes
         self.node = 0
         self.year = 1978
         self.products = []              # List of all products
@@ -179,7 +179,8 @@ class Product():
 
     def market(self):
         "Counts the total size of a market segment"
-        market = calc.normal(self.price / AVGCONSUMER)
+        market = calc.normal(self.price / AVGCONSUMER) * AVGCONSUMER / self.price
+        #market = calc.normal(self.price / AVGCONSUMER)
         #market = totalMarket * ( normal(max) - normal(min) )
         return market
 
@@ -195,7 +196,7 @@ class Product():
             # print("ptp self", self.ptp, "avg", game.avg_ptp)
             # print("raw sales", theoretical_sales)
             # print("ptp modifier", game.avg_ptp/self.ptp)  # calc.normal(game.avg_ptp/self.ptp * 100) * 2 )
-            sales = theoretical_sales * ( calc.normal(game.avg_ptp/self.ptp) * 2 ) # * ( 1 + self.price_delta ) #  modifiers (price to performance)
+            sales = theoretical_sales * ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 +1 ,1) * 2 ) # * ( 1 + self.price_delta ) #  modifiers (price to performance)
         return sales
 
     def get_income(self, game):
@@ -277,16 +278,20 @@ if __name__ == "__main__":
     game = GameStatus(1,0)
     player = game.players[0]
     products = player.products
-    new_product = Product("chip A", 100, 0, 100, 1, 1)
+
+    new_product = Product("chip A", 50, 0, 50, 1, 1)
     products.append(new_product)
     game.newProduct(products[-1])
-    new_product = Product("chip B", 100, 0, 100, 2, 1)
+    new_product = Product("chip B", 100, 0, 100, 1, 1)
     products.append(new_product)
     game.newProduct(products[-1])
-    new_product = Product("chip C", 200, 0, 200, 2, 1)
+    new_product = Product("chip C", 200, 0, 200, 1, 1)
     products.append(new_product)
     game.newProduct(products[-1])
-    new_product = Product("chip D", 200, 0, 300, 2, 1)
+    new_product = Product("chip D", 300, 0, 300, 1, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+    new_product = Product("chip D", 400, 0, 500, 1, 1)
     products.append(new_product)
     game.newProduct(products[-1])
 

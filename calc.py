@@ -57,7 +57,7 @@ def normal(procent, mode=0):
             precentile = 1.0 - NORMAL[-delta]
         else:
             precentile = NORMAL[delta]
-    return precentile
+    return  precentile
 
 
 if __name__ == "__main__":

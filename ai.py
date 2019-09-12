@@ -4,6 +4,7 @@
 # AI
 
 import calc
+import UI
 import engine
 try:
     from mscvrt import getch
@@ -47,21 +48,21 @@ def makeAproduct(player, game):
     if player.purchase(engine.PRODUCTION_COST):
         if len(player.products) % 3 == 0: # make Low end / make first product
             name = "A10"
-            size = 95
-            overdrive = -8
+            size = 90
+            overdrive = -14
             #price = 1
         elif len(player.products) % 3 == 1: # make mid range
             name = "A20"
             size = 185
-            overdrive = -5
+            overdrive = -12
             #price = 1
         elif len(player.products) % 3 == 2: # make High end
             name = "A30"
             size = 275
-            overdrive = 3
+            overdrive = 0
             #price = 1
 
-        UI.productRelease(player, game)     # Product Release announcement
+        UI.productReleace(player, game)     # Product Release announcement
         # print("\n==============================")
         # print(player.name, "released", name)
         # print("==============================\n")

@@ -315,7 +315,7 @@ def design(player, game):
         print(player.products[0].name, player.products[0].node, player.products[0].size, "mm2", player.products[0].price, "c")
         old_chip = player.products[0]
         game.remove_from_market(old_chip)
-        del[products[0]]
+        del[player.products[0]]
 
     # PRODUCTION AND TRANSACTION
     statusBar(player)

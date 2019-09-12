@@ -62,15 +62,6 @@ def makeAproduct(player, game):
             overdrive = 0
             #price = 1
 
-        UI.productReleace(player, game)     # Product Release announcement
-        # print("\n==============================")
-        # print(player.name, "released", name)
-        # print("==============================\n")
-        try:
-            getch()
-        except:
-            input()
-
         new_product = engine.Product(name, size, overdrive, 1, player.node, player.science, player.refinememt)
         chipcost = new_product.chipCost()           # Count chipcost to guide pricing
         price = round(chipcost * 1.1)               # Sets the price by chip cost
@@ -95,13 +86,18 @@ def makeAproduct(player, game):
         player.products.append(new_product)
         player.products[-1].inproduction = True
         # market_segment = player.products[-1].market()
+
+        UI.productReleace(player, game)     # Product Release announcement
+        # print("\n==============================")
+        # print(player.name, "released", name)
+        # print("==============================\n")
+        try:
+            getch()
+        except:
+            input()
+
         game.newProduct(player.products[-1])            # market_segment, price, player.products[-1].performance())
         player.income += player.products[-1].get_income(game)
-
-
-
-
-
 
 
 # SOME ALTERNATIVE LOGIC
@@ -120,7 +116,5 @@ def makeAproduct(player, game):
 #            if len(player.products) == 3:
 #                break
 #            elif player.credits < 1:
-#                break 
-
-
+#                break
 

@@ -18,7 +18,8 @@ AVGCONSUMER = 200.0         # Money an average consumer has to spend
 TOTAL_MARKET = 10000        # Size of the annual market in thousands
 REFINE = 1.3                # Refinement step per year
 MAX_CHIPS = 4               # Maximum allowed chips per player
-PRODUCTION_COST = 1 # Cost to start manufacturing a new chip
+PRODUCTION_COST = 1         # Cost to start manufacturing a new chip
+INIT_CREDITS = 2            # Player starting cash
 
 class GameStatus():
     """
@@ -86,7 +87,7 @@ class Player():
 
         self.name = name
         self.id = id
-        self.credits = 3     # thousand credits
+        self.credits = INIT_CREDITS     # thousand credits
         self.science = 1        #science level
         self.generalization = 1 # resistance to technology changes
         self.node = 0
@@ -272,6 +273,7 @@ class Product():
 
 if __name__ == "__main__":
 
+    #                      name    size oc price node sciense
     game = GameStatus(1,0)
     player = game.players[0]
     products = player.products
@@ -279,6 +281,12 @@ if __name__ == "__main__":
     products.append(new_product)
     game.newProduct(products[-1])
     new_product = Product("chip B", 100, 0, 100, 2, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+    new_product = Product("chip C", 200, 0, 200, 2, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+    new_product = Product("chip D", 200, 0, 300, 2, 1)
     products.append(new_product)
     game.newProduct(products[-1])
 
@@ -291,9 +299,11 @@ if __name__ == "__main__":
     #    p.update_market()
 
     # SHOW RESULTS
+    print("name\tprice\tperf\tsales")
+    for p in products:
+        print(p.name, "\t", p.price, "\t", p.perf, "\t", int(p.sales(game)) )
 
-    print(products[0].name, products[0].price, products[0].perf, int(products[0].sales(game)) )
-    print(products[1].name, products[1].price, products[1].perf, int(products[1].sales(game)) )
+    #print(products[1].name, products[1].price, products[1].perf, int(products[1].sales(game)) )
 
     #newProduct = Product("name", 50, 0, 200, 0, 0)
     #products = []

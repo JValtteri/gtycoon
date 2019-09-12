@@ -70,7 +70,7 @@ def makeAproduct(player, game):
         except:
             input()
 
-        new_product = engine.Product(name, size, overdrive, price=1, player.node, player.science, player.refinememt)
+        new_product = engine.Product(name, size, overdrive, 1, player.node, player.science, player.refinememt)
         chipcost = new_product.chipCost()           # Count chipcost to guide pricing
         price = round(chipcost * 1.1)               # Sets the price by chip cost
         if price < 26:                              # If the price is too low

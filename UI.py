@@ -58,13 +58,13 @@ def productReleace(player, game):
             review_word = "to universal acclaim."
             review = "The new product sets the standard for technology to come."
         else:
-            review = product.name " is a great value."
+            review = product.name + " is a great value."
 
     # PACKAGE THE ANNOUNCEMENT
-    print "================================\n"
-    print(player.name, "releaced", product.name, ,' ',  review_word, "\n")
+    print("================================\n")
+    print(player.name, "releaced", product.name, ' ',  review_word, "\n")
     print(review)
-    print "================================"
+    print("================================")
 
 def statusBar(player):
     print("""

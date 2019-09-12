@@ -71,6 +71,10 @@ def makeAproduct(player, game):
             size = 275
             overdrive = 0
             #price = 1
+        else:
+            name = "A10"
+            size = 90
+            overdrive = -15
 
         if len(player.products) >= 3:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced

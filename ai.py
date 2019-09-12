@@ -48,7 +48,7 @@ def typeAturn(player, game):
 def makeAproduct(player, game):
     # Try transaction, if true go on...
     if player.purchase(engine.PRODUCTION_COST):
-        if len(player.products) % 3 == 0: # make Low end / make first product
+        if len(player.products) >= 3: # make Low end / make first product
             if player.products[-1].name[-2] == "3":
                 name = "A30"
                 size = 275
@@ -61,12 +61,12 @@ def makeAproduct(player, game):
                 name = "A10"
                 size = 90
                 overdrive = -15
-        elif len(player.products) % 3 == 1: # make mid range
+        elif len(player.products) == 1: # make mid range
             name = "A20"
             size = 185
             overdrive = -12
             #price = 1
-        elif len(player.products) % 3 == 2: # make High end
+        elif len(player.products)  == 2: # make High end
             name = "A30"
             size = 275
             overdrive = 0

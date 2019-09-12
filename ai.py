@@ -26,21 +26,23 @@ def aiTurn(player, game, ai_type = 0):
 
 
 def typeAturn(player, game):
-    if len(player.products) >= 3:    # If a full product stack exists...
-        player.research()            # Research architecture
+    if len(player.products) >= 3:        # If a full product stack exists...
+        player.research()                # Research architecture
         if player.refinememt < 0.15:
-            player.research_node()   # Research NODE
+            player.research_node()       # Research NODE
         #if player.products[-3].node == player.node: # If the last 3 chips are current node, buy a new node if possible
         #    doNode(player)
     makeAproduct(player, game)
-    while True:                     # Research nodes 'till out of money
+    while True:                          # Research nodes 'till out of money
         money_to_spend = player.research_node()
         if money_to_spend != True:
             break
-    while True:                     # Research other stuff 'till out of money
+        else: print("Ai did node research")
+    while True:                          # Research other stuff 'till out of money
         money_to_spend = player.research(player)
         if money_to_spend != True:
             break
+        else: print("Ai did research")
 
 
 def makeAproduct(player, game):
@@ -62,13 +64,6 @@ def makeAproduct(player, game):
             overdrive = 0
             #price = 1
 
-        new_product = engine.Product(name, size, overdrive, 1, player.node, player.science, player.refinememt)
-        chipcost = new_product.chipCost()           # Count chipcost to guide pricing
-        price = round(chipcost * 1.1)               # Sets the price by chip cost
-        if price < 26:                              # If the price is too low
-            price = 26                              # set the minimum price.
-        new_product.price = price                   # Save it in the product
-
         if len(player.products) >= 3:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced
             game.remove_from_market(player.products[0]) # old_product.market(), old_product.price, old_product.pref)
@@ -81,7 +76,15 @@ def makeAproduct(player, game):
                 series = str(int(new_name[0]) + 1)      # Iterate series number
                 name = "A" + series + new_name          # New name is derived
 
+            #player.products[len(player.products)%3].inproduction = False
             del[player.products[0]]
+
+        new_product = engine.Product(name, size, overdrive, 1, player.node, player.science, player.refinememt)
+        chipcost = new_product.chipCost()           # Count chipcost to guide pricing
+        price = round(chipcost * 1.1)               # Sets the price by chip cost
+        if price < 26:                              # If the price is too low
+            price = 26                              # set the minimum price.
+        new_product.price = price                   # Save it in the product
 
         player.products.append(new_product)
         player.products[-1].inproduction = True

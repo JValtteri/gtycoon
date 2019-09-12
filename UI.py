@@ -53,12 +53,15 @@ def productReleace(player, game):
             if c.perf >= perf_max:
                 perf_max = c.perf
 
-    if product.ptp < game.avg_ptp:
+    if product.ptp * 2 < game.avg_ptp:
         if c.perf == perf_max:
             review_word = "to universal acclaim."
             review = "The new product sets the standard for technology to come."
         else:
-            review = product.name + " is a great value."
+            review = product.name + " offers great value that is hard to beat in the current market."
+    elif product.ptp > game.avg_ptp:
+            review = product.name + " francly, is an example of the never ending greed of modern companies \nripping of their customers."
+
 
     # PACKAGE THE ANNOUNCEMENT
     print("========================= TECH POINT ==========================\n")
@@ -273,9 +276,9 @@ def design(player, game):
          13     ''     = 10% pass rate
          24     ''     =  1% pass rate
         """)
-        print("Choose your cut off point")
+        print("Choose your cut off point:")
         try:
-            overdrive = float(input())  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
+            overdrive = float(input("> "))  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
         except ValueError:
             overdrive = 0
         player.products[-1].overdrive = overdrive
@@ -338,7 +341,7 @@ def design(player, game):
     statusBar(player)
     print("""
     It costs %i M to start production.
-    Do you whant to procede with producing this chip? (y/N)
+    Do you whant to procede with producing this chip? (Y/n)
     """ % engine.PRODUCTION_COST)
     try:
         ch = getch()

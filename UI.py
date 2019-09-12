@@ -263,10 +263,10 @@ def design(player, game):
          But don't worry. I raised the price abit. It should be fine now.
          New price is %i c
          """ % price)
-        try:
-            getch()
-        except:
-            input()
+         try:
+             getch()
+         except:
+             input()
     player.products[-1].price = price
 
     # Is the maximum number of chips reached?

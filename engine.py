@@ -194,7 +194,7 @@ class Product():
             # print("ptp self", self.ptp, "avg", game.avg_ptp)
             # print("raw sales", theoretical_sales)
             # print("ptp modifier", game.avg_ptp/self.ptp)  # calc.normal(game.avg_ptp/self.ptp * 100) * 2 )
-            sales = theoretical_sales * game.avg_ptp/self.ptp   #( calc.normal(game.avg_ptp/self.ptp * 100) * 2 ) # * ( 1 + self.price_delta ) #  modifiers (price to performance)
+            sales = theoretical_sales * ( calc.normal(game.avg_ptp/self.ptp) * 2 ) # * ( 1 + self.price_delta ) #  modifiers (price to performance)
         return sales
 
     def get_income(self, game):

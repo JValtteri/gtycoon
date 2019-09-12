@@ -16,7 +16,7 @@ except: pass
 
 def intro():
     print("""
-    
+
     You are the CEO of a rising star of semiconductors.
 
     Steer your company to greatness. Design a product line-up, optimize 
@@ -137,7 +137,7 @@ def research(player):
                 print("Researched!")
             else:
                 print("Not enough credits")
-                
+
             try:
                 getch()
             except:
@@ -188,7 +188,7 @@ def design(player, game):
         overdrive = 0
 
         new_product = engine.Product(name, size, overdrive, price, player.node, player.science, player.refinememt)
-        
+
         # The chip is added to products (saved), it will be refrenced to as 
         # player.products[-1] ig. Players newest product.
         player.products.append(new_product)
@@ -271,7 +271,9 @@ def design(player, game):
         The oldest chip will be removed:
         """)
         print(player.products[0].name, player.products[0].node, player.products[0].size, "mm2", player.products[0].price, "c")
-
+        old_chip = player.products[0]
+        game.remove_from_market(old_chip)
+        del[products[0]]
 
     # PRODUCTION AND TRANSACTION
     statusBar(player)
@@ -291,7 +293,7 @@ def design(player, game):
 
             player.products[-1].inproduction = True
             market_segment = player.products[-1].market()
-            game.newProduct(market_segment, price, player.products[-1].performance())
+            game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
             # player.income += player.products[-1].get_income(game)				# PROBLEMATIC!!! GET INCOME ASKS FOR GAME PTP THAT IS NONE
 
             # game.ref_market += player.products[-1].market()

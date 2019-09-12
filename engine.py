@@ -45,23 +45,30 @@ class GameStatus():
             id = number + i
             self.players.append(Player(id, name="ASIx", ai=True))
 
-    def newProduct(self, market, price, perf):
-        #print(self.ref_market, self.sum_price, self.num_products)
+    def newProduct(self, product):
+        market = product.market()
+        price = product.price
+        perf = product.perf
+
         self.num_products += 1
         self.ref_market += market
         self.sum_price += price
         self.sum_perf += perf
-        #print(price)
-        #print(self.ref_market, self.sum_price, self.num_products)
+
         self.update_ptp()
 
-    def remove_from_market(self, market, price, pref):
+    def remove_from_market(self, product):
+        market = product.market()
+        price = product.price
+        perf = product.perf
+
         self.num_products -= 1
         self.ref_market -= market
         self.sum_price -= price
         self.sum_perf -= perf
+
         self.update_ptp()
-        
+
     def update_ptp(self):
         try:
             ptp = self.sum_price/self.sum_perf
@@ -76,10 +83,10 @@ class GameStatus():
 class Player():
 
     def __init__(self, id = 0, name = "Mixel Co.", ai = False):
-        
+
         self.name = name
         self.id = id
-        self.credits = 1     # thousand credits
+        self.credits = 3     # thousand credits
         self.science = 1        #science level
         self.generalization = 1 # resistance to technology changes
         self.node = 0
@@ -154,21 +161,21 @@ class Product():
         self.overdrive = overdrive              # how agressively the chips are binned
         self.refinememt = refinememt            # defect dencity in x/cm2
         self.yeald = self.yealdPr()             # production yeald of the physical chips
-        self.mcost = self.chipCost()            # 
+        self.mcost = self.chipCost()            #
         self.cost = self.chipCost()             # cost to manufacture
         self.price = price                      # sale price
         # self.income = 0                         # income is created automatically every turn
         self.inproduction = False               # is the chip in the market
         self.perf = self.performance()          # performance metric
-        self.price_delta = 0                    # Delta from the 
+        self.price_delta = 0                    # Delta from the
         self.ptp = 0
-        
+
         self.update_ptp()                       # Price to performance
 
-        
+
         # self.update_price_delta()    # Difference in price to performance to the market average
                                        # is created automatically every turn
-    
+
     def market(self):
         "Counts the total size of a market segment"
         market = calc.normal(self.price / AVGCONSUMER)
@@ -183,7 +190,11 @@ class Product():
             print("AVG PTP defined!")  # DEBUG
             return 0
         else:
-            sales = theoretical_sales * ( 1 + calc.normal(game.avg_ptp/self.ptp * 100) ) # * ( 1 + self.price_delta ) #  modifiers (price to performance) 
+            # DEBUG
+            # print("ptp self", self.ptp, "avg", game.avg_ptp)
+            # print("raw sales", theoretical_sales)
+            # print("ptp modifier", game.avg_ptp/self.ptp)  # calc.normal(game.avg_ptp/self.ptp * 100) * 2 )
+            sales = theoretical_sales * game.avg_ptp/self.ptp   #( calc.normal(game.avg_ptp/self.ptp * 100) * 2 ) # * ( 1 + self.price_delta ) #  modifiers (price to performance)
         return sales
 
     def get_income(self, game):
@@ -213,8 +224,8 @@ class Product():
 
         # VERY IMNPORTANT!
         #
-        # Defect dencity is often given in  sq cm 
-        # while chip size is given in       sq mm 
+        # Defect dencity is often given in  sq cm
+        # while chip size is given in       sq mm
         # the difference is (100x)!!
         #
         # The formula works only if both inputs are in same units!!!
@@ -224,7 +235,7 @@ class Product():
 
         #poisson = e ** -(self.size * ddencity[self.refinememt])
         murphy = ( ( 1.0 - e ** -(self.size * rdencity) ) / (self.size * rdencity) ) ** 2.0
-        
+
         return murphy
 
     def update_yeald(self):
@@ -253,16 +264,40 @@ class Product():
 
     def update_refinement(self):
         self.refinememt = self.refinememt / REFINE
-        
+
     def update_ptp(self):
         ptp = self.price / self.perf
         self.ptp = ptp
 
 
 if __name__ == "__main__":
-    newProduct = Product("name", 50, 0, 200, 0, 0)
-    products = []
-    products.append(newProduct)
+
+    game = GameStatus(1,0)
+    player = game.players[0]
+    products = player.products
+    new_product = Product("chip A", 100, 0, 100, 1, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+    new_product = Product("chip B", 100, 0, 100, 2, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+
+
+    # UPDATE EVERYTHING
+
+    game.update_ptp()
+
+    #for p in products:
+    #    p.update_market()
+
+    # SHOW RESULTS
+
+    print(products[0].name, products[0].price, products[0].perf, int(products[0].sales(game)) )
+    print(products[1].name, products[1].price, products[1].perf, int(products[1].sales(game)) )
+
+    #newProduct = Product("name", 50, 0, 200, 0, 0)
+    #products = []
+    #products.append(newProduct)
     # ref_market += products[-1].market()
     # num_products += 1
 
@@ -270,5 +305,5 @@ if __name__ == "__main__":
     # print(ref_market)
     # print(num_products)
 
-    print(products[-1].market())
-    print(products[-1].sales())
+    # print(products[-1].market())
+    # print(products[-1].sales())

@@ -24,7 +24,7 @@ def aiTurn(player, game, ai_type = 0):
         typeAturn(player, game)
 
 
-def typeAturn(player, game):   
+def typeAturn(player, game):
     if len(player.products) >= 3:    # If a full product stack exists...
         player.research()            # Research architecture
         if player.refinememt < 0.15:
@@ -40,7 +40,7 @@ def typeAturn(player, game):
         money_to_spend = player.research(player)
         if money_to_spend != True:
             break
-            
+
 
 def makeAproduct(player, game):
     # Try transaction, if true go on...
@@ -71,7 +71,7 @@ def makeAproduct(player, game):
 
         if len(player.products) >= 3:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced
-            game.remove_from_market(old_product.market(), old_product.price, old_product.pref)
+            game.remove_from_market(player.products[0]) # old_product.market(), old_product.price, old_product.pref)
 
             if bace_name == name:
                 name = name.replace('A', 'A1')
@@ -82,10 +82,11 @@ def makeAproduct(player, game):
                 name = "A" + series + new_name          # New name is derived
 
             del[player.products[0]]
+
         player.products.append(new_product)
         player.products[-1].inproduction = True
-        market_segment = player.products[-1].market()
-        game.newProduct(market_segment, price, player.products[-1].performance())
+        # market_segment = player.products[-1].market()
+        game.newProduct(player.products[-1])            # market_segment, price, player.products[-1].performance())
         player.income += player.products[-1].get_income(game)
 
 

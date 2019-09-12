@@ -257,8 +257,25 @@ def design(player, game):
 
     # FINE TUNING THE PRODUCT
     while True:
+        print("OVERDIRVE:")
+        print("Basically, level of factory overclock in %%.")
+        print("However, not all chips can reach the desired speed within power, thermal and stability constrains.")
+        print("default value of Zero is the level that exactly half the chips could do better and half would be lost.")
+        print("""
+        Examples:
+        -24 underclock = 99% pass rate
+        -13     ''     = 90% pass rate
+         -9     ''     = 80% pass rate
+           nnnnnnnnnnnnnnnnnn
+          0            = 50% pass rate
+           nnnnnnnnnnnnnnnnnn
+          9  overclock = 20% pass rate
+         13     ''     = 10% pass rate
+         24     ''     =  1% pass rate
+        """)
+        print("Choose your cut off point")
         try:
-            overdrive = float( input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
+            overdrive = float(input())  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
         except ValueError:
             overdrive = 0
         player.products[-1].overdrive = overdrive
@@ -286,7 +303,7 @@ def design(player, game):
     # Proposes a price for the player
     # pprice = round(chipcost*1.1)
     print("\nChoose chip price:")
-    print("Press enter for default (10%%) margin price: (%i c) \nor enter a price. (Minimum ~26)" % round(chipcost*1.1) )
+    print("Press enter for default (10%%) margin price: (%i c) \nor enter a price." % round(chipcost*1.1) )  # minimum ~26
     try:
         price = int( input("> ") )
     except:
@@ -328,7 +345,7 @@ def design(player, game):
     except:
         ch = ch = input("")
 
-    if ch.upper() in ['Y', b'Y']:
+    if ch.upper() in ['Y', b'Y', b' ', ' ', '']:
         done = player.purchase(engine.PRODUCTION_COST)
 
         if done == True:

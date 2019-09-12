@@ -49,27 +49,28 @@ def makeAproduct(player, game):
             name = "A10"
             size = 95
             overdrive = -8
-            price = 50
+            #price = 1
         elif len(player.products) % 3 == 1: # make mid range
             name = "A20"
             size = 185
             overdrive = -5
-            price = 190
+            #price = 1
         elif len(player.products) % 3 == 2: # make High end
             name = "A30"
             size = 275
             overdrive = 3
-            price = 50
+            #price = 1
 
-        print("\n==============================")
-        print(player.name, "released", name)
-        print("==============================\n")
+        UI.productRelease(player, game)     # Product Release announcement
+        # print("\n==============================")
+        # print(player.name, "released", name)
+        # print("==============================\n")
         try:
             getch()
         except:
             input()
 
-        new_product = engine.Product(name, size, overdrive, price, player.node, player.science, player.refinememt)
+        new_product = engine.Product(name, size, overdrive, price=1, player.node, player.science, player.refinememt)
         chipcost = new_product.chipCost()           # Count chipcost to guide pricing
         price = round(chipcost * 1.1)               # Sets the price by chip cost
         if price < 26:                              # If the price is too low
@@ -80,10 +81,10 @@ def makeAproduct(player, game):
             old_product = player.products[0]        # Oldest card is replaced
             game.remove_from_market(player.products[0]) # old_product.market(), old_product.price, old_product.pref)
 
+            bace_name = player.products[0].name
             if bace_name == name:
                 name = name.replace('A', 'A1')
             else:
-                bace_name = player.products[0].name
                 new_name = bace_name.strip('A')
                 series = str(int(new_name[0]) + 1)      # Iterate series number
                 name = "A" + series + new_name          # New name is derived

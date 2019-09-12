@@ -61,7 +61,7 @@ if __name__ == "__main__":
             # Yearly income is deposited
             p.credits += p.income
 
-            print("\n", p.name, "This years earnings:", p.income, "c")
+            print("\n Projected earnigs for", p.name, "this year:", round(p.income), "M")
 
             try:
                 getch()

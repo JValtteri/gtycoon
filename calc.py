@@ -71,7 +71,7 @@ if __name__ == "__main__":
     #print(chipCost(a, c, b))
 
     procent = float( input("procent > ") )
-    print(normal(procent, 0))
+    print(normal(procent, 1))
 
     # 1-calc.normal(self.overdrive, 1)
 

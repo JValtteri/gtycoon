@@ -33,6 +33,39 @@ def ask(question=""):
     print("\n")
     return i
 
+def productReleace(player, game):
+    "Announcement of a new product and a brief review"
+    product = player.product[-1]
+    review_word = "in mid range."
+    review = product.name + " is a new, compelling offering from a compelling offering \n" + player.name + " deliivers on their promice to deliver more performance in its segment."
+
+    if product.price > 300:
+        review_word = "in the hign-end market."
+
+    elif product.price < 100:
+        review_word = "\n And it is an interesting offering in the budjet segment."
+
+
+    # MAXIMUM PERFORMANCE
+    perf_max = 0     # Init
+    for p in game.players:
+        for c in p.products:
+            if c.perf >= perf_max:
+                perf_max = c.perf
+
+    if product.ptp < game.ptp_avg:
+        if perf == perf_max:
+            review_word = "to universal acclaim."
+            review = "The new product sets the standard for technology to come."
+        else:
+            review = product.name " is a great value."
+
+    # PACKAGE THE ANNOUNCEMENT
+    print "================================\n"
+    print(player.name, "releaced", product.name, ,' ',  review_word, "\n")
+    print(review)
+    print "================================"
+
 def statusBar(player):
     print("""
 
@@ -304,7 +337,9 @@ def design(player, game):
             # game.ref_market += player.products[-1].market()
             # game.num_products += 1
 
-            print("Transaction complete\nChip Released")
+            print("Transaction complete\nChip Released\n")
+            productRelease(player, game)			# Announcement and review
+
         else:
             print("Not enough credits!")
         try:

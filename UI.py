@@ -89,8 +89,11 @@ def gameScreen(player, game):
         statusBar(player)
 
         print("""
-        C = Chip Design  \t\t  B = Rebrand
-        R = Research     \t\t  S = Price Drop
+        C = Chip Design \t %i
+        R = Research    \t %i+
+
+        B = Rebrand     \t %i
+        S = Price Cut   \t free   # not implemented
 
         M = Show the market
 
@@ -99,7 +102,7 @@ def gameScreen(player, game):
         \t\t\t\t  Q = Quit game instantly
 
 
-        """)
+        """ % (engine.PRODUCTION_COST, player.research_cost(), engine.REBRAND_COST) )
         try:
             ch = getch()
         except:
@@ -109,13 +112,13 @@ def gameScreen(player, game):
             research(player)
 
         elif ch.upper() in ["B", b"B"]:
-            pass
+            rebrand(player, game)
 
         elif ch.upper() in ["C", b"C"]:
             design(player, game)
 
         elif ch.upper() in ["S", b"S"]:
-            pass
+            print("not implemented")
 
         elif ch.upper() in ["M", b"M"]:
             showMarket(player, game)
@@ -146,13 +149,17 @@ def research(player):
 
                                         Cost
         S = Specific Architecture       %i M
-        G = General Compute             %i M
+        G = General Compute             %i M  (Not implemented)
+        X = Experimental                   M  (Not implemented)
 
         N = Smaller process node        %i M
 
         [space] = Exit
 
         """ % (player.research_cost(), player.research_cost(), player.node_cost() ) )
+        # This could work so, that the specific version gives double sciense, but is reset every node.
+        # Experimental could be "i feel lucky" boost ranging from 0 to 10 science points randomly
+        # Experimental things cost twice the normal research, but may sometimes yeald great leaps in performance
 
         try:
             ch = getch()
@@ -187,6 +194,7 @@ def research(player):
         except:
             pass
 
+
 def showMarket(player, game):
     "Prints the market situation"
     print("""
@@ -197,6 +205,7 @@ def showMarket(player, game):
 
     print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
     for p in game.players:
+        print("")
         for c in p.products:
             if c.inproduction == True:
                 line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
@@ -205,6 +214,126 @@ def showMarket(player, game):
     #    getch()
     #except:
     #    input()
+
+
+def rebrand(player, game):
+    """
+    You can change the:
+     - Name
+     - overclock
+     - and the price of the chip
+    """
+
+   print("""
+    You can change the:
+     - Name
+     - overclock
+     - and the price of your product
+    """)
+
+    if player.products == []:
+        print("You have no products.\n\nFirst design a product. \nIf you need to make adjustents to it you can make them here.")
+        try: getch()
+        except: input()
+    else:
+        number = 1
+        for c in player.products:
+            if c.inproduction == True:
+                print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+                line = '\t' + str(number)  '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
+                print(line)
+                number += 1
+
+        i = input("Choose a product to rebrand, Q to quit (1-3):\n> ")
+        try:
+            search_index = int(i)
+            while search_index > 0:
+                for c in player.products:
+                    if c.inproduction == True:
+                        search_index -= 1
+                        print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+                        line = '\t' + str(number)  '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
+            print(line)
+            i = int(i)
+            nuff_money = player.purchase(engine.REBRAND_COST)
+            if nuff_money:
+                game.remove_from_market(player.products[i])                # Remove the old product from market
+                name = input("\nNew chip name: ")
+                player.products[i] = overdrive(player, player.products[i])
+                player.products[i] = price(player.products[i])
+                game.newProduct(player.products[i])                        # Add the rebranded product back to market
+            else:
+                print("Not enough money!")
+                try: getch()
+                except input()
+
+        except TypeError:
+            print("Cancel")
+            pass
+
+
+def overdrive(product):
+    "Fine tune the product"
+
+    while True:
+        print("OVERDIRVE:")
+        print("Basically, level of factory overclock in %%.")
+        print("However, not all chips can reach the desired speed within power, thermal and stability constrains.")
+        print("default value of Zero is the level that exactly half the chips could do better and half would be lost.")
+        print("""
+        Examples:
+        99%  90%  80%  70%  60%  50%  40%  30%  20%  10%  1%   pass rate
+       -23  -13   -9   -6   -3    0    3   -6   -9   13   23   overclock / underclock
+        """)
+        print("Choose your cut off point:")
+        try:
+            overdrive = float(input("> "))  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
+        except ValueError:
+            overdrive = 0
+        product.overdrive = overdrive
+        chipcost = product.chipCost()
+        print( "" )
+        print( "Manufacturing cost per chip: \t", round( chipcost, 2), "c" )
+        print( "Manufacturing yeald:         \t", round( product.yealdPr()*100 ), "%" )
+        print( "Total yeald:                 \t", round( product.yealdPr() * product.skewYeald() *100 ), "%" )
+
+        print("\nProceed? Y/n")
+        try:
+            ch = getch()
+        except:
+            ch = input(">>")
+        if ch.upper() in ['N', b'N']:
+            pass
+        elif ch.upper() in ['', 'Y', ' ', b'\r', b'Y', b' ']:
+            break
+        else:
+            pass
+    return product
+
+
+def price(product):
+    chipcost = product.chipCost()
+    print("\nChoose chip price:")
+    print("Press enter for default (10%%) margin price: (%i c) \nor enter a price." % round(chipcost*1.1) )  # minimum ~26
+    try:
+        price = int( input("> ") )
+    except:
+        print("Using default price")
+        price = round(chipcost * 1.1)
+    if price < 26:
+         price = 26
+         print("""
+         Price set too low!
+         It won't cover the packaging costs.
+         But don't worry. I raised the price abit. It should be fine now.
+         New price is %i c
+         """ % price)
+         try:
+             getch()
+         except:
+             input()
+    product.price = price
+    return product
 
 
 def design(player, game):
@@ -236,7 +365,7 @@ def design(player, game):
 
         new_product = engine.Product(name, size, overdrive, price, player.node, player.science, player.refinememt)
 
-        # The chip is added to products (saved), it will be refrenced to as 
+        # The chip is added to products (saved), it will be refrenced to as
         # player.products[-1] ig. Players newest product.
         player.products.append(new_product)
 
@@ -261,72 +390,13 @@ def design(player, game):
 
 
     # FINE TUNING THE PRODUCT
-    while True:
-        print("OVERDIRVE:")
-        print("Basically, level of factory overclock in %%.")
-        print("However, not all chips can reach the desired speed within power, thermal and stability constrains.")
-        print("default value of Zero is the level that exactly half the chips could do better and half would be lost.")
-        print("""
-        Examples:
-        -24 underclock = 99% pass rate
-        -13     ''     = 90% pass rate
-         -9     ''     = 80% pass rate
-           nnnnnnnnnnnnnnnnnn
-          0            = 50% pass rate
-           nnnnnnnnnnnnnnnnnn
-          9  overclock = 20% pass rate
-         13     ''     = 10% pass rate
-         24     ''     =  1% pass rate
-        """)
-        print("Choose your cut off point:")
-        try:
-            overdrive = float(input("> "))  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
-        except ValueError:
-            overdrive = 0
-        player.products[-1].overdrive = overdrive
-        chipcost = player.products[-1].chipCost()
-        print( "" )
-        print( "Manufacturing cost per chip: \t", round( chipcost, 2), "c" )
-        print( "Manufacturing yeald:         \t", round( player.products[-1].yealdPr()*100 ), "%" )
-        print( "Total yeald:                 \t", round( player.products[-1].yealdPr() * player.products[-1].skewYeald() *100 ), "%" )
-
-        print("\nProceed? Y/n")
-        try:
-            ch = getch()
-        except:
-            ch = input(">>")
-        if ch.upper() in ['N', b'N']:
-            pass
-        elif ch.upper() in ['', 'Y', ' ', b'\r', b'Y', b' ']:
-            break
-        else:
-            pass
+    #
+    player.products[-1] = overdrive(player.products[-1])
 
 
     # PRICE SELECTION
     #
-    # Proposes a price for the player
-    # pprice = round(chipcost*1.1)
-    print("\nChoose chip price:")
-    print("Press enter for default (10%%) margin price: (%i c) \nor enter a price." % round(chipcost*1.1) )  # minimum ~26
-    try:
-        price = int( input("> ") )
-    except:
-        print("Using default price")
-        price = round(chipcost * 1.1)
-    if price < 26:
-         price = 26
-         print("""
-         Price set too low!
-         It won't cover the packaging costs.
-         But don't worry. I raised the price abit. It should be fine now.
-         New price is %i c
-         """ % price)
-         try:
-             getch()
-         except:
-             input()
-    player.products[-1].price = price
+    player.products[-1] = price(player.product[-1])
 
     # Is the maximum number of chips reached?
     if len(player.products) >= engine.MAX_CHIPS:
@@ -356,10 +426,9 @@ def design(player, game):
         if done == True:
 
             player.products[-1].inproduction = True
-            market_segment = player.products[-1].market()
+            # market_segment = player.products[-1].market()
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
             # player.income += player.products[-1].get_income(game)				# PROBLEMATIC!!! GET INCOME ASKS FOR GAME PTP THAT IS NONE
-
             # game.ref_market += player.products[-1].market()
             # game.num_products += 1
 

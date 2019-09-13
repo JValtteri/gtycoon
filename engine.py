@@ -18,8 +18,9 @@ AVGCONSUMER = 200.0         # Money an average consumer has to spend
 TOTAL_MARKET = 10000        # Size of the annual market in thousands
 REFINE = 1.3                # Refinement step per year
 MAX_CHIPS = 4               # Maximum allowed chips per player
-PRODUCTION_COST = 1         # Cost to start manufacturing a new chip
-INIT_CREDITS = 2            # Player starting cash
+PRODUCTION_COST = 2         # Cost to start manufacturing a new chip
+REBRAND_COST = 1            # Cost to rename re-clock and re-price an old chip
+INIT_CREDITS = 3            # Player starting cash
 
 class GameStatus():
     """

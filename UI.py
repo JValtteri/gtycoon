@@ -92,10 +92,10 @@ def gameScreen(player, game):
         statusBar(player)
 
         print("""
-        C = Chip Design \t %i
-        R = Research    \t %i+
+        C = Chip Design \t %i M
+        R = Research    \t %i+ M
 
-        B = Rebrand     \t %i
+        B = Rebrand     \t %i M
         S = Price Cut   \t free   # not implemented
 
         M = Show the market
@@ -109,7 +109,7 @@ def gameScreen(player, game):
         try:
             ch = getch()
         except:
-            ch = input (">>")
+            ch = input ("> ")
 
         if ch.upper() in ["R", b"R"]:
             research(player)
@@ -208,7 +208,7 @@ def showMarket(player, game):
 
     print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
     for p in game.players:
-        print("")
+        # print("")
         for c in p.products:
             if c.inproduction == True:
                 line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
@@ -228,14 +228,17 @@ def rebrand(player, game):
     """
 
     print("""
+    ========================================================
     You can change the:
      - Name
      - overclock
      - and the price of your product
-    """)
+     """)
 
     if player.products == []:
         print("You have no products.\n\nFirst design a product. \nIf you need to make adjustents to it you can make them here.")
+        print("========================================================\n")
+
         try: getch()
         except: input()
     else:
@@ -248,16 +251,19 @@ def rebrand(player, game):
                 number += 1
 
         i = input("Choose a product to rebrand, Q to quit (1-3):\n> ")
+        true_index = -1
         try:
-            search_index = int(i)
+            search_index = int(i-1)
             while search_index > 0:
                 for c in player.products:
                     if c.inproduction == True:
-                        search_index -= 1
                         print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
                         line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
+                        search_index -= 1
+                    true_index += 1
+
             print(line)
-            i = int(i)
+            i = true_index
             nuff_money = player.purchase(engine.REBRAND_COST)
             if nuff_money:
                 game.remove_from_market(player.products[i])                # Remove the old product from market

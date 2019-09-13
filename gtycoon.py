@@ -32,9 +32,14 @@ if __name__ == "__main__":
 
     while True:
 
-        game.update_ptp()
-
         for p in game.players:
+
+            print("============================")
+            print("Player:     ", p.name)
+            print("year:       ", p.year)
+            print("refinement: ", p.refinememt)
+            print("============================")
+
 
             if p.ai == False:
                 UI.showMarket(p, game)
@@ -44,32 +49,39 @@ if __name__ == "__main__":
             p.year += 1
             p.refinememt =  p.refinememt / REFINE
 
-            p.income = 0    # Income is reset for update
+            p.income = 0                     # Income is reset for update
 
             for c in p.products:
 
-                # Update the dynamic parameters about each chip
+                # UPDATE the dynamic parameters about each chip
+                #
                 c.update_refinement()
                 c.update_cost()
                 c.update_price_delta(game)
                 c.update_yeald()
                 c.update_income(game)
+                game.update_ptp()
 
                 if c.inproduction == True:
-                    p.income += c.income    # Income is added together
+                    p.income += c.income     # Income is added together (FOR A PROJECTION!!!)
+            # p.credits += p.income          # NOOOOOOOOOOOOO! not here. All turns must be complete before counting the income
 
-            # Yearly income is deposited
-            p.credits += p.income
-
-            print("\n Projected earnigs for", p.name, "this year:", round(p.income), "M")
+            print("Projected earnigs for", p.name, "this year:", round(p.income), "M")
+            print("======================================================================")
 
             try:
                 getch()
             except:
                 input()
 
-    print(("year:", players[0].year))
-    print(("year:", players[0].refinememt))
+        game.update_ptp()
+
+        for p in players:
+            p.income = 0                     # Income is reset for update
+            for c in p.products:
+                c.update_income(game)
+                if c.inproduction == True:
+                    p.income += c.income     # Income is added together
+            p.credits += p.income            # Yearly income is deposited
 
     # when game is run on command line
-

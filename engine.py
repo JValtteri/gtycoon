@@ -219,8 +219,8 @@ class Product():
             # print("ptp self", self.ptp, "avg", game.avg_ptp)
             # print("raw sales", theoretical_sales)
             ptp_modifier = ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 ,1) )
-            print("\t\t\t\t ptp debug:", round(ptp_modifier, 4))                  # Debug
-            sales = theoretical_sales * ptp_modifier * 5              # * ( 1 + self.price_delta ) #  modifiers (price to performance)
+            #print("\t\t\t\t ptp debug:", round(ptp_modifier, 4))                  # Debug
+            sales = theoretical_sales * ptp_modifier * 3              # * ( 1 + self.price_delta ) #  modifiers (price to performance)
         return sales                                #* 5 is to offset the market so that the sum of all products may approach 10 000 market cap
 
     def get_income(self, game):
@@ -328,12 +328,9 @@ if __name__ == "__main__":
     products.append(new_product)
     game.newProduct(products[-1])
 
-
-
     # UPDATE EVERYTHING
 
     game.update_ptp()
-
     #for p in products:
     #    p.update_market()
 
@@ -342,17 +339,3 @@ if __name__ == "__main__":
     for p in products:
         print(p.name, "\t", p.price, "\t", p.perf, "\t", int(p.sales(game)) )
 
-    #print(products[1].name, products[1].price, products[1].perf, int(products[1].sales(game)) )
-
-    #newProduct = Product("name", 50, 0, 200, 0, 0)
-    #products = []
-    #products.append(newProduct)
-    # ref_market += products[-1].market()
-    # num_products += 1
-
-
-    # print(ref_market)
-    # print(num_products)
-
-    # print(products[-1].market())
-    # print(products[-1].sales())

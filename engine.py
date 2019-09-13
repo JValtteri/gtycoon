@@ -44,7 +44,7 @@ class GameStatus():
 
         for i in range(aiPlayers):
             id = number + i
-            self.players.append(Player(id, name="ASIx", ai=True))
+            self.players.append(Player(id, name="ASIx Co.", ai=True))
 
     def newProduct(self, product):
         market = product.market()
@@ -196,7 +196,8 @@ class Product():
             # print("ptp self", self.ptp, "avg", game.avg_ptp)
             # print("raw sales", theoretical_sales)
             # print("ptp modifier", game.avg_ptp/self.ptp)  # calc.normal(game.avg_ptp/self.ptp * 100) * 2 )
-            sales = theoretical_sales * ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 +1 ,1) * 2 ) # * ( 1 + self.price_delta ) #  modifiers (price to performance)
+            ptp_modifier = ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 ,1) * 2 ) #
+            sales = theoretical_sales * ptp_modifier # * ( 1 + self.price_delta ) #  modifiers (price to performance)
         return sales
 
     def get_income(self, game):

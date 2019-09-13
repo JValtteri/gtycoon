@@ -37,6 +37,8 @@ class GameStatus():
         self.num_products = 0            # Number of active products
         self.players = []
         self.avg_ptp = 0                 # Average price to performance
+        self.max_perf = 0
+        self.best_ptp = 10               # Init value, hopefully high enough
 
         for id in range(human_players):
             self.players.append(Player(id))
@@ -57,6 +59,7 @@ class GameStatus():
         self.sum_perf += perf
 
         self.update_ptp()
+        self.update_max_perf()
 
     def remove_from_market(self, product):
         market = product.market()
@@ -69,14 +72,31 @@ class GameStatus():
         self.sum_perf -= perf
 
         self.update_ptp()
-
+        #self.update_max_perf()        # The market remembers the best and hold on to their used chips.
+                                       # Sales will suffer if you try to sell them worse chips
     def update_ptp(self):
         try:
             ptp = self.sum_price/self.sum_perf
-            self.avg_ptp = ptp
+            self.avg_ptp = ptp        # Update avg PTP
+
+            best = self.best_ptp
+            for p in self.players:
+                for c in p.products:
+                    if c.ptp <= best:
+                        best = c.perf
+            self.best_ptp = best     # Update best PTP
+
         except ZeroDivisionError:
             self.avg_ptp = 0
 
+    def update_max_perf(self):
+        best = self.max_perf
+        for p in self.players:
+            for c in p.products:
+                if c.perf >= best:
+                    best = c.perf
+        self.max_perf = best
+        return best
     # def price_cut(self, old_market, new_market, old_price, new_price):
     #     pass
 
@@ -141,7 +161,7 @@ class Player():
     def purchase(self, cost):
         """
         Checks if transaction can be completed
-        deducts payment and returns: 
+        deducts payment and returns:
           True for succesfull transaction and
           False for no sale.
         """
@@ -179,7 +199,7 @@ class Product():
 
     def market(self):
         "Counts the total size of a market segment"
-        market = calc.normal(self.price / AVGCONSUMER) * AVGCONSUMER / self.price
+        market = 1 - calc.normal(self.price / AVGCONSUMER) #* AVGCONSUMER / self.price
         #market = calc.normal(self.price / AVGCONSUMER)
         #market = totalMarket * ( normal(max) - normal(min) )
         return market
@@ -187,18 +207,20 @@ class Product():
     def sales(self, game):
         "Counts number of units sold per year"
         self.update_price_delta(game)
-        theoretical_sales = self.market() / game.ref_market * TOTAL_MARKET
+        # Now,
+        theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET
         if game.avg_ptp == 0:
             print("AVG PTP defined!")  # DEBUG
             return 0
         else:
             # DEBUG
+            # Now the market should shrink with added expense, but more performance will incentivize more people to buy...
             # print("ptp self", self.ptp, "avg", game.avg_ptp)
             # print("raw sales", theoretical_sales)
-            # print("ptp modifier", game.avg_ptp/self.ptp)  # calc.normal(game.avg_ptp/self.ptp * 100) * 2 )
-            ptp_modifier = ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 ,1) * 2 ) #
-            sales = theoretical_sales * ptp_modifier # * ( 1 + self.price_delta ) #  modifiers (price to performance)
-        return sales
+            ptp_modifier = ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 ,1) )
+            print("\t\t\t\t ptp debug:", round(ptp_modifier, 4))                  # Debug
+            sales = theoretical_sales * ptp_modifier * 5              # * ( 1 + self.price_delta ) #  modifiers (price to performance)
+        return sales                                #* 5 is to offset the market so that the sum of all products may approach 10 000 market cap
 
     def get_income(self, game):
         "Counts the total winnings from the products sold"
@@ -292,9 +314,19 @@ if __name__ == "__main__":
     new_product = Product("chip D", 300, 0, 300, 1, 1)
     products.append(new_product)
     game.newProduct(products[-1])
-    new_product = Product("chip D", 400, 0, 500, 1, 1)
+    new_product = Product("chip E", 400, 0, 400, 1, 1)
     products.append(new_product)
     game.newProduct(products[-1])
+    new_product = Product("C C", 250, 0, 190, 1, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+    new_product = Product("C D", 340, 0, 290, 1, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+    new_product = Product("C E", 500, 0, 600, 1, 1)
+    products.append(new_product)
+    game.newProduct(products[-1])
+
 
 
     # UPDATE EVERYTHING

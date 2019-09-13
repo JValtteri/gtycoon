@@ -43,24 +43,26 @@ def productReleace(player, game):
         review_word = "in the hign-end market."
 
     elif product.price < 100:
-        review_word = "\n And it is an interesting offering in the budjet segment."
+        review_word = "\nAnd it is an interesting offering in the budjet segment."
 
 
     # MAXIMUM PERFORMANCE
-    perf_max = 0     # Init
-    for p in game.players:
-        for c in p.products:
-            if c.perf >= perf_max:
-                perf_max = c.perf
+    perf_max = game.max_perf
+    #for p in game.players:
+    #    for c in p.products:
+    #        if c.perf >= perf_max:
+    #            perf_max = c.perf
 
-    if product.ptp * 2 < game.avg_ptp:
-        if c.perf == perf_max:
+    if c.perf == perf_max:
+        review = "The new product sets the standard for technology to come."
+        if product.ptp == game.max_ptp:
             review_word = "to universal acclaim."
-            review = "The new product sets the standard for technology to come."
-        else:
-            review = product.name + " offers great value that is hard to beat in the current market."
-    elif product.ptp > game.avg_ptp:
-            review = product.name + " francly, is an example of the never ending greed of modern companies \nripping of their customers."
+    elif product.ptp == game.best_ptp:
+        review = product.name + "is the best thing since sliced bread. It is the best value out there."
+    elif product.ptp < game.best_ptp*1.1 :
+        review = product.name + " offers great value that is hard to beat in the current market."
+    elif product.ptp >= game.avg_ptp:
+        review = product.name + " francly, is an example of the never ending greed of modern companies \nripping off their customers."
 
 
     # PACKAGE THE ANNOUNCEMENT

@@ -33,9 +33,9 @@ def ask(question=""):
     print("\n")
     return i
 
-def productReleace(player, game):
+def productReleace(player, product, game, rebrand=False):
     "Announcement of a new product and a brief review"
-    product = player.products[-1]
+    #product = player.products[-1]
     review_word = "in mid range."
     review = product.name + " is a new, compelling offering from a compelling offering \n" + player.name + " deliivers on their promice to deliver more performance in its segment."
 
@@ -45,6 +45,8 @@ def productReleace(player, game):
     elif product.price < 100:
         review_word = "\nAnd it is an interesting offering in the budjet segment."
 
+    if rebrand == True:
+        review_word = "rebrand" + review_word
 
     # MAXIMUM PERFORMANCE
     perf_max = game.max_perf
@@ -53,9 +55,9 @@ def productReleace(player, game):
     #        if c.perf >= perf_max:
     #            perf_max = c.perf
 
-    if c.perf == perf_max:
+    if product.perf == perf_max:
         review = "The new product sets the standard for technology to come."
-        if product.ptp == game.max_ptp:
+        if product.ptp == game.best_ptp:
             review_word = "to universal acclaim."
     elif product.ptp == game.best_ptp:
         review = product.name + "is the best thing since sliced bread. It is the best value out there."
@@ -70,6 +72,7 @@ def productReleace(player, game):
     print(player.name, "releaced", product.name,  review_word, "\n")
     print(review)
     print("===============================================================")
+
 
 def statusBar(player):
     print("""
@@ -208,7 +211,7 @@ def showMarket(player, game):
         print("")
         for c in p.products:
             if c.inproduction == True:
-                line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
+                line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
                 print(line)
     #try:
     #    getch()
@@ -224,7 +227,7 @@ def rebrand(player, game):
      - and the price of the chip
     """
 
-   print("""
+    print("""
     You can change the:
      - Name
      - overclock
@@ -240,7 +243,7 @@ def rebrand(player, game):
         for c in player.products:
             if c.inproduction == True:
                 print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
-                line = '\t' + str(number)  '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
+                line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
                 print(line)
                 number += 1
 
@@ -252,27 +255,28 @@ def rebrand(player, game):
                     if c.inproduction == True:
                         search_index -= 1
                         print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
-                        line = '\t' + str(number)  '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
+                        line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
             print(line)
             i = int(i)
             nuff_money = player.purchase(engine.REBRAND_COST)
             if nuff_money:
                 game.remove_from_market(player.products[i])                # Remove the old product from market
                 name = input("\nNew chip name: ")
-                player.products[i] = overdrive(player, player.products[i])
-                player.products[i] = price(player.products[i])
+                player.products[i] = set_overdrive(player, player.products[i])
+                player.products[i] = set_price(player.products[i])
                 game.newProduct(player.products[i])                        # Add the rebranded product back to market
+                productReleace(player, player.product[i], game, True)
             else:
                 print("Not enough money!")
                 try: getch()
-                except input()
+                except: input()
 
         except TypeError:
             print("Cancel")
             pass
 
 
-def overdrive(product):
+def set_overdrive(product):
     "Fine tune the product"
 
     while True:
@@ -311,7 +315,7 @@ def overdrive(product):
     return product
 
 
-def price(product):
+def set_price(product):
     chipcost = product.chipCost()
     print("\nChoose chip price:")
     print("Press enter for default (10%%) margin price: (%i c) \nor enter a price." % round(chipcost*1.1) )  # minimum ~26
@@ -391,12 +395,12 @@ def design(player, game):
 
     # FINE TUNING THE PRODUCT
     #
-    player.products[-1] = overdrive(player.products[-1])
+    player.products[-1] = set_overdrive(player.products[-1])
 
 
     # PRICE SELECTION
     #
-    player.products[-1] = price(player.product[-1])
+    player.products[-1] = set_price(player.products[-1])
 
     # Is the maximum number of chips reached?
     if len(player.products) >= engine.MAX_CHIPS:
@@ -433,7 +437,7 @@ def design(player, game):
             # game.num_products += 1
 
             print("Transaction complete\nChip Released\n")
-            productReleace(player, game)			# Announcement and review
+            productReleace(player, player.products[-1], game)			# Announcement and review
 
         else:
             print("Not enough credits!")

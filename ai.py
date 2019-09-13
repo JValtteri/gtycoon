@@ -102,7 +102,7 @@ def makeAproduct(player, game):
         player.products[-1].inproduction = True
         # market_segment = player.products[-1].market()
 
-        UI.productReleace(player, game)     # Product Release announcement
+        UI.productReleace(player, player.products[-1], game)     # Product Release announcement
         # print("\n==============================")
         # print(player.name, "released", name)
         # print("==============================\n")

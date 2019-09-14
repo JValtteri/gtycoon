@@ -35,7 +35,7 @@ def ask(question=""):
 
 def productReleace(player, product, game, rebrand=False):
     "Announcement of a new product and a brief review"
-    #product = player.products[-1]
+
     review_word = "in mid range."
     review = product.name + " is a new, compelling offering from a compelling offering \n" + player.name + " deliivers on their promice to deliver more performance in its segment."
 
@@ -50,10 +50,6 @@ def productReleace(player, product, game, rebrand=False):
 
     # MAXIMUM PERFORMANCE
     perf_max = game.max_perf
-    #for p in game.players:
-    #    for c in p.products:
-    #        if c.perf >= perf_max:
-    #            perf_max = c.perf
 
     if product.perf == perf_max:
         review = "The new product sets the standard for technology to come."
@@ -83,7 +79,7 @@ def statusBar(player):
         general:  %i    \t\t\t   node:     %s
         refinem:  %f
 
-    ===========================================================
+    ===============================================================
     """ % (player.name, player.year, player.credits, len(player.products), player.science, player.income, player.generalization, calc.NODE[player.node], player.refinememt) )
 
 def gameScreen(player, game):
@@ -230,7 +226,7 @@ def rebrand(player, game):
     """
 
     print("""
-    ========================================================
+    ===============================================================
     You can change the:
      - Name
      - overclock
@@ -239,7 +235,7 @@ def rebrand(player, game):
 
     if player.products == []:
         print("You have no products.\n\nFirst design a product. \nIf you need to make adjustents to it you can make them here.")
-        print("========================================================\n")
+        print("===============================================================\n")
 
         try: getch()
         except: input()
@@ -269,8 +265,8 @@ def rebrand(player, game):
             nuff_money = player.purchase(engine.REBRAND_COST)
             if nuff_money:
                 game.remove_from_market(player.products[i])                # Remove the old product from market
-                name = input("\nNew chip name: ")
-                player.products[i] = set_overdrive(player, player.products[i])
+                player.products[i].name = input("\nNew chip name: ")
+                player.products[i] = set_overdrive(player.products[i])
                 player.products[i] = set_price(player.products[i])
                 game.newProduct(player.products[i])                        # Add the rebranded product back to market
                 productReleace(player, player.product[i], game, True)
@@ -382,6 +378,7 @@ def design(player, game):
         player.products.append(new_product)
 
     # RECALL AN UNFINISHED CHIP
+    #
     else:
         # If a saved chip is found, the preliminary specs are displayed
         print("Chip name: ", player.products[-1].name)
@@ -438,11 +435,7 @@ def design(player, game):
         if done == True:
 
             player.products[-1].inproduction = True
-            # market_segment = player.products[-1].market()
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
-            # player.income += player.products[-1].get_income(game)				# PROBLEMATIC!!! GET INCOME ASKS FOR GAME PTP THAT IS NONE
-            # game.ref_market += player.products[-1].market()
-            # game.num_products += 1
 
             print("Transaction complete\nChip Released\n")
             productReleace(player, player.products[-1], game)			# Announcement and review

@@ -37,7 +37,7 @@ if __name__ == "__main__":
             print("============================")
             print("Player:     ", p.name)
             print("year:       ", p.year)
-            print("refinement: ", p.refinememt)
+            print("refinement: ", round(p.refinememt,2))
             print("============================")
 
 

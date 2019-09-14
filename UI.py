@@ -33,7 +33,7 @@ def ask(question=""):
     print("\n")
     return i
 
-def productReleace(player, product, game, rebrand=False):
+def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
 
     review_word = "in mid range."
@@ -45,8 +45,10 @@ def productReleace(player, product, game, rebrand=False):
     elif product.price < 100:
         review_word = "\nAnd it is an interesting offering in the budjet segment."
 
-    if rebrand == True:
+    if mode == "REBRAND":
         review_word = "rebrand" + review_word
+    elif mode == "PRICEDROP":
+        review_word = "pricedrop" + review_word
 
     # MAXIMUM PERFORMANCE
     perf_max = game.max_perf
@@ -92,7 +94,7 @@ def gameScreen(player, game):
         R = Research    \t %i+ M
 
         B = Rebrand     \t %i M
-        S = Price Cut   \t free   # not implemented
+        S = Price Cut   \t free
 
         M = Show the market
 
@@ -117,7 +119,7 @@ def gameScreen(player, game):
             design(player, game)
 
         elif ch.upper() in ["S", b"S"]:
-            print("not implemented")
+            priceDrop(player, game)
 
         elif ch.upper() in ["M", b"M"]:
             showMarket(player, game)
@@ -239,29 +241,11 @@ def rebrand(player, game):
 
         try: getch()
         except: input()
+
     else:
-        number = 1
-        for c in player.products:
-            if c.inproduction == True:
-                print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
-                line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
-                print(line)
-                number += 1
-
-        i = input("Choose a product to rebrand, Q to quit (1-3):\n> ")
-        true_index = -1
-        try:
-            search_index = int(i-1)
-            while search_index > 0:
-                for c in player.products:
-                    if c.inproduction == True:
-                        print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
-                        line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node]) 
-                        search_index -= 1
-                    true_index += 1
-
-            print(line)
-            i = true_index
+        number = chooseProduct(player, game, 'rebrand')
+        if number is not None:
+            i = number
             nuff_money = player.purchase(engine.REBRAND_COST)
             if nuff_money:
                 game.remove_from_market(player.products[i])                # Remove the old product from market
@@ -269,15 +253,51 @@ def rebrand(player, game):
                 player.products[i] = set_overdrive(player.products[i])
                 player.products[i] = set_price(player.products[i])
                 game.newProduct(player.products[i])                        # Add the rebranded product back to market
-                productReleace(player, player.product[i], game, True)
+                productReleace(player, player.products[i], game, "REBRAND")
+
             else:
                 print("Not enough money!")
                 try: getch()
                 except: input()
 
-        except TypeError:
-            print("Cancel")
-            pass
+
+def priceDrop(player, game):
+    i = chooseProduct(player, game, 'rebrand')
+    if i is not None:
+        game.remove_from_market(player.products[i])                # Remove the old product from market
+        player.products[i] = set_price(player.products[i])
+        game.newProduct(player.products[i])                        # Add the rebranded product back to market
+        productReleace(player, player.product[i], game, "PRICEDROP")
+    else:
+        pass
+
+
+def chooseProduct(player, game, text):
+    number = 1
+    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+    for c in player.products:
+        if c.inproduction == True:
+            line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
+            print(line)
+            number += 1
+
+    i = input("Choose a product to %s, Q to quit (1-3):\n> " % text)
+    cancel = False
+    try:
+        number = int(i)-1
+
+    except TypeError:
+        print("Cancel")
+        cancel = True
+
+    if cancel is not True:
+        product = player.products[number]
+        print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+        line = '\t' + str(number) + '\t ' + product.name + '\t ' + str(product.perf) + '\t ' + str(round(product.chipCost()))  + '\t ' + str(product.price) + ' c\t ' + str(round(product.sales(game))) + 'k \t ' + str(product.size) + ' mm2 \t' + str(calc.NODE[product.node]) 
+        print(line)
+        return number
+    else:
+        return None
 
 
 def set_overdrive(product):
@@ -411,12 +431,15 @@ def design(player, game):
     if len(player.products) >= engine.MAX_CHIPS:
         print("""
         Maximum number of chips reached.
-        The oldest chip will be removed:
+        Pick on chip to be removed:
         """)
-        print(player.products[0].name, player.products[0].node, player.products[0].size, "mm2", player.products[0].price, "c")
-        old_chip = player.products[0]
+
+        number = chooseProduct(player, game, 'replace')
+        if number == None:                                          # If none selected, the oldest (0) will be removed
+            number = 0
+        old_chip = player.products[number]
         game.remove_from_market(old_chip)
-        del[player.products[0]]
+        del[player.products[number]]
 
     # PRODUCTION AND TRANSACTION
     statusBar(player)
@@ -427,25 +450,20 @@ def design(player, game):
     try:
         ch = getch()
     except:
-        ch = ch = input("")
+        ch = input("")
 
     if ch.upper() in [b'Y', b' ', b'\r', 'Y', ' ', '']:
         done = player.purchase(engine.PRODUCTION_COST)
 
         if done == True:
-
             player.products[-1].inproduction = True
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
-
             print("Transaction complete\nChip Released\n")
             productReleace(player, player.products[-1], game)			# Announcement and review
-
         else:
             print("Not enough credits!")
-        try:
-            getch()
-        except:
-            input()
+        try: getch()
+        except: input()
 
     elif ch.upper() in ['N', b'N']:
         print("""
@@ -455,11 +473,9 @@ def design(player, game):
         try:
             getch()
         except:
-            ch = input(">>")
+            ch = input("> ")
         if ch.upper() in ['N', b'N']:
             del player.products[-1]
             print("Deleted")
         else:
             pass
-
-

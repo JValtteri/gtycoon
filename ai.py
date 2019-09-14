@@ -26,7 +26,7 @@ def aiTurn(player, game, ai_type = 0):
 
 
 def typeAturn(player, game):
-    if len(player.products) <= 3:
+    if len(player.products) <= engine.MAX_CHIPS:
         makeAproduct(player, game)
         doResearch(player)
 
@@ -34,7 +34,7 @@ def typeAturn(player, game):
         priceCut(player, game)
         doResearch(player)
     
-    elif len(player.products) >= 3:        # If a full product stack exists...
+    elif len(player.products) >= engine.MAX_CHIPS:        # If a full product stack exists...
         doResearch(player)
         makeAproduct(player, game)
 
@@ -53,7 +53,13 @@ def doResearch(player):
 
 
 def priceCut(player, game):
-    pass
+    for product in player.products:
+        game.remove_from_market(product)    # Remove the old product from market
+        chipcost = product.chipCost()       # Count chipcost to guide pricing
+        price = round(chipcost * 1.08)
+        player.product.price = price
+        game.newProduct(product)            # Add the pricecut product back to market
+        UI.productReleace(player, product, game, "PRICEDROP")
 
 
 def makeAproduct(player, game):
@@ -124,34 +130,9 @@ def makeAproduct(player, game):
         player.products[-1].inproduction = True
         # market_segment = player.products[-1].market()
 
-        UI.productReleace(player, player.products[-1], game)     # Product Release announcement
-        # print("\n==============================")
-        # print(player.name, "released", name)
-        # print("==============================\n")
-        try:
-            getch()
-        except:
-            input()
+        UI.productReleace(player, player.products[-1], game)
+        try: getch()
+        except: input()
 
         game.newProduct(player.products[-1])            # market_segment, price, player.products[-1].performance())
         player.income += player.products[-1].get_income(game)
-
-
-# SOME ALTERNATIVE LOGIC
-#
-#
-#def spawnProduct(player):
-    #
- #   new_product = engine.Product(name, size, overdrive, price, player.node, player.science, player.refinememt)
-    # The chip is added to products (saved), it will be refrenced to as
-    # player.products[-1] eg. Players newest product.
-  #  player.products.append(new_product)
-
-#    if len(player.products) < 3:
-#        while True:
-#            makeProduct()
-#            if len(player.products) == 3:
-#                break
-#            elif player.credits < 1:
-#                break
-

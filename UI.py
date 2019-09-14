@@ -43,7 +43,7 @@ def productReleace(player, product, game, mode=None):
         review_word = "in the hign-end market"
 
     elif product.price < 100:
-        review_word = "\nIt is an interesting offering in the budjet segment."
+        review = "It is an interesting offering in the budjet segment."
 
     if mode == "REBRAND":
         review_word = "rebrand" + review_word

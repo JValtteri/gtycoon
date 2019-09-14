@@ -26,67 +26,89 @@ def aiTurn(player, game, ai_type = 0):
 
 
 def typeAturn(player, game):
-    if len(player.products) >= 3:        # If a full product stack exists...
-        player.research()                # Research architecture
-        if player.refinememt < 0.15:
-            player.research_node()       # Research NODE
-        #if player.products[-3].node == player.node: # If the last 3 chips are current node, buy a new node if possible
-        #    doNode(player)
-    makeAproduct(player, game)
+    if len(player.products) <= 3:
+        makeAproduct(player, game)
+        doResearch(player)
+
+    elif player.refinememt < 0.15:     # If the node is old
+        priceCut(player, game)
+        doResearch(player)
+    
+    elif len(player.products) >= 3:        # If a full product stack exists...
+        doResearch(player)
+        makeAproduct(player, game)
+
+
+def doResearch(player):
     while True:                          # Research nodes 'till out of money
         money_to_spend = player.research_node()
         if money_to_spend != True:
             break
         else: print("Ai did node research")
     while True:                          # Research other stuff 'till out of money
-        money_to_spend = player.research(player)
+        money_to_spend = player.research(0)
         if money_to_spend != True:
             break
         else: print("Ai did research")
 
 
+def priceCut(player, game):
+    pass
+
+
 def makeAproduct(player, game):
     # Try transaction, if true go on...
     if player.purchase(engine.PRODUCTION_COST):
-        if len(player.products) >= 3: # make Low end / make first product
-            if player.products[-1].name[-2] == "3":
+        if len(player.products) == 4: 
+            if player.products[0].name[-2] == "4":
+                name = "A40"
+                size = 365
+                overdrive = -11
+            if player.products[0].name[-2] == "3":
                 name = "A30"
                 size = 275
                 overdrive = -11
-            if player.products[-1].name[-2] == "2":
+            elif player.products[0].name[-2] == "2":
                 name = "A20"
                 size = 185
                 overdrive = -12
-            else:
+            elif player.products[0].name[-2] == "1":
                 name = "A10"
-                size = 90
+                size = 110
                 overdrive = -15
-        elif len(player.products) == 1: # make mid range
-            name = "A20"
-            size = 185
-            overdrive = -12
-            #price = 1
-        elif len(player.products)  == 2: # make High end
-            name = "A30"
-            size = 275
-            overdrive = 0
-            #price = 1
-        else:
-            name = "A10"
-            size = 90
-            overdrive = -15
 
-        if len(player.products) >= 3:               # If a full product stack exits
+        else: # make Low end / make first product
+            if len(player.products) == 0: # make low end
+                name = "A10"
+                size = 110
+                overdrive = -15
+            if len(player.products) == 1: # make mid range
+                name = "A20"
+                size = 185
+                overdrive = -12
+                #price = 1
+            elif len(player.products)  == 2: # make High end
+                name = "A30"
+                size = 275
+                overdrive = -10
+                #price = 1
+            elif len(player.products)  == 2: # make High end
+                name = "A40"
+                size = 365
+                overdrive = -6
+                #price = 1
+
+        if len(player.products) >= 4:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced
-            game.remove_from_market(old_product) # old_product.market(), old_product.price, old_product.pref)
+            game.remove_from_market(old_product)    # old_product.market(), old_product.price, old_product.pref)
 
             bace_name = player.products[0].name
             if bace_name == name:
                 name = name.replace('A', 'A1')
             else:
-                new_name = bace_name.strip('A')
-                series = str(int(new_name[0]) + 1)      # Iterate series number
-                name = "A" + series + new_name          # New name is derived
+                old_name = bace_name.strip('A')
+                series = str(int(old_name[0]) + 1)      # Iterate series number
+                name = "A" + series + name          # New name is derived
 
             #player.products[len(player.products)%3].inproduction = False
             del[player.products[0]]

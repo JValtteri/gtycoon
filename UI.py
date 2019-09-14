@@ -36,14 +36,14 @@ def ask(question=""):
 def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
 
-    review_word = "in mid range."
+    review_word = "in mid range"
     review = product.name + " is a new, compelling offering from a compelling offering \n" + player.name + " deliivers on their promice to deliver more performance in its segment."
 
     if product.price > 300:
-        review_word = "in the hign-end market."
+        review_word = "in the hign-end market"
 
     elif product.price < 100:
-        review_word = "\nAnd it is an interesting offering in the budjet segment."
+        review_word = "\nIt is an interesting offering in the budjet segment."
 
     if mode == "REBRAND":
         review_word = "rebrand" + review_word
@@ -55,14 +55,14 @@ def productReleace(player, product, game, mode=None):
 
     if product.perf == perf_max:
         review = "The new product sets the standard for technology to come."
-        if product.ptp == game.best_ptp:
-            review_word = "to universal acclaim."
-    elif product.ptp == game.best_ptp:
-        review = product.name + "is the best thing since sliced bread. It is the best value out there."
+        if product.ptp <= game.best_ptp:
+            review_word = review_word + " to universal acclaim."
+    elif product.ptp <= game.best_ptp:
+        review = product.name + " is the best thing since sliced bread. It is the best value \nout there."
     elif product.ptp < game.best_ptp*1.1 :
-        review = product.name + " offers great value that is hard to beat in the current market."
+        review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp >= game.avg_ptp:
-        review = product.name + " francly, is an example of the never ending greed of modern companies \nripping off their customers."
+        review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers."
 
 
     # PACKAGE THE ANNOUNCEMENT
@@ -82,7 +82,7 @@ def statusBar(player):
         refinem:  %f
 
     ===============================================================
-    """ % (player.name, player.year, player.credits, len(player.products), player.science, player.income, player.generalization, calc.NODE[player.node], player.refinememt) )
+    """ % (player.name, player.year, player.credits, len(player.products), player.science, player.income, player.generalization, calc.NODE[player.node], round(player.refinememt, 3) ))
 
 def gameScreen(player, game):
     while True:
@@ -262,22 +262,22 @@ def rebrand(player, game):
 
 
 def priceDrop(player, game):
-    i = chooseProduct(player, game, 'rebrand')
+    i = chooseProduct(player, game, 'pricedrop')
     if i is not None:
         game.remove_from_market(player.products[i])                # Remove the old product from market
         player.products[i] = set_price(player.products[i])
         game.newProduct(player.products[i])                        # Add the rebranded product back to market
-        productReleace(player, player.product[i], game, "PRICEDROP")
+        productReleace(player, player.products[i], game, "PRICEDROP")
     else:
         pass
 
 
 def chooseProduct(player, game, text):
     number = 1
-    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+    print('\t No. \t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
     for c in player.products:
         if c.inproduction == True:
-            line = '\t' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
+            line = '\t ' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
             print(line)
             number += 1
 
@@ -293,7 +293,7 @@ def chooseProduct(player, game, text):
     if cancel is not True:
         product = player.products[number]
         print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
-        line = '\t' + str(number) + '\t ' + product.name + '\t ' + str(product.perf) + '\t ' + str(round(product.chipCost()))  + '\t ' + str(product.price) + ' c\t ' + str(round(product.sales(game))) + 'k \t ' + str(product.size) + ' mm2 \t' + str(calc.NODE[product.node]) 
+        line = '\t' + product.name + '\t ' + str(product.perf) + '\t ' + str(round(product.chipCost()))  + '\t ' + str(product.price) + ' c\t ' + str(round(product.sales(game))) + 'k \t ' + str(product.size) + ' mm2 \t' + str(calc.NODE[product.node]) 
         print(line)
         return number
     else:
@@ -305,13 +305,13 @@ def set_overdrive(product):
 
     while True:
         print("OVERDIRVE:")
-        print("Basically, level of factory overclock in %%.")
+        print("Basically, level of factory overclock in (%).")
         print("However, not all chips can reach the desired speed within power, thermal and stability constrains.")
         print("default value of Zero is the level that exactly half the chips could do better and half would be lost.")
         print("""
         Examples:
         99%  90%  80%  70%  60%  50%  40%  30%  20%  10%  1%   pass rate
-       -23  -13   -9   -6   -3    0    3   -6   -9   13   23   overclock / underclock
+       -23  -13   -9   -6   -3    0    3    6    9   13   23   overclock / underclock
         """)
         print("Choose your cut off point:")
         try:

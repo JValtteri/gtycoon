@@ -82,6 +82,8 @@ def makeAproduct(player, game):
                 name = "A10"
                 size = 110
                 overdrive = -15
+            else:
+                print("Error: 4 products, Could not recognize the chip")
 
         else: # make Low end / make first product
             if len(player.products) == 0: # make low end
@@ -98,11 +100,13 @@ def makeAproduct(player, game):
                 size = 275
                 overdrive = -10
                 #price = 1
-            elif len(player.products)  == 2: # make High end
+            elif len(player.products)  == 3: # make High end
                 name = "A40"
                 size = 365
                 overdrive = -6
                 #price = 1
+            else:
+                print("Error: Under 4 products, Could not recognize the chip")
 
         if len(player.products) >= 4:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced

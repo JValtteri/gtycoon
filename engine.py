@@ -76,7 +76,7 @@ class GameStatus():
         #self.update_max_perf()        # The market remembers the best and hold on to their used chips.
                                        # Sales will suffer if you try to sell them worse chips
     def update_ptp(self):
-        try:
+        if self.sum_perf != 0:
             ptp = self.sum_price/self.sum_perf
             self.avg_ptp = ptp        # Update avg PTP
 
@@ -84,11 +84,10 @@ class GameStatus():
             for p in self.players:
                 for c in p.products:
                     if c.ptp <= best:
-                        best = c.perf
+                        best = c.ptp
             self.best_ptp = best     # Update best PTP
+        # except ZeroDivisionError:
 
-        except ZeroDivisionError:
-            self.avg_ptp = 0
 
     def update_max_perf(self):
         best = self.max_perf
@@ -220,7 +219,7 @@ class Product():
             # print("raw sales", theoretical_sales)
             ptp_modifier = ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 ,1) )
             #print("\t\t\t\t ptp debug:", round(ptp_modifier, 4))                  # Debug
-            sales = theoretical_sales * ptp_modifier * 3              # * ( 1 + self.price_delta ) #  modifiers (price to performance)
+            sales = theoretical_sales * ptp_modifier                # * ( 1 + self.price_delta ) #  modifiers (price to performance)
         return sales                                #* 5 is to offset the market so that the sum of all products may approach 10 000 market cap
 
     def get_income(self, game):

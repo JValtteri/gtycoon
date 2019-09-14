@@ -5,7 +5,9 @@
 
 import calc
 import UI
-# from msvcrt import getch
+try:
+    from msvcrt import getch
+except: pass
 from math import log, e, sqrt
 from engine import GameStatus, Player, REFINE
 import ai

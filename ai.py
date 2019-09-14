@@ -7,7 +7,7 @@ import calc
 import UI
 import engine
 try:
-    from mscvrt import getch
+    from msvcrt import getch
 except:
     pass
 
@@ -78,7 +78,7 @@ def makeAproduct(player, game):
 
         if len(player.products) >= 3:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced
-            game.remove_from_market(player.products[0]) # old_product.market(), old_product.price, old_product.pref)
+            game.remove_from_market(old_product) # old_product.market(), old_product.price, old_product.pref)
 
             bace_name = player.products[0].name
             if bace_name == name:

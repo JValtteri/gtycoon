@@ -142,6 +142,7 @@ def gameScreen(player, game):
         else:
             print("woops")
 
+
 def research(player):
     while True:
 
@@ -181,6 +182,7 @@ def research(player):
 
         elif ch.upper() in [b" ", b'\r', "",  " "]:
             break
+
         else:
             print("woops")
 

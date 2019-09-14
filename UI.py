@@ -130,7 +130,7 @@ def gameScreen(player, game):
             except:
                 input ()
 
-        elif ch.upper() in [b" ", "", " "]:
+        elif ch.upper() in [b" ", b'\r', "", " "]:
             if game.num_products < 1:
                 print("What sort of a company doesn't have any products!?")
             else:
@@ -179,7 +179,7 @@ def research(player):
         elif ch.upper() in ["N", b"N"]:
             researched = player.research_node()
 
-        elif ch.upper() in ["", b" ", " "]:
+        elif ch.upper() in [b" ", b'\r', "",  " "]:
             break
         else:
             print("woops")
@@ -430,7 +430,7 @@ def design(player, game):
     except:
         ch = ch = input("")
 
-    if ch.upper() in ['Y', b'Y', b' ', ' ', '']:
+    if ch.upper() in [b'Y', b' ', b'\r', 'Y', ' ', '']:
         done = player.purchase(engine.PRODUCTION_COST)
 
         if done == True:

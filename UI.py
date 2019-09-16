@@ -37,7 +37,7 @@ def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
 
     review_word = "in mid range"
-    review = product.name + " is a new, compelling offering from a compelling offering \n" + player.name + " deliivers on their promice to deliver more performance in its segment."
+    review = product.name + " is a new, compelling offering from \n" + player.name + " delivers on their promice to deliver more performance \nin its segment."
 
     if product.price > 300:
         review_word = "in the hign-end market"
@@ -46,9 +46,9 @@ def productReleace(player, product, game, mode=None):
         review = "It is an interesting offering in the budjet segment."
 
     if mode == "REBRAND":
-        review_word = "rebrand" + review_word
+        review_word = "rebrand " + review_word
     elif mode == "PRICEDROP":
-        review_word = "pricedrop" + review_word
+        review_word = "pricedrop " + review_word
 
     # MAXIMUM PERFORMANCE
     perf_max = game.max_perf
@@ -286,7 +286,7 @@ def chooseProduct(player, game, text):
     try:
         number = int(i)-1
 
-    except TypeError:
+    except ValueError:
         print("Cancel")
         cancel = True
 
@@ -428,7 +428,7 @@ def design(player, game):
     player.products[-1] = set_price(player.products[-1])
 
     # Is the maximum number of chips reached?
-    if len(player.products) >= engine.MAX_CHIPS:
+    if len(player.products) > engine.MAX_CHIPS:
         print("""
         Maximum number of chips reached.
         Pick on chip to be removed:

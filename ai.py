@@ -33,7 +33,7 @@ def typeAturn(player, game):
     elif player.refinememt < 0.15:     # If the node is old
         priceCut(player, game)
         doResearch(player)
-    
+
     elif len(player.products) >= engine.MAX_CHIPS:        # If a full product stack exists...
         doResearch(player)
         makeAproduct(player, game)
@@ -44,12 +44,12 @@ def doResearch(player):
         money_to_spend = player.research_node()
         if money_to_spend != True:
             break
-        else: print("Ai did node research")
+        else: print("%s Researched a %s node" % (player.name, calc.NODE[player.node] ))
     while True:                          # Research other stuff 'till out of money
         money_to_spend = player.research(0)
         if money_to_spend != True:
             break
-        else: print("Ai did research")
+        # else: print("Ai did research")
 
 
 def priceCut(player, game):
@@ -65,7 +65,7 @@ def priceCut(player, game):
 def makeAproduct(player, game):
     # Try transaction, if true go on...
     if player.purchase(engine.PRODUCTION_COST):
-        if len(player.products) == 4: 
+        if len(player.products) == 4:
             if player.products[0].name[-2] == "4":
                 name = "A40"
                 size = 365
@@ -80,16 +80,16 @@ def makeAproduct(player, game):
                 overdrive = -12
             elif player.products[0].name[-2] == "1":
                 name = "A10"
-                size = 110
-                overdrive = -15
+                size = 90
+                overdrive = -14
             else:
                 print("Error: 4 products, Could not recognize the chip")
 
         else: # make Low end / make first product
             if len(player.products) == 0: # make low end
                 name = "A10"
-                size = 110
-                overdrive = -15
+                size = 90
+                overdrive = -14
             if len(player.products) == 1: # make mid range
                 name = "A20"
                 size = 185

@@ -65,11 +65,10 @@ if __name__ == "__main__":
                 game.update_ptp()
 
                 if c.inproduction == True:
-                    p.income += c.income     # Income is added together (FOR A PROJECTION!!!)
-            # p.credits += p.income          # NOOOOOOOOOOOOO! not here. All turns must be complete before counting the income
+                    p.income += c.income     # Income is added together (FOR A PROJECTION!!! Don't use this for anything but cosmetic stuff!)
 
             print("Projected earnigs for", p.name, "this year:", round(p.income), "M")
-            print("======================================================================")
+            print("==================================================================")
 
             try:
                 getch()

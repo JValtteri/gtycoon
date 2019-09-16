@@ -68,7 +68,7 @@ if __name__ == "__main__":
                     p.income += c.income     # Income is added together (FOR A PROJECTION!!! Don't use this for anything but cosmetic stuff!)
 
             print("Projected earnigs for", p.name, "this year:", round(p.income), "M")
-            print("==================================================================")
+            print("===============================================================")
 
             try:
                 getch()

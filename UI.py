@@ -79,11 +79,20 @@ def statusBar(player):
         credits:  %i M   \t\t   products: %i
         science:  %i   \t\t\t   income:   %i M
         general:  %i    \t\t\t   node:     %s
-        refinem:  %s
+                        \t\t\t   defect
+                        \t\t\t   dencity:  %s
 
     ===============================================================
-    """ % (player.name, player.year, player.credits, len(player.products), player.science, player.income, player.generalization, calc.NODE[player.node], 
-str(round(player.refinememt, 3)) ))
+    """ % (player.name, 
+           player.year, 
+           player.credits, 
+           len(player.products), 
+           player.science, 
+           player.income, 
+           player.generalization, 
+           calc.NODE[player.node], 
+           str(round(player.refinememt, 3)) 
+          ))
 
 def gameScreen(player, game):
     while True:
@@ -212,12 +221,39 @@ def showMarket(player, game):
         # print("")
         for c in p.products:
             if c.inproduction == True:
-                line = '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
-                print(line)
+                showLine(c, game, None)
+                #categories = ['\t ',
+                #              c.name, '\t ',
+                #              calc.scale( c.perf ), '\t ',
+                #              str(round(c.chipCost())), '\t ',
+                #              str(c.price), ' c\t ',
+                #              calc.scale( c.sales(game) * 1000 ), '\t ',
+                #              str(c.size), ' mm2 \t',
+                #              str(calc.NODE[c.node]
+                #             ]
+                #line = ''.join(categories)
+                #print(line)
     #try:
     #    getch()
     #except:
     #    input()
+
+
+def showLine(product, game, index=None):
+    categories = ['\t ',
+                  c.name, '\t ',
+                  calc.scale( c.perf ), '\t ',
+                  str(round(c.chipCost())), '\t ',
+                  str(c.price), ' c\t ',
+                  calc.scale( c.sales(game) * 1000 ), '\t ',
+                  str(c.size), ' mm2 \t',
+                  str(calc.NODE[c.node]
+                 ]
+
+        line = ''.join(categories)
+    if index != None:
+        line = '\t '.join(str(index), line)
+    print(line)
 
 
 def rebrand(player, game):
@@ -278,11 +314,22 @@ def chooseProduct(player, game, text):
     print('\t No. \t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
     for c in player.products:
         if c.inproduction == True:
-            line = '\t ' + str(number) + '\t ' + c.name + '\t ' + str(c.perf) + '\t ' + str(round(c.chipCost()))  + '\t ' + str(c.price) + ' c\t ' + str(round(c.sales(game))) + 'k \t ' + str(c.size) + ' mm2 \t' + str(calc.NODE[c.node])
-            print(line)
-            number += 1
+            showLine(c, game, number)
+            #categories = ['\t ',
+            #              str(number), '\t ',
+            #              c.name, '\t ',
+            #              calc.scale( c.perf ), '\t ',
+            #              str(round(c.chipCost())), '\t ',
+            #              str(c.price), ' c\t ',
+            #              calc.scale( c.sales(game) * 1000 ), '\t ',
+            #              str(c.size), ' mm2 \t',
+            #              str(calc.NODE[c.node]
+            #             ]
+            #line = ''.join(categories)
+            #print(line)
+            #number += 1
 
-    i = input("Choose a product to %s, Q to quit (1-3):\n> " % text)
+    i = input("Choose a product to %s, Q to quit :\n> " % text)
     cancel = False
     try:
         number = int(i)-1
@@ -290,12 +337,27 @@ def chooseProduct(player, game, text):
     except ValueError:
         print("Cancel")
         cancel = True
+    except IndexError:
+        print("You don't have a product with that index.\nCancelling:")
+        cancel = True
 
     if cancel is not True:
         product = player.products[number]
         print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
-        line = '\t' + product.name + '\t ' + str(product.perf) + '\t ' + str(round(product.chipCost()))  + '\t ' + str(product.price) + ' c\t ' + str(round(product.sales(game))) + 'k \t ' + str(product.size) + ' mm2 \t' + str(calc.NODE[product.node]) 
-        print(line)
+        showLine(c, game, None)
+        #categories = ['\t ',
+        #              str(number), '\t ',
+        #              c.name, '\t ',
+        #              calc.scale( c.perf ), '\t ',
+        #              str(round(c.chipCost())), '\t ',
+        #              str(c.price), ' c\t ',
+        #              calc.scale( c.sales(game) * 1000 ), '\t ',
+        #              str(c.size), ' mm2 \t',
+        #              str(calc.NODE[c.node]
+        #             ]
+        #line = ''.join(categories)
+        #print(line)
+
         return number
     else:
         return None

@@ -27,29 +27,39 @@ def aiTurn(player, game, ai_type = 0):
 
 def typeAturn(player, game):
     if len(player.products) <= engine.MAX_CHIPS:
-        makeAproduct(player, game)
-        doResearch(player)
-
-    elif player.refinememt < 0.15:     # If the node is old
-        priceCut(player, game)
-        doResearch(player)
-
-    elif len(player.products) >= engine.MAX_CHIPS:        # If a full product stack exists...
         doResearch(player)
         makeAproduct(player, game)
 
+    elif player.refinememt < 0.15:                        # If the node is old
+        priceCut(player, game, 1)
+        doResearch(player)
 
-def doResearch(player):
-    while True:                          # Research nodes 'till out of money
-        money_to_spend = player.research_node()
-        if money_to_spend != True:
+    elif len(player.products) < 0.2  #engine.MAX_CHIPS:        # If a full product stack exists...
+        if player.products[-1].node != player.node:
+            doResearch(player, 0)
+            makeAproduct(player, game)
+        else:
+            doResearch(player, 1)
+            makeAproduct(player, game)
+
+def doResearch(player, mode=0):
+    """
+    Mode 0 = research all
+    Mode 1 = research Node
+    Mode 2 = research Architecture
+    """
+    if mode in [0, 1]:
+        while True:                          # Research nodes 'till out of money
+            money_to_spend = player.research_node()
+            if money_to_spend != True:
+                break
+            else: print("%s Researched a %s node" % (player.name, calc.NODE[player.node] ))
+    if mode in [0, 2]:
+        while True:                          # Research other stuff 'till out of money
+            money_to_spend = player.research(0)
+            if money_to_spend != True:
             break
-        else: print("%s Researched a %s node" % (player.name, calc.NODE[player.node] ))
-    while True:                          # Research other stuff 'till out of money
-        money_to_spend = player.research(0)
-        if money_to_spend != True:
-            break
-        # else: print("Ai did research")
+            else: print("Ai did research")
 
 
 def priceCut(player, game):
@@ -68,19 +78,19 @@ def makeAproduct(player, game):
         if len(player.products) == 4:
             if player.products[0].name[-2] == "4":
                 name = "A40"
-                size = 365
-                overdrive = -11
-            if player.products[0].name[-2] == "3":
+                size = 450
+                overdrive = -12
+            elif player.products[0].name[-2] == "3":
                 name = "A30"
-                size = 275
+                size = 350
                 overdrive = -11
             elif player.products[0].name[-2] == "2":
                 name = "A20"
-                size = 185
+                size = 250
                 overdrive = -12
             elif player.products[0].name[-2] == "1":
                 name = "A10"
-                size = 90
+                size = 110
                 overdrive = -14
             else:
                 print("Error: 4 products, Could not recognize the chip")
@@ -88,25 +98,20 @@ def makeAproduct(player, game):
         else: # make Low end / make first product
             if len(player.products) == 0: # make low end
                 name = "A10"
-                size = 90
+                size = 105
                 overdrive = -14
-            if len(player.products) == 1: # make mid range
+            elif len(player.products) == 1: # make mid range
                 name = "A20"
-                size = 185
+                size = 250
                 overdrive = -12
-                #price = 1
             elif len(player.products)  == 2: # make High end
                 name = "A30"
-                size = 275
-                overdrive = -10
-                #price = 1
+                size = 320
+                overdrive = -11
             elif len(player.products)  == 3: # make High end
                 name = "A40"
                 size = 365
-                overdrive = -6
-                #price = 1
-            else:
-                print("Error: Under 4 products, Could not recognize the chip")
+                overdrive = -11
 
         if len(player.products) >= 4:               # If a full product stack exits
             old_product = player.products[0]        # Oldest card is replaced
@@ -118,7 +123,7 @@ def makeAproduct(player, game):
             else:
                 old_name = bace_name.strip('A')
                 series = str(int(old_name[0]) + 1)      # Iterate series number
-                name = "A" + series + name          # New name is derived
+                name = "A" + series + name.strip('A')   # New name is derived
 
             #player.products[len(player.products)%3].inproduction = False
             del[player.products[0]]

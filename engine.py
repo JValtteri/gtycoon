@@ -55,7 +55,7 @@ class GameStatus():
         perf = product.perf
 
         self.num_products += 1
-        self.ref_market += market
+        # self.ref_market += market
         self.sum_price += price
         self.sum_perf += perf
 
@@ -68,7 +68,7 @@ class GameStatus():
         perf = product.perf
 
         self.num_products -= 1
-        self.ref_market -= market
+        # self.ref_market -= market
         self.sum_price -= price
         self.sum_perf -= perf
 
@@ -208,6 +208,7 @@ class Product():
         "Counts number of units sold per year"
         self.update_price_delta(game)
         # Now,
+        # theoretical_sales = self.market() * self.perf/game.max_perf * TOTAL_MARKET
         theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET
         if game.avg_ptp == 0:
             print("AVG PTP defined!")  # DEBUG

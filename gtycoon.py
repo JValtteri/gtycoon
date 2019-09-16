@@ -76,6 +76,7 @@ if __name__ == "__main__":
                 input()
 
         game.update_ptp()
+        game.ref_market = 0                  # Init ref_market every turn
 
         for p in players:
             p.income = 0                     # Income is reset for update
@@ -83,6 +84,7 @@ if __name__ == "__main__":
                 c.update_income(game)
                 if c.inproduction == True:
                     p.income += c.income     # Income is added together
+                    game.ref_market += c.market()
             p.credits += p.income            # Yearly income is deposited
 
     # when game is run on command line

@@ -25,6 +25,7 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
 
 ### Planned features:
 
+ - Storymode/Tutorial to help teach the game concepts, but also, above all: ENTERTAIN!
  - Multiplayer with multiple human and AI players
  - Saving/loading games
  - Random variation in default market and costs

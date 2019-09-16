@@ -79,6 +79,12 @@ if __name__ == "__main__":
         game.ref_market = 0                  # Init ref_market every turn
 
         for p in players:
+            for c in p.products:
+                if c.inproduction == True:
+                    game.ref_market += c.market()
+            p.credits += p.income            # Yearly income is deposited
+
+        for p in players:
             p.income = 0                     # Income is reset for update
             for c in p.products:
                 c.update_income(game)

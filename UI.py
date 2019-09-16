@@ -79,8 +79,8 @@ def statusBar(player):
         credits:  %i M   \t\t   products: %i
         science:  %i   \t\t\t   income:   %i M
         general:  %i    \t\t\t   node:     %s
-                        \t\t\t   defect
-                        \t\t\t   dencity:  %s
+                        \t\t   defect
+                        \t\t   dencity:  %s
 
     ===============================================================
     """ % (player.name, 
@@ -241,16 +241,16 @@ def showMarket(player, game):
 
 def showLine(product, game, index=None):
     categories = ['\t ',
-                  c.name, '\t ',
-                  calc.scale( c.perf ), '\t ',
-                  str(round(c.chipCost())), '\t ',
-                  str(c.price), ' c\t ',
-                  calc.scale( c.sales(game) * 1000 ), '\t ',
-                  str(c.size), ' mm2 \t',
-                  str(calc.NODE[c.node]
+                  product.name, '\t ',
+                  calc.scale( product.perf ), '\t ',
+                  str(round(product.chipCost())), '\t ',
+                  str(product.price), ' c\t ',
+                  calc.scale( product.sales(game) * 1000 ), '\t ',
+                  str(product.size), ' mm2 \t',
+                  str(calc.NODE[product.node])
                  ]
 
-        line = ''.join(categories)
+    line = ''.join(categories)
     if index != None:
         line = '\t '.join(str(index), line)
     print(line)

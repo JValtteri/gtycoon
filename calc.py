@@ -65,15 +65,17 @@ def scale(number):
     scales "number" to fit in a set space, returns as str with k,M,G,T or P
     """
     if number >= 1000:
-        return = str(round(number/1000.0, 1)) + " k"
+        return str(round(number/1000.0, 1)) + " k"
     elif number >= 10**6:
-        return = str(round(number/(10.0**6), 1)) + " M"
+        return str(round(number/(10.0**6), 1)) + " M"
     elif number >= 10**9:
-        return = str(round(number/(10.0**9), 1)) + " G"
+        return str(round(number/(10.0**9), 1)) + " G"
     elif number >= 10**12:
-        return = str(round(number/(10.0**12), 1)) + " T"
+        return str(round(number/(10.0**12), 1)) + " T"
     elif number >= 10**15:
-        return = str(round(number/(10.0**15), 1)) + " P"
+        return str(round(number/(10.0**15), 1)) + " P"
+    else:
+        return str(round(number, 1))
 
 
 if __name__ == "__main__":

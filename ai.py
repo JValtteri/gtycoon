@@ -34,7 +34,7 @@ def typeAturn(player, game):
         priceCut(player, game, 1)
         doResearch(player)
 
-    elif len(player.products) < 0.2  #engine.MAX_CHIPS:        # If a full product stack exists...
+    elif len(player.products) < 0.2:  #engine.MAX_CHIPS:        # If a full product stack exists...
         if player.products[-1].node != player.node:
             doResearch(player, 0)
             makeAproduct(player, game)
@@ -58,7 +58,7 @@ def doResearch(player, mode=0):
         while True:                          # Research other stuff 'till out of money
             money_to_spend = player.research(0)
             if money_to_spend != True:
-            break
+                break
             else: print("Ai did research")
 
 

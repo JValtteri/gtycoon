@@ -55,7 +55,7 @@ class GameStatus():
         perf = product.perf
 
         self.num_products += 1
-        # self.ref_market += market
+        self.ref_market += market        # Not relevant for other than income estimate
         self.sum_price += price
         self.sum_perf += perf
 
@@ -68,7 +68,7 @@ class GameStatus():
         perf = product.perf
 
         self.num_products -= 1
-        # self.ref_market -= market
+        self.ref_market -= market       # Not relevant for other than income estimate
         self.sum_price -= price
         self.sum_perf -= perf
 
@@ -209,19 +209,16 @@ class Product():
         self.update_price_delta(game)
         # Now,
         # theoretical_sales = self.market() * self.perf/game.max_perf * TOTAL_MARKET
-        theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET
+        theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET * 5
         if game.avg_ptp == 0:
             print("AVG PTP defined!")  # DEBUG
             return 0
         else:
             # DEBUG
             # Now the market should shrink with added expense, but more performance will incentivize more people to buy...
-            # print("ptp self", self.ptp, "avg", game.avg_ptp)
-            # print("raw sales", theoretical_sales)
-            ptp_modifier = ( calc.normal( ( (game.avg_ptp/self.ptp)-1)*100 ,1) )
-            #print("\t\t\t\t ptp debug:", round(ptp_modifier, 4))                  # Debug
-            sales = theoretical_sales * ptp_modifier                # * ( 1 + self.price_delta ) #  modifiers (price to performance)
-        return sales                                #* 5 is to offset the market so that the sum of all products may approach 10 000 market cap
+            ptp_modifier = ( calc.normal( ( (game.best_ptp/self.ptp)-1)*100 ,1) )
+            sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
+        return sales
 
     def get_income(self, game):
         "Counts the total winnings from the products sold"

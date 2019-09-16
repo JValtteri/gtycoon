@@ -79,10 +79,11 @@ def statusBar(player):
         credits:  %i M   \t\t   products: %i
         science:  %i   \t\t\t   income:   %i M
         general:  %i    \t\t\t   node:     %s
-        refinem:  %f
+        refinem:  %s
 
     ===============================================================
-    """ % (player.name, player.year, player.credits, len(player.products), player.science, player.income, player.generalization, calc.NODE[player.node], round(player.refinememt, 3) ))
+    """ % (player.name, player.year, player.credits, len(player.products), player.science, player.income, player.generalization, calc.NODE[player.node], 
+str(round(player.refinememt, 3)) ))
 
 def gameScreen(player, game):
     while True:

@@ -55,13 +55,13 @@ def productReleace(player, product, game, mode=None):
 
     if product.perf == perf_max:
         review = "The new product sets the standard for technology to come."
-        if product.ptp <= game.best_ptp:
+        if product.ptp >= game.best_ptp:
             review_word = review_word + " to universal acclaim."
-    elif product.ptp <= game.best_ptp:
+    elif product.ptp >= game.best_ptp:
         review = product.name + " is the best thing since sliced bread. It is the best value \nout there."
-    elif product.ptp < game.best_ptp*1.1 :
+    elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
-    elif product.ptp >= game.avg_ptp:
+    elif product.ptp <= game.avg_ptp:
         review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers."
 
 

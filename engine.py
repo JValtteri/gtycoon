@@ -39,7 +39,7 @@ class GameStatus():
         self.players = []
         self.avg_ptp = 0                 # Average price to performance
         self.max_perf = 0
-        self.best_ptp = 10               # Init value, hopefully high enough
+        self.best_ptp = 0                # Init valu PERF / PRICE
 
         for id in range(human_players):
             self.players.append(Player(id))
@@ -76,14 +76,16 @@ class GameStatus():
         #self.update_max_perf()        # The market remembers the best and hold on to their used chips.
                                        # Sales will suffer if you try to sell them worse chips
     def update_ptp(self):
+        # INVERTED!
+        # Performance / Price
         if self.sum_perf != 0:
-            ptp = self.sum_price/self.sum_perf
+            ptp = self.sum_perf/self.sum_price
             self.avg_ptp = ptp        # Update avg PTP
 
             best = self.best_ptp
             for p in self.players:
                 for c in p.products:
-                    if c.ptp <= best:
+                    if c.ptp >= best:
                         best = c.ptp
             self.best_ptp = best     # Update best PTP
         # except ZeroDivisionError:
@@ -208,13 +210,14 @@ class Product():
         "Counts number of units sold per year"
         # Now,
         # theoretical_sales = self.market() * self.perf/game.max_perf * TOTAL_MARKET
-        theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET #* 5
+        theoretical_sales = self.market() * self.perf/game.max_perf * TOTAL_MARKET #* 5
+        # theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET #* 5
         # DEBUG
         # Now the market should shrink with added expense, but more performance will incentivize more people to buy...
         #
         # The way the bace market is now calculated, takes in to account the performance and inhearently is PTP
         # sensitive. I'm not sure if the discrete PTP modifier does more good or harm.
-        ptp_modifier = ( calc.normal( (1 - self.ptp/game.best_ptp) ,1)*2 )
+        ptp_modifier = self.ptp / game.best_ptp #( calc.normal( (1 - self.ptp/game.best_ptp) ,1)*2 )
         sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
  							# DEBUG
         print('\n'.join([
@@ -298,7 +301,7 @@ class Product():
         self.refinememt = self.refinememt / REFINE
 
     def update_ptp(self):
-        ptp = self.price / self.perf
+        ptp = self.perf / self.price
         self.ptp = ptp
 
 

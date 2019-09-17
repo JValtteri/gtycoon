@@ -88,7 +88,8 @@ if __name__ == "__main__":
             for c in p.products:
                 c.update_income(game)
                 if c.inproduction == True:
-                    p.income += c.get_income(game)     # Income is added together
+                    c.income == c.get_income(game)
+                    p.income += c.income               # Income is added together
             p.credits += p.income                      # Yearly income is deposited
 
     # when game is run on command line

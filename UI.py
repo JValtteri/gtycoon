@@ -27,11 +27,14 @@ def intro():
     """)
 
 def ask(question=""):
-    question = question+"\t: "
-    print("\n\n")
-    i = input(question)
-    print("\n")
-    return i
+    while True:
+        question = question
+        #print("\n")
+        answer = input(question)
+        #print("\n")
+        if answer != '':
+            break
+    return answer
 
 def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
@@ -161,11 +164,11 @@ def research(player):
         CHOOSE RESEARCH SUBJECT:
 
                                         Cost
-        S = Specific Architecture       %i M
-        G = General Compute             %i M  (Not implemented)
-        X = Experimental                   M  (Not implemented)
+        S = Specific Architecture       %s
+        G = General Compute             %s\t(Not implemented)
+        X = Experimental                    \t(Not implemented)
 
-        N = Smaller process node        %i M
+        N = Smaller process node        %s
 
         [space] = Exit
 
@@ -177,7 +180,7 @@ def research(player):
         try:
             ch = getch()
         except:
-            ch = input(">>")
+            ch = input("> ")
 
 
         if ch.upper() in ["S", b"S"]:
@@ -217,43 +220,31 @@ def showMarket(player, game):
     if player.products == []:
         print("\n\tIt's a virgin market")
 
-    print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
+    print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \t\tPTP \tRevenue')
     for p in game.players:
         # print("")
         for c in p.products:
             if c.inproduction == True:
                 showLine(c, game, None)
-                #categories = ['\t ',
-                #              c.name, '\t ',
-                #              calc.scale( c.perf ), '\t ',
-                #              str(round(c.chipCost())), '\t ',
-                #              str(c.price), ' c\t ',
-                #              calc.scale( c.sales(game) * 1000 ), '\t ',
-                #              str(c.size), ' mm2 \t',
-                #              str(calc.NODE[c.node]
-                #             ]
-                #line = ''.join(categories)
-                #print(line)
-    #try:
-    #    getch()
-    #except:
-    #    input()
 
 
 def showLine(product, game, index=None):
     categories = ['\t ',
                   product.name, '\t ',
                   calc.scale( product.perf ), '\t ',
-                  str(round(product.chipCost())), '\t ',
-                  str(product.price), ' c\t',
+                  str( round( product.chipCost() ) ), '\t ',
+                  str( product.price ), ' c\t',
                   calc.scale( product.sales(game) ), '\t ',
-                  str(product.size), ' mm2 \t',
-                  str(calc.NODE[product.node])
+                  str( product.size ), ' mm2 \t',
+                  str( calc.NODE[product.node] ), '\t\t',
+                  str( round( product.ptp/game.best_ptp, 2 ) ), '\t',
+                  calc.scale( product.income ), '\t'
+                  #calc.scale( product.market() * 10**7 * product.perf/game.max_perf)
                  ]
 
     line = ''.join(categories)
     if index != None:
-        line = '\t '.join((str(index), line))
+        line = '\t '.join(('\t',str(index), line))
     print(line)
 
 
@@ -312,25 +303,14 @@ def priceDrop(player, game):
 
 def chooseProduct(player, game, text):
     number = 1
-    print('\t No. \t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
+    print('\t No. \t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \t\tPTP \tRevenue')
+
     for c in player.products:
         if c.inproduction == True:
             showLine(c, game, number)
-            #categories = ['\t ',
-            #              str(number), '\t ',
-            #              c.name, '\t ',
-            #              calc.scale( c.perf ), '\t ',
-            #              str(round(c.chipCost())), '\t ',
-            #              str(c.price), ' c\t ',
-            #              calc.scale( c.sales(game) * 1000 ), '\t ',
-            #              str(c.size), ' mm2 \t',
-            #              str(calc.NODE[c.node]
-            #             ]
-            #line = ''.join(categories)
-            #print(line)
-            #number += 1
+            number += 1
 
-    i = input("Choose a product to %s, Q to quit :\n> " % text)
+    i = ask("Choose a product to %s, Q to quit :\n> " % text)
     cancel = False
     try:
         number = int(i)-1
@@ -346,18 +326,6 @@ def chooseProduct(player, game, text):
         product = player.products[number]
         print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
         showLine(c, game, None)
-        #categories = ['\t ',
-        #              str(number), '\t ',
-        #              c.name, '\t ',
-        #              calc.scale( c.perf ), '\t ',
-        #              str(round(c.chipCost())), '\t ',
-        #              str(c.price), ' c\t ',
-        #              calc.scale( c.sales(game) * 1000 ), '\t ',
-        #              str(c.size), ' mm2 \t',
-        #              str(calc.NODE[c.node]
-        #             ]
-        #line = ''.join(categories)
-        #print(line)
 
         return number
     else:
@@ -389,11 +357,12 @@ def set_overdrive(product):
         print( "Manufacturing yeald:         \t", round( product.yealdPr()*100 ), "%" )
         print( "Total yeald:                 \t", round( product.yealdPr() * product.skewYeald() *100 ), "%" )
 
-        print("\nProceed? Y/n")
+        print("\nProceed?")
         try:
             ch = getch()
         except:
-            ch = input(">>")
+            ch = input("(Y/n) ")
+
         if ch.upper() in ['N', b'N']:
             pass
         elif ch.upper() in ['', 'Y', ' ', b'\r', b'Y', b' ']:
@@ -406,7 +375,7 @@ def set_overdrive(product):
 def set_price(product):
     chipcost = product.chipCost()
     print("\nChoose chip price:")
-    print("Press enter for default (10%%) margin price: (%i c) \nor enter a price." % round(chipcost*1.1) )  # minimum ~26
+    print("Press enter for default (10%%) margin over manufacturing price: (%i c) \nor enter a sale price." % round(chipcost*1.1) )  # minimum ~26
     try:
         price = int( input("> ") )
     except:
@@ -438,7 +407,7 @@ def design(player, game):
 
     statusBar(player)
     showMarket(player, game)
-    print("\n\n\n\n")
+    print("\n\n\n")
 
     # Asks if there is a new chip designed, that is not in production
     try:
@@ -450,8 +419,8 @@ def design(player, game):
     # START FRESH
     # THE BASICS
     if no_saved:
-        name = input("Chip name: ")
-        size = int( input("Chip size: ") )
+        name = ask("Chip name: ")
+        size = int( ask("Chip size: ") )
         price = 1
         overdrive = 0
 
@@ -509,8 +478,8 @@ def design(player, game):
     statusBar(player)
     print("""
     It costs %s to start production.
-    Do you whant to procede with producing this chip? (Y/n)
-    """ % calc.scale(engine.PRODUCTION_COST))
+    Do you whant to procede with producing this chip? 
+    (Y/n)""" % calc.scale(engine.PRODUCTION_COST))
     try:
         ch = getch()
     except:
@@ -532,12 +501,11 @@ def design(player, game):
     elif ch.upper() in ['N', b'N']:
         print("""
         Do you whant to save the chip for later?
-        (Y/n)
-        """)
+        (Y/n)""")
         try:
             getch()
         except:
-            ch = input("> ")
+            ch = input("")
         if ch.upper() in ['N', b'N']:
             del player.products[-1]
             print("Deleted")

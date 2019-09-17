@@ -187,7 +187,7 @@ class Product():
         self.mcost = self.chipCost()            #
         self.cost = self.chipCost()             # cost to manufacture
         self.price = price                      # sale price
-        # self.income = 0                         # income is created automatically every turn
+        self.income = 0                         # income is created automatically every turn
         self.inproduction = False               # is the chip in the market
         self.perf = self.performance()          # performance metric
         # self.price_delta = 0                    # Delta from the
@@ -220,14 +220,14 @@ class Product():
         ptp_modifier = self.ptp / game.best_ptp #( calc.normal( (1 - self.ptp/game.best_ptp) ,1)*2 )
         sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
  							# DEBUG
-        print('\n'.join([
-                         "self.market\t" + calc.scale(self.market()),
-                         "ref_market\t" + calc.scale(game.ref_market),
-                         "max_perf\t" + calc.scale(game.max_perf),
-                         "ptp mod\t" + str(ptp_modifier),
-                         "T-sales\t" + calc.scale(theoretical_sales),
-                         "sales\t" + calc.scale(sales)
-                       ]))
+        #print('\n'.join([
+                         #"self.market\t" + calc.scale(self.market()),
+                         #"ref_market\t" + calc.scale(game.ref_market),
+                         #"max_perf\t" + calc.scale(game.max_perf),
+                         #"value mod\t" + str(ptp_modifier),
+                         #"T-sales\t" + calc.scale(theoretical_sales),
+                         #"sales\t" + calc.scale(sales)
+                       #]))
 
         return sales
 

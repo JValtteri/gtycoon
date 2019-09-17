@@ -76,8 +76,8 @@ def statusBar(player):
     print("""
 
         company:  %s    \t\t   year:     %i
-        credits:  %i M   \t\t   products: %i
-        science:  %i   \t\t\t   income:   %i M
+        credits:  %s   \t\t   products: %i
+        science:  %i   \t\t\t   income:   %s
         general:  %i    \t\t\t   node:     %s
                         \t\t   defect
                         \t\t   dencity:  %s
@@ -85,10 +85,10 @@ def statusBar(player):
     ===============================================================
     """ % (player.name, 
            player.year, 
-           player.credits, 
+           calc.scale(player.credits), 
            len(player.products), 
            player.science, 
-           player.income, 
+           calc.scale(player.income), 
            player.generalization, 
            calc.NODE[player.node], 
            str(round(player.refinememt, 3)) 
@@ -100,10 +100,10 @@ def gameScreen(player, game):
         statusBar(player)
 
         print("""
-        C = Chip Design \t %i M
-        R = Research    \t %i+ M
+        C = Chip Design \t %s
+        R = Research    \t %s+
 
-        B = Rebrand     \t %i M
+        B = Rebrand     \t %s
         S = Price Cut   \t free
 
         M = Show the market
@@ -113,8 +113,9 @@ def gameScreen(player, game):
         \t\t\t\t  Q = Quit game instantly
 
 
-        """ % (engine.PRODUCTION_COST, player.research_cost(), engine.REBRAND_COST) )
-        try:
+        """ % (calc.scale(engine.PRODUCTION_COST), calc.(player.research_cost()), calc.scale(engine.REBRAND_COST)) )
+
+         try:
             ch = getch()
         except:
             ch = input ("> ")
@@ -168,7 +169,7 @@ def research(player):
 
         [space] = Exit
 
-        """ % (player.research_cost(), player.research_cost(), player.node_cost() ) )
+        """ % (calc.scale(player.research_cost()), calc.scale(player.research_cost()), calc.scale(player.node_cost()) ) )
         # This could work so, that the specific version gives double sciense, but is reset every node.
         # Experimental could be "i feel lucky" boost ranging from 0 to 10 science points randomly
         # Experimental things cost twice the normal research, but may sometimes yeald great leaps in performance
@@ -507,9 +508,9 @@ def design(player, game):
     # PRODUCTION AND TRANSACTION
     statusBar(player)
     print("""
-    It costs %i M to start production.
+    It costs %s to start production.
     Do you whant to procede with producing this chip? (Y/n)
-    """ % engine.PRODUCTION_COST)
+    """ % calc.scale(engine.PRODUCTION_COST))
     try:
         ch = getch()
     except:

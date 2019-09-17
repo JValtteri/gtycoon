@@ -10,17 +10,17 @@ from math import log, e, sqrt
 #from gtycoon import game
 
 # ddencity=[0.4, 0.3, 0.2, 0.1, 0.05]
-REFINEMENT = 0.4            # Normal defect dencity (1/cm2) of a new node
-RESEARCH_BASE_COST = 10     # Cost to research the first level
-NODE_BASE_COST = 100        # Cost to research the first node
-PRICE = 0.207972270         # Silicone price per mm2
-AVGCONSUMER = 200.0         # Money an average consumer has to spend
-TOTAL_MARKET = 10000        # Size of the annual market in thousands
-REFINE = 1.3                # Refinement step per year
-MAX_CHIPS = 4               # Maximum allowed chips per player
-PRODUCTION_COST = 2         # Cost to start manufacturing a new chip
-REBRAND_COST = 1            # Cost to rename re-clock and re-price an old chip
-INIT_CREDITS = 3            # Player starting cash
+REFINEMENT = 0.4                  # Normal defect dencity (1/cm2) of a new node
+RESEARCH_BASE_COST = 10 *10**6    # Cost to research the first level
+NODE_BASE_COST = 100 *10**6       # Cost to research the first node
+PRICE = 0.207972270               # Silicone price per mm2
+AVGCONSUMER = 200.0               # Money an average consumer has to spend
+TOTAL_MARKET = 10 *10**6          # Size of the annual market in thousands
+REFINE = 1.3                      # Refinement step per year
+MAX_CHIPS = 4                     # Maximum allowed chips per player
+PRODUCTION_COST = 2 *10**6        # Cost to start manufacturing a new chip
+REBRAND_COST = 1 *10**6           # Cost to rename re-clock and re-price an old chip
+INIT_CREDITS = 3 *10**6           # Player starting cash
 
 class GameStatus():
     """
@@ -216,13 +216,16 @@ class Product():
         else:
             # DEBUG
             # Now the market should shrink with added expense, but more performance will incentivize more people to buy...
+            #
+            # The way the bace market is now calculated, takes in to account the performance and inhearently is PTP
+            # sensitive. I'm not sure if the discrete PTP modifier does more good or harm.
             ptp_modifier = ( calc.normal( ( (game.best_ptp/self.ptp)-1)*100 ,1) )
             sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
         return sales
 
     def get_income(self, game):
         "Counts the total winnings from the products sold"
-        income = (self.sales(game) * (self.price - self.cost)) / 1000
+        income = (self.sales(game) * (self.price - self.cost)) # / 1000
         return income
 
     def update_income(self, game):

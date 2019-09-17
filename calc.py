@@ -93,7 +93,7 @@ if __name__ == "__main__":
     procent = float( input("procent > ") )
     print(normal(procent, 1))
 
-    print(scale(5*10**19))
+    # print(scale(5*10**19))
 
     # 1-calc.normal(self.overdrive, 1)
 

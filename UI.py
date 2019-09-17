@@ -113,9 +113,9 @@ def gameScreen(player, game):
         \t\t\t\t  Q = Quit game instantly
 
 
-        """ % (calc.scale(engine.PRODUCTION_COST), calc.(player.research_cost()), calc.scale(engine.REBRAND_COST)) )
+        """ % (calc.scale(engine.PRODUCTION_COST), calc.scale(player.research_cost()), calc.scale(engine.REBRAND_COST)) )
 
-         try:
+        try:
             ch = getch()
         except:
             ch = input ("> ")
@@ -217,7 +217,7 @@ def showMarket(player, game):
     if player.products == []:
         print("\n\tIt's a virgin market")
 
-    print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+    print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
     for p in game.players:
         # print("")
         for c in p.products:
@@ -245,15 +245,15 @@ def showLine(product, game, index=None):
                   product.name, '\t ',
                   calc.scale( product.perf ), '\t ',
                   str(round(product.chipCost())), '\t ',
-                  str(product.price), ' c\t ',
-                  calc.scale( product.sales(game) * 1000 ), '\t ',
+                  str(product.price), ' c\t',
+                  calc.scale( product.sales(game) ), '\t ',
                   str(product.size), ' mm2 \t',
                   str(calc.NODE[product.node])
                  ]
 
     line = ''.join(categories)
     if index != None:
-        line = '\t '.join(str(index), line)
+        line = '\t '.join((str(index), line))
     print(line)
 
 
@@ -312,7 +312,7 @@ def priceDrop(player, game):
 
 def chooseProduct(player, game, text):
     number = 1
-    print('\t No. \t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+    print('\t No. \t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
     for c in player.products:
         if c.inproduction == True:
             showLine(c, game, number)
@@ -344,7 +344,7 @@ def chooseProduct(player, game, text):
 
     if cancel is not True:
         product = player.products[number]
-        print('\t Name \t Perf \t Cost \t Price \t Sales \t Size  \t\tNode')
+        print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
         showLine(c, game, None)
         #categories = ['\t ',
         #              str(number), '\t ',

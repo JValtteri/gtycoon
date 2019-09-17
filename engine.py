@@ -188,7 +188,7 @@ class Product():
         # self.income = 0                         # income is created automatically every turn
         self.inproduction = False               # is the chip in the market
         self.perf = self.performance()          # performance metric
-        self.price_delta = 0                    # Delta from the
+        # self.price_delta = 0                    # Delta from the
         self.ptp = 0
 
         self.update_ptp()                       # Price to performance
@@ -206,26 +206,32 @@ class Product():
 
     def sales(self, game):
         "Counts number of units sold per year"
-        self.update_price_delta(game)
         # Now,
         # theoretical_sales = self.market() * self.perf/game.max_perf * TOTAL_MARKET
-        theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET * 5
-        if game.avg_ptp == 0:
-            print("AVG PTP defined!")  # DEBUG
-            return 0
-        else:
-            # DEBUG
-            # Now the market should shrink with added expense, but more performance will incentivize more people to buy...
-            #
-            # The way the bace market is now calculated, takes in to account the performance and inhearently is PTP
-            # sensitive. I'm not sure if the discrete PTP modifier does more good or harm.
-            ptp_modifier = ( calc.normal( ( (game.best_ptp/self.ptp)-1)*100 ,1) )
-            sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
+        theoretical_sales = self.market() / game.ref_market * self.perf/game.max_perf * TOTAL_MARKET #* 5
+        # DEBUG
+        # Now the market should shrink with added expense, but more performance will incentivize more people to buy...
+        #
+        # The way the bace market is now calculated, takes in to account the performance and inhearently is PTP
+        # sensitive. I'm not sure if the discrete PTP modifier does more good or harm.
+        ptp_modifier = ( calc.normal( (1 - self.ptp/game.best_ptp) ,1)*2 )
+        sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
+ 							# DEBUG
+        print('\n'.join([
+                         "self.market\t" + calc.scale(self.market()),
+                         "ref_market\t" + calc.scale(game.ref_market),
+                         "max_perf\t" + calc.scale(game.max_perf),
+                         "ptp mod\t" + str(ptp_modifier),
+                         "T-sales\t" + calc.scale(theoretical_sales),
+                         "sales\t" + calc.scale(sales)
+                       ]))
+
         return sales
 
     def get_income(self, game):
         "Counts the total winnings from the products sold"
         income = (self.sales(game) * (self.price - self.cost)) # / 1000
+        self.income = income
         return income
 
     def update_income(self, game):
@@ -283,10 +289,10 @@ class Product():
         "Updates the manufacturing cost per chip"
         self.cost = self.chipCost()
 
-    def update_price_delta(self, game):
-        "Calculattes the price delta from market average"
-        delta = self.price - ( game.sum_price / game.num_products )
-        return delta
+    #def update_price_delta(self, game):
+    #    "Calculattes the price delta from market average"
+    #    delta = self.price - ( game.sum_price / game.num_products )
+    #    return delta
 
     def update_refinement(self):
         self.refinememt = self.refinememt / REFINE

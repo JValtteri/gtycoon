@@ -59,7 +59,7 @@ if __name__ == "__main__":
                 #
                 c.update_refinement()
                 c.update_cost()
-                c.update_price_delta(game)
+                # c.update_price_delta(game)
                 c.update_yeald()
                 c.update_income(game)
                 game.update_ptp()
@@ -67,7 +67,7 @@ if __name__ == "__main__":
                 if c.inproduction == True:
                     p.income += c.income     # Income is added together (FOR A PROJECTION!!! Don't use this for anything but cosmetic stuff!)
 
-            print("Projected earnigs for", p.name, "this year:", round(p.income), "M")
+            print("Projected earnigs for", p.name, "this year:", calc.scale(p.income))
             print("===============================================================")
 
             try:
@@ -76,21 +76,19 @@ if __name__ == "__main__":
                 input()
 
         game.update_ptp()
-        game.ref_market = 0                  # Init ref_market every turn
+        game.ref_market = 0                            # Init ref_market every turn
 
         for p in players:
             for c in p.products:
                 if c.inproduction == True:
-                    game.ref_market += c.market()
-            p.credits += p.income            # Yearly income is deposited
+                    game.ref_market += c.market()      # Ref_market is calculated
 
         for p in players:
-            p.income = 0                     # Income is reset for update
+            p.income = 0                               # Income is reset for update
             for c in p.products:
                 c.update_income(game)
                 if c.inproduction == True:
-                    p.income += c.income     # Income is added together
-                    game.ref_market += c.market()
-            p.credits += p.income            # Yearly income is deposited
+                    p.income += c.get_income(game)     # Income is added together
+            p.credits += p.income                      # Yearly income is deposited
 
     # when game is run on command line

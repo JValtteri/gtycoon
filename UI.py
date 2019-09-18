@@ -26,14 +26,25 @@ def intro():
 
     """)
 
-def ask(question=""):
+def ask(question="", mode=0):
+    """
+    mode 0 = str
+    mode 1 = int (positive)
+    """
     while True:
         question = question
         #print("\n")
         answer = input(question)
         #print("\n")
         if answer != '':
-            break
+            if mode == 1:
+                try:
+                    if int(answer) > 0:
+                        break
+                except ValueError:
+                    pass
+            else:
+                break
     return answer
 
 def productReleace(player, product, game, mode=None):
@@ -310,7 +321,7 @@ def chooseProduct(player, game, text):
             showLine(c, game, number)
             number += 1
 
-    i = ask("Choose a product to %s, Q to quit :\n> " % text)
+    i = ask("Choose a product to %s, Q to quit :\n> " % text , 1)
     cancel = False
     try:
         number = int(i)-1
@@ -420,8 +431,8 @@ def design(player, game):
     # START FRESH
     # THE BASICS
     if no_saved:
-        name = ask("Chip name: ")
-        size = int( ask("Chip size: ") )
+        name = ask("Chip name: ", 0)
+        size = int( ask("Chip size: ", 1) )
         price = 1
         overdrive = 0
 

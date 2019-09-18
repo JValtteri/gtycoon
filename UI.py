@@ -40,7 +40,7 @@ def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
 
     review_word = "in mid range"
-    review = product.name + " is a new, compelling offering from \n" + player.name + " delivers on their promice to deliver more performance \nin its segment."
+    review = product.name + " is a new, compelling offering from \n" + player.name + " and delivers on their promice to deliver more performance \nin its segment."
 
     if product.price > 300:
         review_word = "in the hign-end market"
@@ -64,7 +64,7 @@ def productReleace(player, product, game, mode=None):
         review = product.name + " is the best thing since sliced bread. It is the best value \nout there."
     elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
-    elif product.ptp <= game.avg_ptp:
+    elif product.ptp <= game.best_ptp * 0.6:
         review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers."
 
 
@@ -220,7 +220,7 @@ def showMarket(player, game):
     if player.products == []:
         print("\n\tIt's a virgin market")
 
-    print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \t\tPTP \tRevenue')
+    print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \tPTP \tRevenue')
     for p in game.players:
         # print("")
         for c in p.products:
@@ -236,7 +236,7 @@ def showLine(product, game, index=None):
                   str( product.price ), ' c\t',
                   calc.scale( product.sales(game) ), '\t ',
                   str( product.size ), ' mm2 \t',
-                  str( calc.NODE[product.node] ), '\t\t',
+                  str( calc.NODE[product.node] ), '\t',
                   str( round( product.ptp/game.best_ptp, 2 ) ), '\t',
                   calc.scale( product.income ), '\t'
                   #calc.scale( product.market() * 10**7 * product.perf/game.max_perf)
@@ -244,7 +244,7 @@ def showLine(product, game, index=None):
 
     line = ''.join(categories)
     if index != None:
-        line = '\t '.join(('\t',str(index), line))
+        line = ''.join(('\t ', str(index), line))
     print(line)
 
 
@@ -303,7 +303,7 @@ def priceDrop(player, game):
 
 def chooseProduct(player, game, text):
     number = 1
-    print('\t No. \t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \t\tPTP \tRevenue')
+    print('\t No. \t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \tPTP \tRevenue')
 
     for c in player.products:
         if c.inproduction == True:
@@ -324,8 +324,9 @@ def chooseProduct(player, game, text):
 
     if cancel is not True:
         product = player.products[number]
-        print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode')
-        showLine(c, game, None)
+        print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \tPTP \tRevenue')
+
+        showLine(player.products[number], game, None)
 
         return number
     else:

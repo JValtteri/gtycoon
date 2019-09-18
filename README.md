@@ -13,12 +13,16 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
 ## Game status - Current features
 
  - Sigleplayer vs one AI player is now possible.
- - Each player can have a maximum of 3 products in market.
+ - Each player can have a maximum of 4 products in market.
    Exceding that number causes the oldest chip to be discarded
- - Market is modelled in a dumb way: Customers will buy a more 
-   expensive product, even if there is a cheaper and a much more 
-   powerfull competitor in themarket, just because the first 
-   chip is the most expensive in their budjet.
+   or a chip of players choosing.
+ - ~~Market is modelled in a dumb way: Customers will buy a more~~
+   ~~expensive product, even if there is a cheaper and a much more~~
+   ~~powerfull competitor in the market, just because the first~~
+   ~~chip is the most expensive in their budjet.~~ (overhauled)
+ - Market is still modelled in a sub-optimal way and some customers
+   will buy an objectivelly "worse product" over a same priced 
+   competitor.
  - Simple "Headlines" for chip announcements (buggy)
  - Single line of architecture research
  - Node research
@@ -38,9 +42,11 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
 
 ### Known bugs:
 
- - Total market (total sales) go down every year
- - Ai doesn't research properly
- - Entering non-numbers in to numbers fields may cause a crash
+ - ~~Total market (total sales) go down every year~~
+ - ~~Ai doesn't research properly~~
+ - ~~Entering non-numbers in to numbers fields may cause a crash~~
  - Entering an out of index will cause a crash.
+ - Performance vs. Price (PVP) metric behaves strangely
+ - Some "product reviews" are harcher than expected.
  
 ### **I'm happy to accept contributions, especially: UI and market algorithms as well as bug fixes**

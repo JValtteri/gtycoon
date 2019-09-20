@@ -5,6 +5,8 @@
 
 import calc
 import UI
+
+import time
 try:
     from msvcrt import getch
 except: pass
@@ -74,10 +76,11 @@ if __name__ == "__main__":
             print("Projected earnigs for", p.name, "this year:", calc.scale(p.income))
             print("===============================================================")
 
-            try:
-                getch()
-            except:
-                input()
+            #try:
+            #    getch()
+            #except:
+            #    input()
+            time.sleep(2)
 
         game.update_ptp()
         game.ref_market = 0                            # Init ref_market every turn

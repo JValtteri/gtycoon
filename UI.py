@@ -6,8 +6,8 @@
 import calc
 import sys
 import engine
-# from gtycoon import game
 
+import time
 # To make platform independent
 try:
     from msvcrt import getch
@@ -34,19 +34,21 @@ def mainmenu():
     redistribute it under certain conditions; 
     for more information, see LICENSE or GPLv2.
     """
-    print(license)
-    try: getch()
-    except: input()
+    print("\n\n\n\n"+license)
+
+    time.sleep(2)
+    #try: getch()
+    #except: input()
 
     print("""
 
 
 
-     GGG     TTTTT Y   Y  CCCC  OOO   OOO  N   N
-    G          T    Y Y  C     O   O O   O NN  N
-    G GGG --   T     Y   C     O   O O   O N N N
-    G   G      T     Y   C     O   O O   O N  NN
-     GGGG      T     Y    CCCC  OOO   OOO  N   N
+     GGG     TTTTT Y   Y  CCC  OOO   OOO  N   N
+    G          T    Y Y  C    O   O O   O NN  N
+    G GGG ###  T     Y   C    O   O O   O N N N
+    G   G      T     Y   C    O   O O   O N  NN
+     GGGG      T     Y    CCC  OOO   OOO  N   N
 
 
 
@@ -98,6 +100,7 @@ def ask(question="", mode=0):
             else:
                 break
     return answer
+
 
 def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
@@ -269,10 +272,11 @@ def research(player):
             else:
                 print("Not enough credits")
 
-            try:
-                getch()
-            except:
-                input ()
+            time.sleep(2)
+            #try:
+            #    getch()
+            #except:
+            #    input ()
         except:
             pass
 
@@ -291,6 +295,7 @@ def showMarket(player, game):
         for c in p.products:
             if c.inproduction == True:
                 showLine(c, game, None)
+    time.sleep(3)
 
 
 def showLine(product, game, index=None):
@@ -351,8 +356,9 @@ def rebrand(player, game):
 
             else:
                 print("Not enough money!")
-                try: getch()
-                except: input()
+                time.sleep(2)
+                #try: getch()
+                #except: input()
 
 
 def priceDrop(player, game):
@@ -460,10 +466,11 @@ def set_price(product):
          But don't worry. I raised the price abit. It should be fine now.
          New price is %i c
          """ % price)
-         try:
-             getch()
-         except:
-             input()
+         #try:
+         #    getch()
+         #except:
+         #    input()'
+         time.sleep(2)
     product.price = price
     return product
 
@@ -567,8 +574,9 @@ def design(player, game):
             showMarket(player, game)
         else:
             print("Not enough credits!")
-        try: getch()
-        except: input()
+        #try: getch()
+        #except: input()
+        time.sleep(2)
 
     elif ch.upper() in ['N', b'N']:
         print("""

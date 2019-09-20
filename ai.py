@@ -6,7 +6,9 @@
 import calc
 import UI
 import engine
+
 import random
+import time
 try:
     from msvcrt import getch
 except:
@@ -19,8 +21,9 @@ except:
 
 def aiTurn(player, game, ai_type = 1):
     print("\n\n\n==================\nAi Turn\n==================\n\n\n")
-    try: getch()
-    except: input()
+    #try: getch()
+    #except: input()
+    time.sleep(2)
 
     if ai_type == 0:
         typeAturn(player, game)
@@ -94,7 +97,10 @@ def doResearch(player, mode):
             money_to_spend = player.research_node()
             if money_to_spend != True:
                 break
-            else: print("%s Researched a %s node" % (player.name, calc.NODE[player.node] ))
+            else:
+                print("%s Researched a %s node" % (player.name, calc.NODE[player.node] ))
+                time.sleep(1)
+
     if mode in [0, 2]:
         # while True:                          # Research other stuff 'till out of money
         money_to_spend = player.research(0)
@@ -118,7 +124,7 @@ def makeBproduct(player, game, type):
     if player.purchase(engine.PRODUCTION_COST):
         if type == 1:
             name = "A10"
-            size = random.choice([90, 100, 110, 120]) 
+            size = random.choice([90, 100, 110, 120])
             overdrive = random.choice([-12, -11, -10])
             margin = 1.2
 
@@ -184,8 +190,9 @@ def makeBproduct(player, game, type):
         player.products[-1].inproduction = True
 
         UI.productReleace(player, player.products[-1], game)
-        try: getch()
-        except: input()
+        #try: getch()
+        #except: input()
+        time.sleep(2)
 
         game.newProduct(player.products[-1])
         player.income += player.products[-1].get_income(game)
@@ -264,8 +271,9 @@ def makeAproduct(player, game):
         # market_segment = player.products[-1].market()
 
         UI.productReleace(player, player.products[-1], game)
-        try: getch()
-        except: input()
+        #try: getch()
+        #except: input()
+        time.sleep(2)
 
         game.newProduct(player.products[-1])            # market_segment, price, player.products[-1].performance())
         player.income += player.products[-1].get_income(game)

@@ -64,7 +64,7 @@ def typeBturn(player,game):
         makeBproduct(player, game, 4)
 
     elif player.refinememt > 0.3:
-        if game.ptp_best / player.products[-1].ptp < 0.8:
+        if game.best_ptp / player.products[-1].ptp < 0.8:
             priceCut(player, game)
             doResearch(player, 0)
         makeBproduct(player, game, 5)
@@ -76,9 +76,9 @@ def typeBturn(player,game):
 
     elif player.refinememt < 0.23:
         priceCut(player, game)
-        if player.reseach_cost() * 1.82 < player.node_cost():
+        if player.research_cost() * 1.82 < player.node_cost():
             for i in range(10):
-                doReseach(player, 2)
+                doResearch(player, 2)
             makeBproduct(player, game, 3)
             makeBproduct(player, game, 4)
             makeBproduct(player, game, 5)
@@ -114,7 +114,7 @@ def priceCut(player, game):
         game.remove_from_market(product)    # Remove the old product from market
         chipcost = product.chipCost()       # Count chipcost to guide pricing
         price = round(chipcost * 1.08)
-        roduct.price = price
+        product.price = price
         game.newProduct(product)            # Add the pricecut product back to market
         UI.productReleace(player, product, game, "PRICEDROP")
 

@@ -16,7 +16,7 @@ except: pass
 
 def intro():
 
-    time.sleep(1)
+    time.sleep(0.5)
     print("""
 
     You are the CEO of a rising star of semiconductors.
@@ -38,7 +38,7 @@ def mainmenu():
     """
     print("\n\n\n\n"+license)
 
-    time.sleep(2)
+    time.sleep(1)
     #try: getch()
     #except: input()
 
@@ -77,6 +77,7 @@ def mainmenu():
 
 
 def choose_players():
+    time.sleep(0.5)
     human = int( ask("Number of human players: ", 1) )
     time.sleep(0.5)
     ai = int( ask("Number of AI players: ", 1) )
@@ -135,7 +136,7 @@ def productReleace(player, product, game, mode=None):
     elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp <= game.best_ptp * 0.6:
-        review = product.name + " francly, is an underwhelming and a thoroughly \nuninteresting product  product in a competative market."
+        review = product.name + " francly, is an underwhelming and a thoroughly \nuninteresting product  product in an already \ncompetative market."
     elif product.ptp <= game.best_ptp * 0.4:
         review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers.\nShurely " + player.name + " could do better."
 
@@ -304,6 +305,7 @@ def showMarket(player, game):
         for c in p.products:
             if c.inproduction == True:
                 showLine(c, game, None)
+                time.sleep(0.2)
     time.sleep(2)
 
 

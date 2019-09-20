@@ -73,7 +73,7 @@ if __name__ == "__main__":
                 if c.inproduction == True:
                     p.income += c.income     # Income is added together (FOR A PROJECTION!!! Don't use this for anything but cosmetic stuff!)
 
-            print("Projected earnigs for", p.name, "this year:", calc.scale(p.income))
+            print("\nProjected earnigs for", p.name, "this year:", calc.scale(p.income))
             print("===============================================================")
 
             #try:

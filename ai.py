@@ -6,6 +6,7 @@
 import calc
 import UI
 import engine
+import random
 try:
     from msvcrt import getch
 except:
@@ -29,7 +30,7 @@ def aiTurn(player, game, ai_type = 1):
 
 def typeAturn(player, game):
     if len(player.products) <= engine.MAX_CHIPS:
-        doResearch(player)
+        doResearch(player, 0)
         makeAproduct(player, game)
 
     elif player.refinememt < 0.2:                        # If the node is old
@@ -46,12 +47,13 @@ def typeAturn(player, game):
 
 
 def typeBturn(player,game):
-    if len(player.products) <= engine.MAX_CHIPS:
+    if len(player.products) < 1:
         makeBproduct(player, game, 1)
+    if len(player.products) <= engine.MAX_CHIPS:
         makeBproduct(player, game, 2)
         makeBproduct(player, game, 3)
         makeBproduct(player, game, 4)
-        doResearch(1)
+        doResearch(player, 1)
     elif player.refinement > 0.39:
         makeBproduct(player, game, 2)
         makeBproduct(player, game, 3)
@@ -60,12 +62,12 @@ def typeBturn(player,game):
     elif player.refinement > 0.3:
         if game.ptp_best / player.products[-1].ptp < 0.8:
             priceCut(player, game)
-            doResearch(0)
+            doResearch(player, 0)
         makeBproduct(player, game, 5)
-        doResearch(1)
+        doResearch(player, 1)
 
     elif player.refinement > 0.2:
-        doResearch(1)
+        doResearch(player, 1)
         priceCut(player, game)
 
     elif player.refinement < 0.2:
@@ -76,11 +78,11 @@ def typeBturn(player,game):
             makeBproduct(player, game, 3)
             makeBproduct(player, game, 4)
             makeBproduct(player, game, 5)
-        if player.products[-1].node != player.node and player.products[-1].sciense != player.sciense:
+        if player.products[-1].node != player.node and player.products[-1].science != player.science:
             makeBproduct(player, game, 6)
 
 
-def doResearch(player, mode=0):
+def doResearch(player, mode):
     """
     Mode 0 = research all
     Mode 1 = research Node
@@ -115,38 +117,38 @@ def makeBproduct(player, game, type):
     if player.purchase(engine.PRODUCTION_COST):
         if type == 1:
             name = "A10"
-            size = 110
-            overdrive = -10
-            margin = 1.1
+            size = random.choice([90, 100, 110, 120]) 
+            overdrive = random.choice([-12, -11, -10])
+            margin = 1.2
 
         elif type == 2:
             name = "A20"
-            size = 250
-            overdrive = -11
-            margin 1.1
+            size = random.choice([240, 250, 260])
+            overdrive = random.choice([-12, -11, -10, -9])
+            margin = 1.1
 
         elif type == 3:
             name = "A30"
-            size = 350
-            overdrive = -11
-            margin 1.1
+            size = random.choice([330, 340, 350, 360])
+            overdrive = random.choice([-12, -11, -10, -9])
+            margin = 1.1
 
         elif type == 4:
             name = "A40"
-            size = 450
-            overdrive = -11
-            margin 1.2
+            size = random.choice([430, 440, 450, 460])
+            overdrive = random.choice([-12, -11, -10, -9])
+            margin = 1.2
 
         elif type == 5:
             name = "A50"
-            size = 540
-            overdrive = -13
+            size = random.choice([530, 540, 550, 560])
+            overdrive = random.choice([-14, -13, -12, -11, -10, -9])
             margin = 2.5
 
         elif type == 6:
             name = "A60"
-            size = 660
-            overdrive = -7
+            size = random.choice([650, 655, 660, 665])
+            overdrive = random.choice([-10, -9, -8, -7, -6])
             margin = 2.3
 
         else:
@@ -161,10 +163,10 @@ def makeBproduct(player, game, type):
                 name = name.replace('A', 'A1')
 
             else:
-                if player.node == player.products[-1].node:
-                    series = str(old_name[-1][1])       # Iterate series number
+                if player.node == player.products[-1].node and player.science == player.products[-1].science:
+                    series = str(player.products[-1].name[1])       # Iterate series number
                 else:
-                    series = str(int(old_name[0][1]) + 1)   # Iterate series number
+                    series = str( int( player.products[-1].name[1] ) + 1 )       # Iterate series number
                 name = "A" + series + name.strip('A')   # New name is derived
 
             del[player.products[0]]

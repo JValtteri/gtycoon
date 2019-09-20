@@ -29,7 +29,8 @@ if __name__ == "__main__":
 
     input("Press ENTER")
 
-    game = GameStatus(1, 1)
+    #game = GameStatus(1, 1)
+    game = GameStatus(0,2)
     players = game.players
 
     while True:
@@ -44,10 +45,11 @@ if __name__ == "__main__":
 
 
             if p.ai == False:
-                UI.showMarket(p, game)
                 UI.gameScreen(p, game)
             else:
                 ai.aiTurn(p, game)
+
+            UI.showMarket(p, game)
             p.year += 1
             p.refinememt =  p.refinememt / REFINE
 

@@ -76,7 +76,9 @@ def productReleace(player, product, game, mode=None):
     elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp <= game.best_ptp * 0.6:
-        review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers."
+        review = product.name + " francly, is an underwhelming and a thoroughly \nuninteresting product  product in a competative market."
+    elif product.ptp <= game.best_ptp * 0.4:
+        review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers.\nShurely " + player.name + " could do better."
 
 
     # PACKAGE THE ANNOUNCEMENT
@@ -355,13 +357,18 @@ def set_overdrive(product):
         print("""
         Examples:
         99%  90%  80%  70%  60%  50%  40%  30%  20%  10%  1%   pass rate
-       -23  -13   -9   -6   -3    0    3    6    9   13   23   overclock / underclock
+       -23  -13   -9   -6   -3    0    3    6    9   13   23   underclock / overclock
         """)
         print("Choose your cut off point:")
         try:
             overdrive = float(input("> "))  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
         except ValueError:
-            overdrive = 0
+            print(
+            "\tYou didn't specify a value."
+            "\tUsing a conservative default: -13."
+            "\tThat way 90% of the chip will meet spec."
+            )
+            overdrive = -13
         product.overdrive = overdrive
         chipcost = product.chipCost()
         print( "" )
@@ -505,6 +512,7 @@ def design(player, game):
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
             print("Transaction complete\nChip Released\n")
             productReleace(player, player.products[-1], game)			# Announcement and review
+            showMarket(player, game)
         else:
             print("Not enough credits!")
         try: getch()

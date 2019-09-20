@@ -49,28 +49,29 @@ def typeAturn(player, game):
 def typeBturn(player,game):
     if len(player.products) < 1:
         makeBproduct(player, game, 1)
-    if len(player.products) <= engine.MAX_CHIPS:
+    if len(player.products) < engine.MAX_CHIPS:
         makeBproduct(player, game, 2)
         makeBproduct(player, game, 3)
         makeBproduct(player, game, 4)
         doResearch(player, 1)
-    elif player.refinement > 0.39:
+
+    elif player.refinememt == 0.4:
         makeBproduct(player, game, 2)
         makeBproduct(player, game, 3)
         makeBproduct(player, game, 4)
 
-    elif player.refinement > 0.3:
+    elif player.refinememt > 0.3:
         if game.ptp_best / player.products[-1].ptp < 0.8:
             priceCut(player, game)
             doResearch(player, 0)
         makeBproduct(player, game, 5)
         doResearch(player, 1)
 
-    elif player.refinement > 0.2:
+    elif player.refinememt > 0.23:
         doResearch(player, 1)
         priceCut(player, game)
 
-    elif player.refinement < 0.2:
+    elif player.refinememt < 0.23:
         priceCut(player, game)
         if player.reseach_cost() * 1.82 < player.node_cost():
             for i in range(10):

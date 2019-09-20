@@ -91,7 +91,7 @@ def ask(question="", mode=0):
         if answer != '':
             if mode == 1:
                 try:
-                    if int(answer) > 0:
+                    if int(answer) >= 0:
                         break
                 except ValueError:
                     pass

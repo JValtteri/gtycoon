@@ -41,12 +41,14 @@ class GameStatus():
         self.max_perf = 0
         self.best_ptp = 0                # Init valu PERF / PRICE
 
-        ai_names=["ASIx", "xIdea", "AMC", "SMRX", "T-Silicon"]
+        ai_names = ["ASIx", "xIdea", "AMC", "SMRX", "T-Silicon"]
         random.shuffle(ai_names)
+        player_names = ["Mixel Co.", "Harrison Semiconductors", "Stainmayer Group ltd.", "Standford Electronix"]
+        random.shuffle(player_names)
         number = 0
 
         for id in range(human_players):
-            self.players.append(Player(id))
+            self.players.append(Player(id, name=player_names.pop()))
             number = id
 
         for i in range(aiPlayers):

@@ -24,14 +24,16 @@ import ai
 
 if __name__ == "__main__":
 
+    players = UI.mainmenu()
+    #game = GameStatus(1, 1)
+    game = GameStatus(players[0], players[1])
+    players = game.players
+
     UI.intro()
     #getch()
 
     input("Press ENTER")
 
-    #game = GameStatus(1, 1)
-    game = GameStatus(0,2)
-    players = game.players
 
     while True:
 

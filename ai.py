@@ -29,7 +29,7 @@ def aiTurn(player, game, ai_type = 1):
 
 
 def typeAturn(player, game):
-    if len(player.products) <= engine.MAX_CHIPS:
+    if len(player.products) < engine.MAX_CHIPS:
         doResearch(player, 0)
         makeAproduct(player, game)
 

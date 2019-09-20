@@ -26,6 +26,58 @@ def intro():
 
     """)
 
+def mainmenu():
+    license="""
+    GTYCOON, copyright (C) 2019 JValtteri
+    GTYCOON comes with ABSOLUTELY NO WARRANTY.
+    This is free software, you are welcome to 
+    redistribute it under certain conditions; 
+    for more information, see LICENSE or GPLv2.
+    """
+    print(license)
+    try: getch()
+    except: input()
+
+    print("""
+
+
+
+     GGG     TTTTT Y   Y  CCCC  OOO   OOO  N   N
+    G          T    Y Y  C     O   O O   O NN  N
+    G GGG --   T     Y   C     O   O O   O N N N
+    G   G      T     Y   C     O   O O   O N  NN
+     GGGG      T     Y    CCCC  OOO   OOO  N   N
+
+
+
+      Q - QUICK GAME (P vs AI)
+
+
+      N - NEW GAME
+      C - CONTINUE   (not implemented)
+
+
+      X - I'M NOT READY FOR THIS
+
+
+    """)
+    while True:
+        try: ch = getch()
+        except: ch = input()
+        if ch.upper() in ["N", b"N"]:
+            return choose_players()
+        elif ch.upper() in ["Q", b"Q"]:
+            return (1,1)
+        elif ch.upper() in ["X", b"X"]:
+            howtoexit = 1/0/1
+
+
+def choose_players():
+    human = int( ask("Number of human players: ", 1) )
+    ai = int( ask("Number of AI players: ", 1) )
+    return (human, ai)
+
+
 def ask(question="", mode=0):
     """
     mode 0 = str
@@ -364,9 +416,9 @@ def set_overdrive(product):
             overdrive = float(input("> "))  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
         except ValueError:
             print(
-            "\tYou didn't specify a value."
-            "\tUsing a conservative default: -13."
-            "\tThat way 90% of the chip will meet spec."
+            "\tYou didn't specify a value.\n"
+            "\tUsing a conservative default: -13.\n"
+            "\tThat way 90% of the chip will meet spec.\n"
             )
             overdrive = -13
         product.overdrive = overdrive

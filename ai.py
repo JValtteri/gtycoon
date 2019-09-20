@@ -122,38 +122,45 @@ def priceCut(player, game):
 def makeBproduct(player, game, type):
     # Try transaction, if true go on...
     if player.purchase(engine.PRODUCTION_COST):
+        # Define the product brand name
+        if len( player.products ) == 0:
+            brands = ["A", "K", "S", "T", "G", "X", "Z", "C", "M", "R", "e", "E"] #'SX', 'CX', 'MX', 'RS'
+            brand = random.choice(brands)
+        else:
+            brand = player.products[0].name[0]
+
         if type == 1:
-            name = "A10"
+            name = brand + "10"
             size = random.choice([90, 100, 110, 120])
             overdrive = random.choice([-12, -11, -10])
             margin = 1.2
 
         elif type == 2:
-            name = "A20"
+            name = brand + "20"
             size = random.choice([240, 250, 260])
             overdrive = random.choice([-12, -11, -10, -9])
             margin = 1.1
 
         elif type == 3:
-            name = "A30"
+            name = brand + "30"
             size = random.choice([330, 340, 350, 360])
             overdrive = random.choice([-12, -11, -10, -9])
             margin = 1.1
 
         elif type == 4:
-            name = "A40"
+            name = brand + "40"
             size = random.choice([430, 440, 450, 460])
             overdrive = random.choice([-12, -11, -10, -9])
             margin = 1.2
 
         elif type == 5:
-            name = "A50"
+            name = brand + "50"
             size = random.choice([530, 540, 550, 560])
             overdrive = random.choice([-14, -13, -12, -11, -10, -9])
             margin = 2.5
 
         elif type == 6:
-            name = "A60"
+            name = brand + "60"
             size = random.choice([650, 655, 660, 665])
             overdrive = random.choice([-10, -9, -8, -7, -6])
             margin = 2.3
@@ -165,16 +172,16 @@ def makeBproduct(player, game, type):
             old_product = player.products[0]         # Oldest card is replaced
             game.remove_from_market(old_product)     # old_product.market(), old_product.price, old_product.pref)
 
-
+            # For example: Replace A20 with A120
             if len( player.products[-1].name ) == 3:
-                name = name.replace('A', 'A1')
+                name = name.replace(brand, brand + '1')
 
             else:
                 if player.node == player.products[-1].node and player.science == player.products[-1].science:
-                    series = str(player.products[-1].name[1])       # Iterate series number
+                    series = str(player.products[-1].name[1])              # series number
                 else:
-                    series = str( int( player.products[-1].name[1] ) + 1 )       # Iterate series number
-                name = "A" + series + name.strip('A')   # New name is derived
+                    series = str( int( player.products[-1].name[1] ) + 1 ) # Iterate series number
+                name = brand + series + name.strip(brand)                  # New name is derived
 
             del[player.products[0]]
 

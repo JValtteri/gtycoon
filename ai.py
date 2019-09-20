@@ -108,7 +108,7 @@ def priceCut(player, game):
         game.remove_from_market(product)    # Remove the old product from market
         chipcost = product.chipCost()       # Count chipcost to guide pricing
         price = round(chipcost * 1.08)
-        player.product.price = price
+        roduct.price = price
         game.newProduct(product)            # Add the pricecut product back to market
         UI.productReleace(player, product, game, "PRICEDROP")
 

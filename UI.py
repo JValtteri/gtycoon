@@ -61,7 +61,7 @@ def mainmenu():
 
 
       N - NEW GAME
-      C - CONTINUE   (not implemented)
+      C - CONTINUE
 
 
       X - I'M NOT READY FOR THIS
@@ -147,14 +147,14 @@ def productReleace(player, product, game, mode=None):
     elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp <= game.best_ptp * 0.6:
-        review = product.name + " francly, is an underwhelming and a thoroughly \nuninteresting product in an already \ncompetative market."
+        review = product.name + " frankly, is an underwhelming and a thoroughly \nuninteresting product in an already \ncompetative market."
     elif product.ptp <= game.best_ptp * 0.4:
-        review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers.\nShurely " + player.name + " could do better."
+        review = product.name + " frankly, is an example of the never ending greed of modern \ncompanies ripping off their customers.\nShurely " + player.name + " could do better."
 
 
     # PACKAGE THE ANNOUNCEMENT
     print("========================= TECH POINT ==========================\n")
-    print(player.name, "releaced", product.name,  review_word, "\n")
+    print(player.name, "released", product.name,  review_word, "\n")
     print(review)
     print("===============================================================")
     time.sleep(MEDIUM_SLEEP)

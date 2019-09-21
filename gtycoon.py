@@ -5,6 +5,7 @@
 
 import calc
 import UI
+import saveload
 
 import time
 try:
@@ -16,28 +17,20 @@ import ai
 
 """Game engine and main program"""
 
-# players=[]
-
-# def newPlayer():
-#     players.append(Player())
-
-# def newAiPlayer():
-#     players.append(Player("ASIx", True))
-
 if __name__ == "__main__":
 
-    players = UI.mainmenu()
-    #game = GameStatus(1, 1)
-    game = GameStatus(players[0], players[1])
+    game = UI.mainmenu()
+    #game = GameStatus(players[0], players[1])
     players = game.players
 
     UI.intro()
-    #getch()
 
     input("Press ENTER")
 
 
     while True:
+
+        saveload.saveGame(game)
 
         for p in game.players:
 

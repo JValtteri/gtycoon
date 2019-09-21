@@ -6,9 +6,9 @@
 import calc
 import sys
 import engine
+import saveload
 
 import time
-# To make platform independent
 try:
     from msvcrt import getch
 except: pass
@@ -69,12 +69,19 @@ def mainmenu():
         try: ch = getch()
         except: ch = input()
         if ch.upper() in ["N", b"N"]:
-            return choose_players()
+            players = choose_players()
+            return engine.GameStatus(players[0], players[1])
         elif ch.upper() in ["Q", b"Q"]:
-            return (1,1)
+            return engine.GameStatus(1,1)
         elif ch.upper() in ["X", b"X"]:
             sys.exit("quit")
-            #howtoexit = 1/0/1
+        if ch.upper() in ["C", b"C"]:
+            game = saveload.loadGame()
+            if game == None:
+                 pass
+            #    print("No save found")
+            else:
+                 return game
 
 
 def choose_players():

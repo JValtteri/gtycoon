@@ -73,7 +73,8 @@ def mainmenu():
         elif ch.upper() in ["Q", b"Q"]:
             return (1,1)
         elif ch.upper() in ["X", b"X"]:
-            howtoexit = 1/0/1
+            sys.exit("quit")
+            #howtoexit = 1/0/1
 
 
 def choose_players():

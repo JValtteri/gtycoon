@@ -13,10 +13,13 @@ try:
     from msvcrt import getch
 except: pass
 
+SHORT_SLEEP = 0.4
+MEDIUM_SLEEP = 1
+LONG_SLEEP = 2
 
 def intro():
 
-    time.sleep(0.5)
+    time.sleep(SHORT_SLEEP)
     print("""
 
     You are the CEO of a rising star of semiconductors.
@@ -38,7 +41,7 @@ def mainmenu():
     """
     print("\n\n\n\n"+license)
 
-    time.sleep(1)
+    time.sleep(MEDIUM_SLEEP)
     #try: getch()
     #except: input()
 
@@ -85,11 +88,11 @@ def mainmenu():
 
 
 def choose_players():
-    time.sleep(0.5)
+    time.sleep(SHORT_SLEEP)
     human = int( ask("Number of human players: ", 1) )
-    time.sleep(0.5)
+    time.sleep(SHORT_SLEEP)
     ai = int( ask("Number of AI players: ", 1) )
-    time.sleep(0.5)
+    time.sleep(SHORT_SLEEP)
     return (human, ai)
 
 
@@ -154,7 +157,7 @@ def productReleace(player, product, game, mode=None):
     print(player.name, "releaced", product.name,  review_word, "\n")
     print(review)
     print("===============================================================")
-    time.sleep(2)
+    time.sleep(LONG_SLEEP)
 
 
 def statusBar(player):
@@ -227,7 +230,7 @@ def gameScreen(player, game):
         elif ch.upper() in [b" ", b'\r', "", " "]:
             if game.num_products < 1:
                 print("What sort of a company doesn't have any products!?")
-                time.sleep(2)
+                time.sleep(LONG_SLEEP)
 
             else:
                 break
@@ -281,7 +284,7 @@ def research(player):
 
         else:
             print("woops")
-            time.sleep(2)
+            time.sleep(MEDIUM_SLEEP)
 
 
         try:
@@ -290,7 +293,7 @@ def research(player):
             else:
                 print("Not enough credits")
 
-            time.sleep(2)
+            time.sleep(MEDIUM_SLEEP)
             #try:
             #    getch()
             #except:
@@ -314,7 +317,7 @@ def showMarket(player, game):
             if c.inproduction == True:
                 showLine(c, game, None)
                 time.sleep(0.2)
-    time.sleep(2)
+    time.sleep(MEDIUM_SLEEP)
 
 
 def showLine(product, game, index=None):
@@ -359,7 +362,7 @@ def rebrand(player, game):
 
         #try: getch()
         #except: input()
-        time.sleep(2)
+        time.sleep(MEIUM_SLEEP)
 
 
     else:
@@ -377,7 +380,7 @@ def rebrand(player, game):
 
             else:
                 print("Not enough money!")
-                time.sleep(2)
+                time.sleep(MEDIUM_SLEEP)
                 #try: getch()
                 #except: input()
 
@@ -412,7 +415,7 @@ def chooseProduct(player, game, text):
         cancel = True
     except IndexError:
         print("You don't have a product with that index.\nCancelling:")
-        time.sleep(2)
+        time.sleep(MEDIUM_SLEEP)
         cancel = True
 
     if cancel is not True:
@@ -448,7 +451,7 @@ def set_overdrive(product):
             "\tUsing a conservative default: -13.\n"
             "\tThat way 90% of the chip will meet spec.\n"
             )
-            time.sleep(2)
+            time.sleep(MEDIUM_SLEEP)
 
             overdrive = -13
         product.overdrive = overdrive
@@ -494,7 +497,7 @@ def set_price(product):
          #    getch()
          #except:
          #    input()'
-         time.sleep(2)
+         time.sleep(MEDIUM_SLEEP)
     product.price = price
     return product
 
@@ -522,9 +525,9 @@ def design(player, game):
     # THE BASICS
     if no_saved:
         name = ask("Chip name: ", 0)
-        time.sleep(0.5)
+        time.sleep(SHORT_SLEEP)
         size = int( ask("Chip size: ", 1) )
-        time.sleep(0.5)
+        time.sleep(SHORT_SLEEP)
         price = 1
         overdrive = 0
 
@@ -570,7 +573,7 @@ def design(player, game):
         Maximum number of chips reached.
         Pick on chip to be removed:
         """)
-        time.sleep(2)
+        time.sleep(MEDIUM_SLEEP)
 
         number = chooseProduct(player, game, 'replace')
         if number == None:                                          # If none selected, the oldest (0) will be removed
@@ -597,14 +600,13 @@ def design(player, game):
             player.products[-1].inproduction = True
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
             print("Transaction complete\nChip Released\n")
-            time.sleep(2)
             productReleace(player, player.products[-1], game)			# Announcement and review
             showMarket(player, game)
         else:
             print("Not enough credits!")
         #try: getch()
         #except: input()
-        time.sleep(2)
+        time.sleep(MEDIUM_SLEEP)
 
     elif ch.upper() in ['N', b'N']:
         print("""

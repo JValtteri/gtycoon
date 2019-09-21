@@ -73,7 +73,7 @@ if __name__ == "__main__":
             #    getch()
             #except:
             #    input()
-            time.sleep(2)
+            time.sleep(UI.LONG_SLEEP)
 
         game.update_ptp()
         game.ref_market = 0                            # Init ref_market every turn

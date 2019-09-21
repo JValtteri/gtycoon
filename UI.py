@@ -147,7 +147,7 @@ def productReleace(player, product, game, mode=None):
     elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp <= game.best_ptp * 0.6:
-        review = product.name + " francly, is an underwhelming and a thoroughly \nuninteresting product  product in an already \ncompetative market."
+        review = product.name + " francly, is an underwhelming and a thoroughly \nuninteresting product in an already \ncompetative market."
     elif product.ptp <= game.best_ptp * 0.4:
         review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers.\nShurely " + player.name + " could do better."
 
@@ -157,7 +157,7 @@ def productReleace(player, product, game, mode=None):
     print(player.name, "releaced", product.name,  review_word, "\n")
     print(review)
     print("===============================================================")
-    time.sleep(LONG_SLEEP)
+    time.sleep(MEDIUM_SLEEP)
 
 
 def statusBar(player):
@@ -222,10 +222,11 @@ def gameScreen(player, game):
 
         elif ch.upper() in ["M", b"M"]:
             showMarket(player, game)
-            try:
-                getch()
-            except:
-                input ()
+            time.sleep(SHORT_SLEEP)
+            #try:
+            #    getch()
+            #except:
+            #    input ()
 
         elif ch.upper() in [b" ", b'\r', "", " "]:
             if game.num_products < 1:
@@ -317,7 +318,7 @@ def showMarket(player, game):
             if c.inproduction == True:
                 showLine(c, game, None)
                 time.sleep(0.2)
-    time.sleep(MEDIUM_SLEEP)
+    time.sleep(SHORT_SLEEP)
 
 
 def showLine(product, game, index=None):

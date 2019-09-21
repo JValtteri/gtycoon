@@ -22,12 +22,13 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
  - Simple "Headlines" for chip announcements (buggy)
  - Single line of architecture research
  - Node research
+ - Autosave and Load game
+ - Multiplayer with multiple AI players (multiplayer with humans not tested)
 
 ### Planned features:
 
- - Storymode/Tutorial to help teach the game concepts, but also, above all: ENTERTAIN!
- - Multiplayer with multiple human and AI players
- - Saving/loading games
+ - Storymode/Tutorial to help teach the game concepts, but also, above all: **ENTERTAIN!**
+ - Multiplayer with multiple human and ~~AI players~~
  - Random variation in default market and costs
  - "News" game events and acheavements
  - Endgame 
@@ -38,9 +39,9 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
 
 ### Known bugs:
 
- - Total market (total sales) go down every year
- - Ai doesn't research properly
- - Entering non-numbers in to numbers fields may cause a crash
- - Entering an out of index will cause a crash.
+ - ~~Total market (total sales) go down every year~~ Scaled market size is disabled for now.
+ - ~~Ai doesn't research properly~~
+ - ~~Entering non-numbers in to numbers fields may cause a crash~~
+ - ~~Entering an out of index will cause a crash.~~
  
 ### **I'm happy to accept contributions, especially: UI and market algorithms as well as bug fixes**

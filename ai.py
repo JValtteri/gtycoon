@@ -66,24 +66,42 @@ def typeBturn(player,game):
     elif player.refinememt > 0.3:
         if game.best_ptp / player.products[-1].ptp < 0.8:
             priceCut(player, game)
-            doResearch(player, 0)
+            doResearch(player, 1)
         makeBproduct(player, game, 5)
-        doResearch(player, 1)
+        doResearch(player, 0)
 
     elif player.refinememt > 0.23:
-        doResearch(player, 1)
         priceCut(player, game)
+        makeBproduct(player, game, 6)
+        doResearch(player, 1)
 
     elif player.refinememt < 0.23:
         priceCut(player, game)
+
+        # Calculate, which is better, to research node or architecture
+        #
         if player.research_cost() * 1.82 < player.node_cost():
             for i in range(10):
                 doResearch(player, 2)
+        else:
+            doResearch(player, 1)
+
+        # If the research worked, a new line of products can be releaced
+        #
+        if player.products[-1].node != player.node or player.products[-1].science != player.science:
+            makeBproduct(player, game, 2)
             makeBproduct(player, game, 3)
             makeBproduct(player, game, 4)
             makeBproduct(player, game, 5)
-        if player.products[-1].node != player.node and player.products[-1].science != player.science:
+
+        # If the last chip made is not a X60 chip, make one now.
+        #
+        elif player.products[-1].name[-2] != 6:
             makeBproduct(player, game, 6)
+
+        # If all else fails, cut prices and hope for the best
+        # Ehem... prices were cut before this step already
+
 
 
 def doResearch(player, mode):
@@ -187,15 +205,12 @@ def makeBproduct(player, game, type):
 
         new_product = engine.Product(name, size, overdrive, 1, player.node, player.science, player.refinememt)
         chipcost = new_product.chipCost()           # Count chipcost to guide pricing
-
         price = round(chipcost * margin)            # Sets the price by chip cost
         if price < 26:                              # If the price is too low
             price = 26                              # set the minimum price.
         new_product.price = price                   # Save it in the product
-
         player.products.append(new_product)
         player.products[-1].inproduction = True
-
         UI.productReleace(player, player.products[-1], game)
         #try: getch()
         #except: input()

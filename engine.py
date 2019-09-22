@@ -7,7 +7,7 @@ import calc
 import UI
 #from msvcrt import bgetch
 from math import log, e, sqrt
-#from gtycoon import game
+import random
 
 # ddencity=[0.4, 0.3, 0.2, 0.1, 0.05]
 REFINEMENT = 0.4                  # Normal defect dencity (1/cm2) of a new node
@@ -41,13 +41,19 @@ class GameStatus():
         self.max_perf = 0
         self.best_ptp = 0                # Init valu PERF / PRICE
 
+        ai_names = ["ASIx", "xIdea", "AMC", "SMRX", "T-Silicon"]
+        random.shuffle(ai_names)
+        player_names = ["Mixel Co.", "Harrison Semiconductors", "Stainmayer Group ltd.", "Standford Electronix"]
+        random.shuffle(player_names)
+        number = 0
+
         for id in range(human_players):
-            self.players.append(Player(id))
+            self.players.append(Player(id, name=player_names.pop()))
             number = id
 
         for i in range(aiPlayers):
             id = number + i
-            self.players.append(Player(id, name="ASIx Co.", ai=True))
+            self.players.append(Player(id, name=ai_names.pop(), ai=True))
 
     def newProduct(self, product):
         market = product.market()

@@ -6,15 +6,20 @@
 import calc
 import sys
 import engine
-# from gtycoon import game
+import saveload
 
-# To make platform independent
+import time
 try:
     from msvcrt import getch
 except: pass
 
+SHORT_SLEEP = 0.4
+MEDIUM_SLEEP = 1
+LONG_SLEEP = 2
 
 def intro():
+
+    time.sleep(SHORT_SLEEP)
     print("""
 
     You are the CEO of a rising star of semiconductors.
@@ -25,6 +30,71 @@ def intro():
     ...
 
     """)
+
+def mainmenu():
+    license="""
+    GTYCOON, copyright (C) 2019 JValtteri
+    GTYCOON comes with ABSOLUTELY NO WARRANTY.
+    This is free software, you are welcome to 
+    redistribute it under certain conditions; 
+    for more information, see LICENSE or GPLv2.
+    """
+    print("\n\n\n\n"+license)
+
+    time.sleep(MEDIUM_SLEEP)
+    #try: getch()
+    #except: input()
+
+    print("""
+
+
+
+     GGG     TTTTT Y   Y  CCC  OOO   OOO  N   N
+    G          T    Y Y  C    O   O O   O NN  N
+    G GGG ###  T     Y   C    O   O O   O N N N
+    G   G      T     Y   C    O   O O   O N  NN
+     GGGG      T     Y    CCC  OOO   OOO  N   N
+
+
+
+      Q - QUICK GAME (P vs AI)
+
+
+      N - NEW GAME
+      C - CONTINUE
+
+
+      X - I'M NOT READY FOR THIS
+
+
+    """)
+    while True:
+        try: ch = getch()
+        except: ch = input()
+        if ch.upper() in ["N", b"N"]:
+            players = choose_players()
+            return engine.GameStatus(players[0], players[1])
+        elif ch.upper() in ["Q", b"Q"]:
+            return engine.GameStatus(1,1)
+        elif ch.upper() in ["X", b"X"]:
+            sys.exit("quit")
+        if ch.upper() in ["C", b"C"]:
+            game = saveload.loadGame()
+            if game == None:
+                 pass
+            #    print("No save found")
+            else:
+                 return game
+
+
+def choose_players():
+    time.sleep(SHORT_SLEEP)
+    human = int( ask("Number of human players: ", 1) )
+    time.sleep(SHORT_SLEEP)
+    ai = int( ask("Number of AI players: ", 1) )
+    time.sleep(SHORT_SLEEP)
+    return (human, ai)
+
 
 def ask(question="", mode=0):
     """
@@ -39,13 +109,14 @@ def ask(question="", mode=0):
         if answer != '':
             if mode == 1:
                 try:
-                    if int(answer) > 0:
+                    if int(answer) >= 0:
                         break
                 except ValueError:
                     pass
             else:
                 break
     return answer
+
 
 def productReleace(player, product, game, mode=None):
     "Announcement of a new product and a brief review"
@@ -76,14 +147,17 @@ def productReleace(player, product, game, mode=None):
     elif product.ptp > game.best_ptp * 0.9 :
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp <= game.best_ptp * 0.6:
-        review = product.name + " francly, is an example of the never ending greed of modern \ncompanies ripping off their customers."
+        review = product.name + " frankly, is an underwhelming and a thoroughly \nuninteresting product in an already \ncompetitive market."
+    elif product.ptp <= game.best_ptp * 0.4:
+        review = product.name + " frankly, is an example of the never ending greed of modern \ncompanies ripping off their customers.\nShurely " + player.name + " could do better."
 
 
     # PACKAGE THE ANNOUNCEMENT
     print("========================= TECH POINT ==========================\n")
-    print(player.name, "releaced", product.name,  review_word, "\n")
+    print(player.name, "released", product.name,  review_word, "\n")
     print(review)
     print("===============================================================")
+    time.sleep(MEDIUM_SLEEP)
 
 
 def statusBar(player):
@@ -148,14 +222,17 @@ def gameScreen(player, game):
 
         elif ch.upper() in ["M", b"M"]:
             showMarket(player, game)
-            try:
-                getch()
-            except:
-                input ()
+            time.sleep(SHORT_SLEEP)
+            #try:
+            #    getch()
+            #except:
+            #    input ()
 
         elif ch.upper() in [b" ", b'\r', "", " "]:
             if game.num_products < 1:
                 print("What sort of a company doesn't have any products!?")
+                time.sleep(LONG_SLEEP)
+
             else:
                 break
 
@@ -208,6 +285,8 @@ def research(player):
 
         else:
             print("woops")
+            time.sleep(MEDIUM_SLEEP)
+
 
         try:
             if researched == True:
@@ -215,10 +294,11 @@ def research(player):
             else:
                 print("Not enough credits")
 
-            try:
-                getch()
-            except:
-                input ()
+            time.sleep(MEDIUM_SLEEP)
+            #try:
+            #    getch()
+            #except:
+            #    input ()
         except:
             pass
 
@@ -237,6 +317,8 @@ def showMarket(player, game):
         for c in p.products:
             if c.inproduction == True:
                 showLine(c, game, None)
+                time.sleep(0.2)
+    time.sleep(SHORT_SLEEP)
 
 
 def showLine(product, game, index=None):
@@ -279,8 +361,10 @@ def rebrand(player, game):
         print("You have no products.\n\nFirst design a product. \nIf you need to make adjustents to it you can make them here.")
         print("===============================================================\n")
 
-        try: getch()
-        except: input()
+        #try: getch()
+        #except: input()
+        time.sleep(MEIUM_SLEEP)
+
 
     else:
         number = chooseProduct(player, game, 'rebrand')
@@ -297,8 +381,9 @@ def rebrand(player, game):
 
             else:
                 print("Not enough money!")
-                try: getch()
-                except: input()
+                time.sleep(MEDIUM_SLEEP)
+                #try: getch()
+                #except: input()
 
 
 def priceDrop(player, game):
@@ -331,6 +416,7 @@ def chooseProduct(player, game, text):
         cancel = True
     except IndexError:
         print("You don't have a product with that index.\nCancelling:")
+        time.sleep(MEDIUM_SLEEP)
         cancel = True
 
     if cancel is not True:
@@ -355,13 +441,20 @@ def set_overdrive(product):
         print("""
         Examples:
         99%  90%  80%  70%  60%  50%  40%  30%  20%  10%  1%   pass rate
-       -23  -13   -9   -6   -3    0    3    6    9   13   23   overclock / underclock
+       -23  -13   -9   -6   -3    0    3    6    9   13   23   underclock / overclock
         """)
         print("Choose your cut off point:")
         try:
             overdrive = float(input("> "))  #input("Overdrive:\n\t\t\t\t-24 = 99%, \n\t\t\t\t-13 = 90%, \n\t\t\t\t -9 = 80%, \n\t\t\t\t  0 = nominal (50%), \n\t\t\t\t  9 = top 20%, \n\t\t\t\t 13 = top 10%\n\n> ") )
         except ValueError:
-            overdrive = 0
+            print(
+            "\tYou didn't specify a value.\n"
+            "\tUsing a conservative default: -13.\n"
+            "\tThat way 90% of the chip will meet spec.\n"
+            )
+            time.sleep(MEDIUM_SLEEP)
+
+            overdrive = -13
         product.overdrive = overdrive
         chipcost = product.chipCost()
         print( "" )
@@ -401,10 +494,11 @@ def set_price(product):
          But don't worry. I raised the price abit. It should be fine now.
          New price is %i c
          """ % price)
-         try:
-             getch()
-         except:
-             input()
+         #try:
+         #    getch()
+         #except:
+         #    input()'
+         time.sleep(MEDIUM_SLEEP)
     product.price = price
     return product
 
@@ -432,7 +526,9 @@ def design(player, game):
     # THE BASICS
     if no_saved:
         name = ask("Chip name: ", 0)
+        time.sleep(SHORT_SLEEP)
         size = int( ask("Chip size: ", 1) )
+        time.sleep(SHORT_SLEEP)
         price = 1
         overdrive = 0
 
@@ -478,6 +574,7 @@ def design(player, game):
         Maximum number of chips reached.
         Pick on chip to be removed:
         """)
+        time.sleep(MEDIUM_SLEEP)
 
         number = chooseProduct(player, game, 'replace')
         if number == None:                                          # If none selected, the oldest (0) will be removed
@@ -505,10 +602,12 @@ def design(player, game):
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
             print("Transaction complete\nChip Released\n")
             productReleace(player, player.products[-1], game)			# Announcement and review
+            showMarket(player, game)
         else:
             print("Not enough credits!")
-        try: getch()
-        except: input()
+        #try: getch()
+        #except: input()
+        time.sleep(MEDIUM_SLEEP)
 
     elif ch.upper() in ['N', b'N']:
         print("""

@@ -5,6 +5,9 @@
 
 import calc
 import UI
+import saveload
+
+import time
 try:
     from msvcrt import getch
 except: pass
@@ -14,25 +17,20 @@ import ai
 
 """Game engine and main program"""
 
-# players=[]
-
-# def newPlayer():
-#     players.append(Player())
-
-# def newAiPlayer():
-#     players.append(Player("ASIx", True))
-
 if __name__ == "__main__":
 
+    game = UI.mainmenu()
+    #game = GameStatus(players[0], players[1])
+    players = game.players
+
     UI.intro()
-    #getch()
 
     input("Press ENTER")
 
-    game = GameStatus(1, 1)
-    players = game.players
 
     while True:
+
+        saveload.saveGame(game)
 
         for p in game.players:
 
@@ -44,10 +42,11 @@ if __name__ == "__main__":
 
 
             if p.ai == False:
-                UI.showMarket(p, game)
                 UI.gameScreen(p, game)
             else:
                 ai.aiTurn(p, game)
+
+            UI.showMarket(p, game)
             p.year += 1
             p.refinememt =  p.refinememt / REFINE
 
@@ -67,13 +66,14 @@ if __name__ == "__main__":
                 if c.inproduction == True:
                     p.income += c.income     # Income is added together (FOR A PROJECTION!!! Don't use this for anything but cosmetic stuff!)
 
-            print("Projected earnigs for", p.name, "this year:", calc.scale(p.income))
+            print("\nProjected earnigs for", p.name, "this year:", calc.scale(p.income))
             print("===============================================================")
 
-            try:
-                getch()
-            except:
-                input()
+            #try:
+            #    getch()
+            #except:
+            #    input()
+            time.sleep(UI.LONG_SLEEP)
 
         game.update_ptp()
         game.ref_market = 0                            # Init ref_market every turn

@@ -22,7 +22,7 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
      1. You can run the game by running gtycoon.py directly 
      2. or on linux, run *run.sh*
      
-Ideally use one of the **[releaces](https://github.com/JValtteri/gtycoon/releases/)**, but genarally anything in the *master* branch should be stable.
+Ideally use one of the **[releases](https://github.com/JValtteri/gtycoon/releases/)**, but genarally anything in the *master* branch should be stable.
 
 ## Use
 

@@ -291,8 +291,17 @@ def research(player):
         try:
             if researched == True:
                 print("Researched!")
-            else:
+            elif researched == False:
                 print("Not enough credits")
+            elif researched == 404:
+                print(
+                    "Researchers tried to split an atom, but fission occoured.\n"
+                    "Fission produces lots of power but also distroys electronics\n"
+                    "so no good.\n"
+                    "We'll have to try something else."
+                    )
+            else:
+                print("woops\nScience department made a blunder.\nAlso the game has a bug.\nPlease report this.")
 
             time.sleep(MEDIUM_SLEEP)
             #try:

@@ -37,7 +37,7 @@ def typeAturn(player, game):
         makeAproduct(player, game)
 
     elif player.refinememt < 0.2:                        # If the node is old
-        priceCut(player, game, 1)
+        priceCut(player, game)
         doResearch(player, 1)
 
     elif len(player.products) >=  engine.MAX_CHIPS:        # If a full product stack exists...
@@ -211,13 +211,14 @@ def makeBproduct(player, game, type):
         new_product.price = price                   # Save it in the product
         player.products.append(new_product)
         player.products[-1].inproduction = True
-        UI.productReleace(player, player.products[-1], game)
         #try: getch()
         #except: input()
         time.sleep(2)
 
         game.newProduct(player.products[-1])
         player.income += player.products[-1].get_income(game)
+
+        UI.productReleace(player, player.products[-1], game)
 
 
 def makeAproduct(player, game):

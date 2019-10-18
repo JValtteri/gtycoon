@@ -65,6 +65,8 @@ class GameStatus():
         self.sum_price += price
         self.sum_perf += perf
 
+        product.update_ptp()            # Important! The product.ptp is INVALID untill 
+                                        # AFTER the price is finalized and updated!
         self.update_ptp()
         self.update_max_perf()
 
@@ -78,14 +80,14 @@ class GameStatus():
         self.sum_price -= price
         self.sum_perf -= perf
 
-        self.update_ptp()
+        # self.update_ptp()   DISABLED # This would update ptp prematurely. A new product is not up to date yet...
         #self.update_max_perf()        # The market remembers the best and hold on to their used chips.
                                        # Sales will suffer if you try to sell them worse chips
     def update_ptp(self):
         # INVERTED!
         # Performance / Price
         if self.sum_perf != 0:
-            ptp = self.sum_perf/self.sum_price
+            ptp = self.sum_perf / self.sum_price
             self.avg_ptp = ptp        # Update avg PTP
 
             best = self.best_ptp
@@ -224,8 +226,8 @@ class Product():
         # The way the bace market is now calculated, takes in to account the performance and inhearently is PTP
         # sensitive. I'm not sure if the discrete PTP modifier does more good or harm.
         ptp_modifier = self.ptp / game.best_ptp #( calc.normal( (1 - self.ptp/game.best_ptp) ,1)*2 )
-        sales = theoretical_sales * ptp_modifier			# PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
- 							# DEBUG
+        sales = theoretical_sales * ptp_modifier            # PRICE TO PERFORMANCE IS HERE. IF IT DOESN'T WORK. REMOVE MODIFIER
+        # DEBUG
         #print('\n'.join([
                          #"self.market\t" + calc.scale(self.market()),
                          #"ref_market\t" + calc.scale(game.ref_market),

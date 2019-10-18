@@ -144,7 +144,7 @@ def productReleace(player, product, game, mode=None):
             review_word = review_word + " to universal acclaim."
     elif product.ptp >= game.best_ptp:
         review = product.name + " is the best thing since sliced bread. It is the best value \nout there."
-    elif product.ptp > game.best_ptp * 0.9 :
+    elif product.ptp > game.best_ptp * 0.9:
         review = product.name + " offers great value that is hard to beat in the current \nmarket."
     elif product.ptp <= game.best_ptp * 0.6:
         review = product.name + " frankly, is an underwhelming and a thoroughly \nuninteresting product in an already \ncompetitive market."
@@ -363,7 +363,7 @@ def rebrand(player, game):
 
         #try: getch()
         #except: input()
-        time.sleep(MEIUM_SLEEP)
+        time.sleep(MEDIUM_SLEEP)
 
 
     else:
@@ -423,7 +423,7 @@ def chooseProduct(player, game, text):
         product = player.products[number]
         print('\t Name \t Perf \t Cost \t Price \tSales \t Size  \t\tNode  \tPTP \tRevenue')
 
-        showLine(player.products[number], game, None)
+        showLine(product, game, None)
 
         return number
     else:
@@ -568,7 +568,9 @@ def design(player, game):
     #
     player.products[-1] = set_price(player.products[-1])
 
-    # Is the maximum number of chips reached?
+
+    # ENFORCE MAXIMUM NUMBER OF CHIPS
+    #
     if len(player.products) > engine.MAX_CHIPS:
         print("""
         Maximum number of chips reached.
@@ -583,7 +585,9 @@ def design(player, game):
         game.remove_from_market(old_chip)
         del[player.products[number]]
 
+
     # PRODUCTION AND TRANSACTION
+    #
     statusBar(player)
     print("""
     It costs %s to start production.
@@ -601,7 +605,7 @@ def design(player, game):
             player.products[-1].inproduction = True
             game.newProduct(player.products[-1])                       # Relevant data is updated to game (and market status)   #market_segment, price, player.products[-1].performance())
             print("Transaction complete\nChip Released\n")
-            productReleace(player, player.products[-1], game)			# Announcement and review
+            productReleace(player, player.products[-1], game)          # Announcement and review
             showMarket(player, game)
         else:
             print("Not enough credits!")

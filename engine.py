@@ -161,10 +161,13 @@ class Player():
         "Buy a research point to a selected branch"
         nuff_money = Player.purchase(self, Player.node_cost(self))
         if nuff_money:
-            self.node += 1
-            # When moving to a new node, the node refinement is reset
-            self.refinememt = REFINEMENT
-            return True
+            if self.node != len(calc.NODE):
+                self.node += 1
+                # When moving to a new node, the node refinement is reset
+                self.refinememt = REFINEMENT
+                return True
+            else:
+                return 404  # If player tries to split an atom
         else:
             return False
 

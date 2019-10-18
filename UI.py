@@ -527,7 +527,7 @@ def design(player, game):
     if no_saved:
         name = ask("Chip name: ", 0)
         time.sleep(SHORT_SLEEP)
-        size = int( ask("Chip size: ", 1) )
+        size = int( ask("Chip size [mm2]: ", 1) )
         time.sleep(SHORT_SLEEP)
         price = 1
         overdrive = 0

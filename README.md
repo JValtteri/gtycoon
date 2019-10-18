@@ -54,7 +54,7 @@ Names for players are auto-assigned randomly.
  - Market is still modelled in a sub-optimal way and some customers
    will buy an objectivelly "worse product" over a same priced 
    competitor.
- - Simple "Headlines" for chip announcements (buggy)
+ - Simple "Headlines" for chip announcements
  - Single line of architecture research
  - Node research
  - Autosave and Load game
@@ -79,7 +79,8 @@ Names for players are auto-assigned randomly.
  - ~~Ai doesn't research properly~~
  - ~~Entering non-numbers in to numbers fields may cause a crash~~
  - ~~Entering an out of index will cause a crash.~~
- - Performance vs. Price (PVP) metric behaves strangely
- - Some "product reviews" are harsher than expected.
+ - ~~Performance vs. Price (PVP) metric behaves strangely~~
+ - ~~Some "product reviews" are harsher than expected.~~
+ - Entering funny stuff to "overdrive" will cause a crash
 
 ### **I'm happy to accept contributions, especially: UI and market algorithms as well as bug fixes**

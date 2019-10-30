@@ -15,7 +15,7 @@ def loadGame(filename="savegame"):
     except FileNotFoundError:
         print("Could not find %s" % filename)
         return None
-    save = yaml.load(savefile, Loader=yaml.FullLoader)
+    save = yaml.load(savefile, Loader=yaml.SafeLoader)
     savefile.close()
 
     return save

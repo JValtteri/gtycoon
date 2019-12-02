@@ -8,7 +8,7 @@ I'm trying to keep the game platform independent. At minimum so it would run on 
 
 **The game has no UI**, but the command line, though one is planned... possibly in Qt.
 
-### This game is in no way complete!
+### This game is very much a work in progress!
 
 ## How to install 
 
@@ -72,6 +72,7 @@ Names for players are auto-assigned randomly.
  - Multiple architecture research options with different pros and conns (and some luck)
  - UI in QT (PySide), PyGame or other...
  - Difficulty levels for AI
+ 
 
 ### Known bugs:
 

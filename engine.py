@@ -161,7 +161,7 @@ class Player():
         "Buy a research point to a selected branch"
         nuff_money = Player.purchase(self, Player.node_cost(self))
         if nuff_money:
-            if self.node != len(calc.NODE):
+            if self.node != len(calc.NODE)-1: 
                 self.node += 1
                 # When moving to a new node, the node refinement is reset
                 self.refinememt = REFINEMENT
